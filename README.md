@@ -1,8 +1,10 @@
 # westmont-cs130-f23-team-gold-
 
 This project is licensed under the GNU GENERAL PUBLIC LICENSE Version 3.
-A copy of this license is [](included) with this project, and can also
-be read at [https://www.gnu.org/licenses/gpl-3.0.en.html#license-text](GNU's licenses page).
+A copy of this license is 
+[https://github.com/mikeryu/westmont-cs130-f23-team-gold/blob/main/LICENSE](included)
+ with this project, and can also be read at
+[https://www.gnu.org/licenses/gpl-3.0.en.html#license-text](GNU's licenses page).
 
 This license was chosen for this project because we as a team and as students prioritize
 the sharing of knowledge for the benefit of the communities that we are a part of.
