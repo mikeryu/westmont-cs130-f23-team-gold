@@ -77,7 +77,7 @@ WSGI_APPLICATION = 'our_site.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'djangotutorials_mysite',
+        'NAME': 'planner_db',
         'USER': 'django',
         'PASSWORD': 'password',
         'HOST': 'localhost',
