@@ -1,9 +1,10 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 
+from .forms import LoginForm
 
-def landing(request):
-    template = loader.get_template('planner/landing.html')
+
+def dashboard(request):
+    template = loader.get_template('planner/dashboard.html')
     return HttpResponse(template.render({}, request))
-
