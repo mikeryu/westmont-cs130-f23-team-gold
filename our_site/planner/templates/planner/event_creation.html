@@ -1,7 +1,15 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <p>
-        You've reached the event creation page.
-    </p>
+
+<form method="post" action="{% url 'login' %}">
+    {% csrf_token %}
+
+    {{ form }}
+
+    <input type="submit" value="Create Event">
+    {# What is the following line for? #}
+    <input type="hidden" name="next" value="{{ next }}">
+</form>
+
 {% endblock content %}
