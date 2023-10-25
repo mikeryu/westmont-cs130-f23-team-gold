@@ -1,7 +1,14 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <p>
+    <div>
         You've reached the dashboard.
-    </p>
+    </div>
+
+    <div>
+        <form action="{% url 'event_creation' %}">
+            <input type="submit" value="Create new event!" />
+        </form>
+    </div>
+{#    WHY DOES THIS NOT HAVE A NEWLINE WHEN IT DOES IN EVENT_CREATION??? #}
 {% endblock content %}
