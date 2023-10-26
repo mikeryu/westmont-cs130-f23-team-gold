@@ -1,7 +1,15 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <p>
-        You've reached the dashboard.
-    </p>
+<div class="column">
+   {% for events in owner.events.all %}
+        <div class="box">
+            {{ events.description }}
+            <span class="is-small has-text-grey-light">
+                ({{ events.date }} by {{ events.location }})
+            </span>
+        </div>
+    {% endfor %}
+</div>
+
 {% endblock content %}
