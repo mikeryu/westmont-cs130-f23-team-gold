@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    roles = models.ManyToManyField("Role", related_name="fulfilled_by")
+    # roles = models.ManyToManyField("Role", related_name="fulfilled_by")
 
 
 class Event(models.Model):

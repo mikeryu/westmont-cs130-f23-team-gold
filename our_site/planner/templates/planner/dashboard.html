@@ -1,7 +1,12 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <p>
-        You've reached the dashboard.
-    </p>
+
+
+{% for event in owner.events.all %}
+    <p>{{ event.name }}</p>
+    <p>By {{ event.owner }}</p>
+{% endfor %}
+
+
 {% endblock content %}
