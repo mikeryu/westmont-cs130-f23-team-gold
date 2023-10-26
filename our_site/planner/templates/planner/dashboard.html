@@ -1,12 +1,40 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    <div>
+        You've reached the dashboard.
+    </div>
 
+    <div>
+        <form action="{% url 'event_creation' %}">
+            <input type="submit" value="Create new event!" />
+        </form>
+    </div>
+{#    WHY DOES THIS NOT HAVE A NEWLINE WHEN IT DOES IN EVENT_CREATION??? #}
+    <p>
+        Choose a filter:
+    </p>
 
-{% for event in owner.events.all %}
-    <p>{{ event.name }}</p>
-    <p>By {{ event.owner }}</p>
-{% endfor %}
+    <form method="post">
+        {% csrf_token %}
+        {{ AllEventsButton }}
+        <input type="submit" value="All Events" name="filter_all_events">
+    </form>
+    <form method="post">
+        {% csrf_token %}
+        {{ MyEventsButton }}
+        <input type="submit" value="My Events" name="filter_my_events">
+    </form>
+    <form method="post">
+        {% csrf_token %}
+        {{ InvitedEventsButton }}
+        <input type="submit" value="Invited Events" name="filter_invited_events">
+    </form>
 
-
+    <p>
+        The dashboard is currently in mode {{ filter_value }}
+    </p>
+    <div>
+        Invited events:
+    </div>
 {% endblock content %}
