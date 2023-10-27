@@ -12,15 +12,11 @@ def dashboard(request):
         return HttpResponseRedirect("/account/login/")
 
     owner = request.user.profile
-    invited = request.user.profile.events.invitees
+    invited = request.user.profile.events
 
     owned_event_list = Event.objects.filter(owner_id=owner)
-
     invited_event_list = Event.objects.filter(profile_id=invited)
-
     event_list = owned_event_list + invited_event_list
-
-    
 
     context = {"owner" : owner, "planner_event_invitees": event_list}
     
