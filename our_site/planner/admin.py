@@ -1,6 +1,8 @@
 from django.contrib import admin
-from . import models
+from .models import Profile
+from .models import Role
+from .models import Event
 
-admin.site.register(models.Profile)
-admin.site.register(models.Role)
-admin.site.register(models.Event)
+admin.site.register(Profile)
+admin.site.register(Role)
+admin.site.register(Event)

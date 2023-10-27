@@ -7,16 +7,21 @@ from .forms import LoginForm
 
 
 def dashboard(request):
-    event_list = Event.objects
-    name = Event.name
-    context = {"name" : name, "planner_event": event_list}
+    owner = None
+    if request.user.is_anonymous:
+        return HttpResponseRedirect("/account/login/")
+
+    owner = request.user.profile
+    invited = request.user.profile.events.invitees
+
+    owned_event_list = Event.objects.filter(owner_id=owner)
+
+    invited_event_list = Event.objects.filter(profile_id=invited)
+
+    event_list = owned_event_list + invited_event_list
+
+    
+
+    context = {"owner" : owner, "planner_event_invitees": event_list}
+    
     return render(request, "planner/dashboard.html", context)
-    # if request.user.is_anonymous:  # User is redirected to login if they are not logged in
-    #     return HttpResponseRedirect("/account/login/")
-
-    # template = loader.get_template('planner/dashboard.html')
-    # return HttpResponse(template.render({}, request))
-
-# def event(request, name):
-#     context = {"name" : name, "planner_event": Event}
-#     return render(request, "dashboard.html", context)

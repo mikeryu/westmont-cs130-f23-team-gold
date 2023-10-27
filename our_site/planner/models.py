@@ -3,9 +3,8 @@ from django.contrib.auth.models import User
 
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    # roles = models.ManyToManyField("Role", related_name="fulfilled_by")
-
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
+    roles = models.ManyToManyField("Role", related_name="fulfilled_by")
 
 class Event(models.Model):
     owner = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="events")
@@ -14,7 +13,6 @@ class Event(models.Model):
     description = models.CharField(max_length=200)
     location = models.CharField(max_length=50)
     invitees = models.ManyToManyField(Profile, related_name="invitations")
-
 
 class Role(models.Model):
     name = models.CharField(max_length=30)
