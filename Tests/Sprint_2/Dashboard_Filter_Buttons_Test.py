@@ -1,7 +1,7 @@
 import unittest
 from selenium.webdriver.common.by import By
 
-from .SeleniumSetUp import driver_manager, test_user_login
+from Tests.SeleniumSetUp import driver_manager, test_user_login
 
 
 class TestDashboard(unittest.TestCase):
