@@ -1,5 +1,12 @@
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
+from selenium.webdriver.common.by import By
+
+
+def test_user_login(driver):
+    driver.find_element(By.ID, "id_username").send_keys("test_user")
+    driver.find_element(By.ID, "id_password").send_keys("test_password")
+    driver.find_element(By.ID, "submit_button").click()
 
 
 class FirefoxManager:

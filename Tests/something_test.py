@@ -1,28 +1,29 @@
 import unittest
-import os
+from selenium.webdriver.common.by import By
 
-from .SeleniumSetUp import driver_manager
+from .SeleniumSetUp import driver_manager, test_user_login
 
 
 class TestDashboard(unittest.TestCase):
     def test_default_filter(self):
         with driver_manager() as driver:
-            self.assertEquals("aaa", "aaa")
+            driver.get("http://localhost:8000/")
+            test_user_login(driver)
 
     def test_all_to_my(self):
-        self.assertEquals(1, 2)
+        self.assertEquals(True, False)
 
     def test_all_to_inv(self):
-        self.assertEquals(2, 2)
+        self.assertEquals(True, False)
 
     def test_my_to_all(self):
-        self.assertEquals(2, 2)
+        self.assertEquals(True, False)
 
     def test_my_to_inv(self):
-        self.assertEquals(2, 2)
+        self.assertEquals(True, False)
 
     def test_inv_to_all(self):
-        self.assertEquals(2, 2)
+        self.assertEquals(True, False)
 
     def test_inv_to_my(self):
-        self.assertEquals(2, 2)
+        self.assertEquals(True, False)
