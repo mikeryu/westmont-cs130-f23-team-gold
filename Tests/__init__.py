@@ -2,6 +2,9 @@ import os
 
 import Tests.SeleniumSetUp as SeleniumSetUp
 
+# Based on the value of the environment variable SELENIUM_DRIVER_MODE,
+# the variable Tests.SeleniumSetUp.driver_manager will be set to a different
+# web driver that is browser specific.
 try:
     web_driver_mode = os.environ["SELENIUM_DRIVER_MODE"]
     match web_driver_mode:
