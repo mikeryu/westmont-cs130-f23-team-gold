@@ -2,18 +2,6 @@
 
 {% block content %}
 
-    <div class="column">
-        {% for event in event_list %}
-            <div class="box">
-                <p>{{ event.name }}</p>
-                <p>{{ event.description }}</p>
-                <p> Created by: {{ event.owner.user }}</p>
-                <p> Location: {{ event.location }}</p>
-                <p> Date: {{ event.date }}</p>
-            </div>
-        {% endfor %}
-    </div>
-
     <div>
         <form action="{% url 'event_creation' %}">
             <input type="submit" value="Create new event!" />
@@ -29,6 +17,7 @@
         {{ AllEventsButton }}
         <input type="submit" value="All Events" name="filter_all_events">
     </form>
+
     <form method="post">
         {% csrf_token %}
         {{ MyEventsButton }}
@@ -43,5 +32,20 @@
     <p>
         The dashboard is currently in mode {{ filter_value }}
     </p>
-{% endblock content %}
+
+
+    <div class="column">
+        {% for event in event_list %}
+        <div class="box">
+            <p>{{ event.name }}</p>
+            <p>{{ event.description }}</p>
+            <p> Created by: {{ event.owner.user }}</p>
+            <p> Location: {{ event.location }}</p>
+            <p> Date: {{ event.date }}</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% endblock content %}
+
 
