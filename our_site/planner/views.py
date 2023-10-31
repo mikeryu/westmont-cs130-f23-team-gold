@@ -4,27 +4,25 @@ from .models import Event
 import django.forms as forms
 from django.shortcuts import render
 
+class DashboardFilterAllEvents(forms.Form):
+        pass
+
+
+class DashboardFilterMyEvents(forms.Form):
+    pass
+       
+
+class DashboardFilterInvitedEvents(forms.Form):
+    pass
+
 
 
 def dashboard(request): 
-    owner = request.user.profile
-    event_list = []
-
-    class DashboardFilterAllEvents(forms.Form):
-        pass
-
-
-    class DashboardFilterMyEvents(forms.Form):
-        pass
-       
-
-    class DashboardFilterInvitedEvents(forms.Form):
-        pass
-
-
     if request.user.is_anonymous:
         return HttpResponseRedirect("/account/login/")
-
+        
+    owner = request.user.profile
+    event_list = Event.objects.filter(owner_id=owner)
 
     if request.method == "POST":
         template = loader.get_template('planner/dashboard.html')
@@ -55,7 +53,7 @@ def dashboard(request):
 
         elif "filter_invited_events" in request.POST:
             filter_value = "Invited Events"
-
+            event_list = []
             for invitedEvent in Event.objects.all():
                 if invitedEvent.invitees.contains(request.user.profile):
                     event_list.append(invitedEvent)
@@ -79,10 +77,12 @@ def dashboard(request):
     template = loader.get_template("planner/dashboard.html")
     return HttpResponse(template.render(
         {
-            "filter_value": "All Events",
+            "filter_value": "My Events",
             "AllEventsButton": DashboardFilterAllEvents(),
             "MyEventsButton": DashboardFilterMyEvents(),
             "InvitedEventsButton": DashboardFilterInvitedEvents(),
+            "event_list" : event_list,
+            "owner" : owner,
         },
         request
     ))
