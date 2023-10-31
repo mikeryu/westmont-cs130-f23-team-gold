@@ -7,7 +7,7 @@ from django.shortcuts import render
 
 
 def dashboard(request): 
-    owner = None
+    owner = request.user.profile
     event_list = []
 
     class DashboardFilterAllEvents(forms.Form):
@@ -25,10 +25,6 @@ def dashboard(request):
     if request.user.is_anonymous:
         return HttpResponseRedirect("/account/login/")
 
-    if request.user.is_authenticated:
-        owner=request.user.profile
-        if request.method == "GET":
-            return HttpResponseRedirect("planner/dashboard.html")
 
     if request.method == "POST":
         template = loader.get_template('planner/dashboard.html')
