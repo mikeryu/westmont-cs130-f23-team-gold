@@ -15,21 +15,21 @@
     <form method="post">
         {% csrf_token %}
         {{ AllEventsButton }}
-        <input type="submit" value="All Events" name="filter_all_events">
+        <input id="All Events Filter" type="submit" value="All Events" name="filter_all_events">
     </form>
 
     <form method="post">
         {% csrf_token %}
         {{ MyEventsButton }}
-        <input type="submit" value="My Events" name="filter_my_events">
+        <input id="My Events Filter" type="submit" value="My Events" name="filter_my_events">
     </form>
     <form method="post">
         {% csrf_token %}
         {{ InvitedEventsButton }}
-        <input type="submit" value="Invited Events" name="filter_invited_events">
+        <input id="Invited Events Filter" type="submit" value="Invited Events" name="filter_invited_events">
     </form>
 
-    <p>
+    <p id="Current Filter Mode">
         The dashboard is currently in mode {{ filter_value }}
     </p>
 
