@@ -1,6 +1,8 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
+from .models import Event
 import django.forms as forms
+<<<<<<< HEAD
 from .models import Event
 from django.shortcuts import render
 
@@ -21,6 +23,29 @@ def dashboard(request):
 
     if request.user.is_anonymous:  # User is redirected to log in if they are not logged in
        return HttpResponseRedirect("/account/login/")
+=======
+from django.shortcuts import render
+
+class DashboardFilterAllEvents(forms.Form):
+        pass
+
+
+class DashboardFilterMyEvents(forms.Form):
+    pass
+       
+
+class DashboardFilterInvitedEvents(forms.Form):
+    pass
+
+
+
+def dashboard(request): 
+    if request.user.is_anonymous:
+        return HttpResponseRedirect("/account/login/")
+        
+    owner = request.user.profile
+    event_list = Event.objects.filter(owner_id=owner)
+>>>>>>> b5246a2 (Dashboard Views with Filtering (#43))
 
     if request.method == "POST":
         template = loader.get_template('planner/dashboard.html')
@@ -28,7 +53,13 @@ def dashboard(request):
 
         if "filter_all_events" in request.POST:
             filter_value = "All Events"
+<<<<<<< HEAD
             owned_events_list = []
+=======
+
+            owned_events_list = []
+
+>>>>>>> b5246a2 (Dashboard Views with Filtering (#43))
             invited_list = []
             for invitedEvent in Event.objects.all():
                 if invitedEvent.invitees.contains(request.user.profile):
@@ -45,6 +76,7 @@ def dashboard(request):
 
         elif "filter_my_events" in request.POST:
             filter_value = "My Events"
+<<<<<<< HEAD
             owned_events_list = []
             invited_list = []
             for events in Event.objects.filter(owner_id=owner):
@@ -57,6 +89,14 @@ def dashboard(request):
 
         elif "filter_invited_events" in request.POST:
             filter_value = "Invited Events"
+=======
+            owner = request.user.profile
+            event_list = Event.objects.filter(owner_id=owner)
+
+        elif "filter_invited_events" in request.POST:
+            filter_value = "Invited Events"
+            event_list = []
+>>>>>>> b5246a2 (Dashboard Views with Filtering (#43))
             for invitedEvent in Event.objects.all():
                 if invitedEvent.invitees.contains(request.user.profile):
                     event_list.append(invitedEvent)
@@ -70,8 +110,14 @@ def dashboard(request):
                 "AllEventsButton": DashboardFilterAllEvents(),
                 "MyEventsButton": DashboardFilterMyEvents(),
                 "InvitedEventsButton": DashboardFilterInvitedEvents(),
+<<<<<<< HEAD
                 "event_list": event_list,
                 "owner": owner,
+=======
+                "event_list" : event_list,
+                "owner" : owner,
+
+>>>>>>> b5246a2 (Dashboard Views with Filtering (#43))
             },
             request
         ))
@@ -79,10 +125,12 @@ def dashboard(request):
     template = loader.get_template("planner/dashboard.html")
     return HttpResponse(template.render(
         {
-            "filter_value": "All Events",
+            "filter_value": "My Events",
             "AllEventsButton": DashboardFilterAllEvents(),
             "MyEventsButton": DashboardFilterMyEvents(),
             "InvitedEventsButton": DashboardFilterInvitedEvents(),
+            "event_list" : event_list,
+            "owner" : owner,
         },
         request
     ))
@@ -105,3 +153,4 @@ def event_creation(request):
         template = loader.get_template('planner/event_creation.html')
         form = EventCreationForm()
         return HttpResponse(template.render({"form": form}, request))
+
