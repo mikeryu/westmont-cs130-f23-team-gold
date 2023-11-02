@@ -1,33 +1,63 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
+from .models import Event
 import django.forms as forms
-
+from django.shortcuts import render
 
 class DashboardFilterAllEvents(forms.Form):
-    pass
+        pass
 
 
 class DashboardFilterMyEvents(forms.Form):
     pass
-
+       
 
 class DashboardFilterInvitedEvents(forms.Form):
     pass
 
 
-def dashboard(request):
-    if request.user.is_anonymous:  # User is redirected to log in if they are not logged in
+
+def dashboard(request): 
+    if request.user.is_anonymous:
         return HttpResponseRedirect("/account/login/")
+        
+    owner = request.user.profile
+    event_list = Event.objects.filter(owner_id=owner)
 
     if request.method == "POST":
         template = loader.get_template('planner/dashboard.html')
 
         if "filter_all_events" in request.POST:
             filter_value = "All Events"
+
+            owned_events_list = []
+
+            invited_list = []
+            for invitedEvent in Event.objects.all():
+                if invitedEvent.invitees.contains(request.user.profile):
+                    invited_list.append(invitedEvent)
+
+            for events in Event.objects.filter(owner_id=owner):
+                if events in invited_list:
+                    owned_events_list = owned_events_list
+                else:
+                    owned_events_list.append(events) 
+
+            event_list = owned_events_list + invited_list
+
+
         elif "filter_my_events" in request.POST:
             filter_value = "My Events"
+            owner = request.user.profile
+            event_list = Event.objects.filter(owner_id=owner)
+
         elif "filter_invited_events" in request.POST:
             filter_value = "Invited Events"
+            event_list = []
+            for invitedEvent in Event.objects.all():
+                if invitedEvent.invitees.contains(request.user.profile):
+                    event_list.append(invitedEvent)
+
         else:
             raise Exception("unknown post provided")
 
@@ -37,6 +67,9 @@ def dashboard(request):
                 "AllEventsButton": DashboardFilterAllEvents(),
                 "MyEventsButton": DashboardFilterMyEvents(),
                 "InvitedEventsButton": DashboardFilterInvitedEvents(),
+                "event_list" : event_list,
+                "owner" : owner,
+
             },
             request
         ))
@@ -44,10 +77,12 @@ def dashboard(request):
     template = loader.get_template("planner/dashboard.html")
     return HttpResponse(template.render(
         {
-            "filter_value": "All Events",
+            "filter_value": "My Events",
             "AllEventsButton": DashboardFilterAllEvents(),
             "MyEventsButton": DashboardFilterMyEvents(),
             "InvitedEventsButton": DashboardFilterInvitedEvents(),
+            "event_list" : event_list,
+            "owner" : owner,
         },
         request
     ))
@@ -70,3 +105,4 @@ def event_creation(request):
         template = loader.get_template('planner/event_creation.html')
         form = EventCreationForm()
         return HttpResponse(template.render({"form": form}, request))
+
