@@ -5,7 +5,7 @@ from django.dispatch import receiver
 
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
     roles = models.ManyToManyField("Role", related_name="fulfilled_by")
 
 class Event(models.Model):
@@ -22,5 +22,9 @@ class Role(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="roles")
     amount = models.IntegerField()
 
+def create_profile(sender, instance, created, **kwargs):
+    if created:
+        user_profile = Profile(user=instance)
+        user_profile.save()
 
 
