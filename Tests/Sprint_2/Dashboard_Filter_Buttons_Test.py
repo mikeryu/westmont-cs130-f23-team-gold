@@ -1,3 +1,8 @@
+"""
+[USER]
+- name: "test_user", password: "test_password"
+"""
+
 import unittest
 from selenium.webdriver.common.by import By
 
