@@ -1,6 +1,9 @@
 """
 [USER]
-- name: "test_user", password: "test_password"
+- 1. name: "test_user", password: "test_password"
+
+[PROFILE]
+- 2. user: 1, roles: []
 """
 
 import unittest
