@@ -37,6 +37,7 @@ class FirefoxManager:
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.driver.quit()
 
+
 class ChromeManager:
     """
     Chrome managers
@@ -55,5 +56,6 @@ class ChromeManager:
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.driver.quit()
+
 
 driver_manager = None
