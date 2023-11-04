@@ -88,7 +88,7 @@ def dashboard(request):
     ))
 
 
-class EventCreationForm(forms.Form):
+class EventBasicDetails(forms.Form):
     event_name = forms.CharField(label="Event Name:", max_length=30, required=True)
     event_date = forms.DateTimeField(input_formats=['%d/%m/%Y %H:%M'], label="Event Date (dd/mm/yy hh:mm):",
                                      required=True)
@@ -102,12 +102,12 @@ def event_creation(request):
 
     if request.method == "GET":
         template = loader.get_template("planner/event_creation.html")
-        event_creation_form = EventCreationForm()
+        event_creation_form = EventBasicDetails()
         return HttpResponse(template.render({"event_creation_form": event_creation_form}, request))
     elif request.method == "POST":
         # It is acceptable to shove the data from this post into one form because currently only one form
         # leads to this page
-        event_creation_form = EventCreationForm(request.POST)
+        event_creation_form = EventBasicDetails(request.POST)
         # If the form is valid, save the new event and move to it's editing page
         # otherwise, just redisplay the form with its errors
         if event_creation_form.is_valid():
@@ -118,6 +118,8 @@ def event_creation(request):
                 description=event_creation_form.cleaned_data["event_description"],
                 location=event_creation_form.cleaned_data["event_location"],
             )
+            event.save()
+            event.date = event_creation_form.cleaned_data["event_date"]
             event.save()
             return HttpResponseRedirect("/planner/{:d}/edit_event".format(event.id))
         else:
@@ -139,18 +141,37 @@ def edit_event(request, event_id):
     if user_profile_id != owner_profile_id:  # If the user does not own this event, they can't edit it
         return HttpResponseRedirect("/account/dashboard")
 
+    # If a get, give the template to edit an event.
+    # If a post, try to validate the form and save information,
+    # and then give back the template to edit the event.
     template = loader.get_template("planner/edit_event.html")
-    basic_details = EventCreationForm()
-    basic_details.event_name = event.name
-    basic_details.event_date = event.date
-    basic_details.event_description = event.description
-    basic_details.event_location = event.location
+    match request.method:
+        case "GET":
+            pass
+        case "POST":
+            # It is acceptable to shove the data from this post into one form because currently only one form
+            # leads to this page
+            posted_details = EventBasicDetails(request.POST)
+            # If the form is valid, update the event and reload the page
+            # otherwise, just redisplay the form with its errors
+            if posted_details.is_valid():
+                event.name = posted_details.cleaned_data["event_name"]
+                event.date = posted_details.cleaned_data["event_date"]
+                event.description = posted_details.cleaned_data["event_description"]
+                event.location = posted_details.cleaned_data["event_location"]
+                event.save()
+
+    basic_details = EventBasicDetails(initial={
+        "event_name": str(event.name),
+        "event_date": str(event.date),
+        "event_description": str(event.description),
+        "event_location": str(event.location),
+    })
     return HttpResponse(
         template.render(
             {
                 "basic_details": basic_details,
-                "form_action": "planner:{:d}/edit_event/".format(event_id),
             },
-            request,
+            request
         )
     )

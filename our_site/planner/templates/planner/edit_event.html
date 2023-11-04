@@ -2,12 +2,12 @@
 
 {% block content %}
 
-    <form method="post" action={{ form_action }}>
+    <form method="post">
         {% csrf_token %}
 
         {{ basic_details.as_div }}
 
-        <input type="submit" value="Edit Event">
+        <input type="submit" value="Save Changes">
     </form>
 
     <form action="{% url 'planner:dashboard' %}">
