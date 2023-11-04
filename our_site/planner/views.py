@@ -119,8 +119,6 @@ def event_creation(request):
                 location=event_creation_form.cleaned_data["event_location"],
             )
             event.save()
-            event.date = event_creation_form.cleaned_data["event_date"]
-            event.save()
             return HttpResponseRedirect("/planner/{:d}/edit_event".format(event.id))
         else:
             template = loader.get_template("planner/event_creation.html")
