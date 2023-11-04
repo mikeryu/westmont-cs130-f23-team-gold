@@ -8,6 +8,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
     roles = models.ManyToManyField("Role", related_name="fulfilled_by")
 
+
 class Event(models.Model):
     owner = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="events")
     name = models.CharField(max_length=30)
@@ -16,11 +17,13 @@ class Event(models.Model):
     location = models.CharField(max_length=50)
     invitees = models.ManyToManyField(Profile, related_name="invitations")
 
+
 class Role(models.Model):
     name = models.CharField(max_length=30)
     description = models.CharField(max_length=100)
     event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="roles")
     amount = models.IntegerField()
+
 
 def create_profile(sender, instance, created, **kwargs):
     if created:

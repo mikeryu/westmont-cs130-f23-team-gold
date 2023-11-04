@@ -2,56 +2,20 @@
 
 {% block content %}
 
-<form method="post" action="{% url 'event_creation' %}">
-    {% csrf_token %}
+    <form method="post" action="{% url "planner:event_creation" %}">
+        {% csrf_token %}
 
-    <div>
-        {{ form.event_name.errors }}
-        <label>
-            Event Name (30 characters max):
-        </label>
-        {{ form.event_name }}
-    </div>
-{#    WHY DOES THIS CAUSE A NEWLINE BUT IT DOESN'T IN THE DASHBOARD??? #}
-    <div>
-        {{ form.event_date.errors }}
-        <label>
-            Event Date (d/m/y h:m):
-        </label>
-        {{ form.event_date }}
-    </div>
-    <div>
-        {{ form.event_description.errors }}
-        <label>
-            Event Description (200 characters max):
-        </label>
-        {{ form.event_description }}
-    </div>
-    <div>
-        {{ form.event_location.errors }}
-        <label>
-            Event Location (50 characters max):
-        </label>
-        {{ form.event_location }}
-    </div>
-    <div>
-        {{ form.event_invitees_emails.errors }}
-        <label>
-            Invitations (comma delimited list of emails):
-        </label>
-        {{ form.event_invitees_emails }}
-    </div>
-    <div>
-        {{ form.event_roles.errors }}
-        <label>
-            Event Roles (comma delimited zipped list of role names and quantities):
-        </label>
-        {{ form.event_roles }}
-    </div>
+        {{ event_creation_form.as_div }}
 
-    <input type="submit" value="Create Event">
-    {# What is the following line for? #}
-    <input type="hidden" name="next" value="{{ next }}">
-</form>
+        <input type="submit" value="Create Event">
+    </form>
+
+    <form>
+        <p>
+            {{ add_invitees }}
+        </p>
+
+        <input type="submit" value="Add Invitees">
+    </form>
 
 {% endblock content %}
