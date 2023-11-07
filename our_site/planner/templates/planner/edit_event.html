@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <form method="post">
+        {% csrf_token %}
+
+        {{ basic_details.as_div }}
+
+        <input type="submit" value="Save Changes">
+    </form>
+
+    <form action="{% url 'planner:dashboard' %}">
+        <input type="submit" value="Back to Dashboard" />
+    </form>
+
+{% endblock content %}
