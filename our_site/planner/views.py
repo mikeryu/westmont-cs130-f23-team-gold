@@ -249,6 +249,7 @@ def invitations(request, event_id) -> HttpResponse:
                 "messages": messages.get_messages(request),
                 "invitees": current_invitees,
                 "invite_form": AddInvitationForm(),
+                "event_edit_page": "/planner/{:d}/edit_event/".format(event_id),
             },
             request,
         )
