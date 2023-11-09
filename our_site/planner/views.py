@@ -153,7 +153,15 @@ def event_specific_credentials(request, event_id) -> HttpResponseRedirect | Even
     return event
 
 
-def edit_event(request, event_id):
+def edit_event(request, event_id: int) -> HttpResponse:
+    """
+    This view provides a way for user to edit the basic details of an event they own (the name, date, description,
+    and location). Users are verified as the owners of the event using event_specific_credentials.
+
+    :param request: The Http request for a page
+    :param event_id: the id of the event that the user wants to edit
+    :return: An HttpResponse of the rendered template planner/edit_event.html
+    """
     event = event_specific_credentials(request, event_id)
     if isinstance(event, HttpResponseRedirect):
         return event
@@ -194,13 +202,14 @@ def edit_event(request, event_id):
     )
 
 
-def invitations(request, event_id) -> HttpResponse:
+def invitations(request, event_id: int) -> HttpResponse:
     """
     The "invitations" view provides a page where the owner of an event may add or remove users from the guest list.
     Uses event_specific_credentials for authentication that the user owns the event.
 
-    :param request: the HTTP request for a page
+    :param request: the Http request for a page
     :param event_id: the id of the event that someone wants to edit
+    :return: An HttpResponse of the rendered template planner/event_modify_invitees.html
     """
     event = event_specific_credentials(request, event_id)
     if isinstance(event, HttpResponseRedirect):
