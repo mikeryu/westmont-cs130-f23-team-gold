@@ -20,6 +20,9 @@
                 </div>
             </form>
 
+            <form action="{% url "planner:dashboard" %}" class="is-inline-block is-pulled-right">
+                <input class="is-size-5" type="submit" value="Back to Dashboard">
+            </form>
             <form action="{{ event_edit_page }}" class="is-inline-block is-pulled-right">
                 <input class="is-size-5" type="submit" value="Back to Event Info">
             </form>
