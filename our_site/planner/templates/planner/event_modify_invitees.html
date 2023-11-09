@@ -7,6 +7,14 @@
     </p>
 
     <div class="column">
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
         <form method="post" action="">
             {% csrf_token %}
             {{ invite_form.as_div }}
@@ -18,9 +26,7 @@
                 {{ invitee.name }}
                 <form method="post" action="">
                     {% csrf_token %}
-    {#                Do we event need the following line? #}
                     {{ invitee.uninvite_form.user_name.as_hidden }}
-{#                    {{ invitee.uninvite_form.as_div }}#}
                     <input type="submit" value="Uninvite User" name="remove">
                 </form>
             </div>

@@ -1,6 +1,7 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 import django.forms as forms
+from django.contrib import messages
 
 from .models import Event, User
 from .forms import AddInvitationForm, RemoveInvitationForm
@@ -193,7 +194,7 @@ def edit_event(request, event_id):
     )
 
 
-def invitations(request, event_id) -> None:
+def invitations(request, event_id) -> HttpResponse:
     """
     The "invitations" view provides a page where the owner of an event may add or remove users from the guest list.
     Uses event_specific_credentials for authentication that the user owns the event.
@@ -212,14 +213,15 @@ def invitations(request, event_id) -> None:
             if "add" in request.POST:
                 form = AddInvitationForm(request.POST)
                 # If the name they type in is a user on record, add their profile as an invitee
-                # Otherwise throw the form back at them with any errors
+                # Otherwise throw the form back at them with a message that they did not ender the name
+                # of a registered user
                 if form.is_valid():
                     # Safe to get directly because user existence has been validated by the form validation
                     matching_user = User.objects.all().filter(username__exact=form.cleaned_data["user_name"]).get()
                     event.invitees.add(matching_user.profile)
                     event.save()
                 else:
-                    pass
+                    messages.info(request, "'{:s}' is not a registered user.".format(form.data["user_name"]))
             elif "remove" in request.POST:
                 form = RemoveInvitationForm(request.POST)
                 # If the name they type in is a user on record, remove their profile from invitations
@@ -244,6 +246,7 @@ def invitations(request, event_id) -> None:
     return HttpResponse(
         template.render(
             {
+                "messages": messages.get_messages(request),
                 "invitees": current_invitees,
                 "invite_form": AddInvitationForm(),
             },
