@@ -2,10 +2,6 @@
 
 {% block content %}
 
-    <p>
-        Current invitees:
-    </p>
-
     <div class="column">
         {% if messages %}
             <ul class="messages">
@@ -15,20 +11,28 @@
             </ul>
         {% endif %}
 
-        <form method="post" action="">
+        <form class="is-size-5" method="post" action="">
             {% csrf_token %}
-            {{ invite_form.as_div }}
-            <input type="submit" value="Invite User" name="add">
+            <input class="is-size-5" type="submit" value="Invite User" name="add" style="display: inline-block">
+            <div style="display: inline-block">
+                {{ invite_form.as_div }}
+            </div>
         </form>
+
+        <hr>
+        <header class="is-size-3 has-text-centered">Current Invitations:</header>
 
          {% for invitee in invitees %}
             <div class="box">
-                {{ invitee.name }}
-                <form method="post" action="">
+                <form method="post" action="" style="display: inline-block;">
                     {% csrf_token %}
                     {{ invitee.uninvite_form.user_name.as_hidden }}
-                    <input type="submit" value="Uninvite User" name="remove">
+                    <input class="has-background-danger is-size-5" type="submit" value="Rescind Invitation" name="remove">
                 </form>
+
+                <p class="is-size-5" style="display: inline-block;">
+                    {{ invitee.name }}
+                </p>
             </div>
         {% endfor %}
     </div>

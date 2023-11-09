@@ -31,7 +31,7 @@ class SelectUserForm(forms.Form):
 
 
 class AddInvitationForm(SelectUserForm):
-    user_name = forms.CharField(label="Invite User:", max_length=150, validators=[is_user_name])
+    user_name = forms.CharField(label="Username:", max_length=150, validators=[is_user_name])
 
 
 class RemoveInvitationForm(SelectUserForm):
