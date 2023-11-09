@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{{ event.name }}</h1>
+    <p>{{ event.description }}</p>
+    <p> Created by: {{ event.owner.user }}</p>
+    <p> Location: {{ event.location }}</p>
+    <p> Date: {{ event.date }}</p>
+    
+    <form action="{% url 'planner:dashboard' %}">
+        <input type="submit" value="Back to Dashboard" />
+    </form>
+{% endblock content %}

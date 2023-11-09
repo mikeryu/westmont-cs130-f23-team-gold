@@ -1,4 +1,4 @@
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.template import loader
 from .models import Event
 import django.forms as forms
@@ -172,4 +172,15 @@ def edit_event(request, event_id):
             },
             request
         )
+    )
+
+
+def event_home(request, event_id):
+    try:
+        event = Event.objects.get(pk=event_id)
+    except Event.DoesNotExist:
+        raise Http404("Event does not exist")
+
+    return HttpResponse(
+        render(request, 'planner/event_home.html', {'event': event})
     )

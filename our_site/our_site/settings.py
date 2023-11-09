@@ -83,7 +83,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'planner_db',
         'USER': 'django',
-        'PASSWORD': 'Sadie002',
+        'PASSWORD': 'password',
         'HOST': 'localhost',
         'PORT': 3306
     }
