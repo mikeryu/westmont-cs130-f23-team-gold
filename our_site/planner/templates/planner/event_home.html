@@ -1,13 +1,25 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>{{ event.name }}</h1>
-    <p>{{ event.description }}</p>
-    <p> Created by: {{ event.owner.user }}</p>
-    <p> Location: {{ event.location }}</p>
-    <p> Date: {{ event.date }}</p>
-    
-    <form action="{% url 'planner:dashboard' %}">
-        <input type="submit" value="Back to Dashboard" />
-    </form>
+<div class="container">
+    <section class="box" style="background-color: #7f000065">
+        <div class="hero-body">
+            <section class="box" style="background-color: #eeb01e">
+                <h1 class="title is-1">{{ event.name }}</h1>
+            </section>
+            <p>Description: {{ event.description }}</p>
+            <p> Host: {{ event.owner.user }}</p>
+            <p> Location: {{ event.location }}</p>
+            <p> Date: {{ event.date }}</p>
+        </div>
+    </section>
+
+    <div class="container">
+        <form action="{% url 'planner:dashboard' %}">
+            <input type="submit" value="Back to Dashboard" />
+        </form>
+    </div>
+</div>
+
+
 {% endblock content %}
