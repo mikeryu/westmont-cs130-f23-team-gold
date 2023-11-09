@@ -19,8 +19,8 @@
                 <form method="post" action="">
                     {% csrf_token %}
     {#                Do we event need the following line? #}
-{#                    {{ invitee.uninvite_form.as_hidden }}#}
-                    {{ invitee.uninvite_form.as_div }}
+                    {{ invitee.uninvite_form.user_name.as_hidden }}
+{#                    {{ invitee.uninvite_form.as_div }}#}
                     <input type="submit" value="Uninvite User" name="remove">
                 </form>
             </div>

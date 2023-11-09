@@ -193,7 +193,14 @@ def edit_event(request, event_id):
     )
 
 
-def invitations(request, event_id):
+def invitations(request, event_id) -> None:
+    """
+    The "invitations" view provides a page where the owner of an event may add or remove users from the guest list.
+    Uses event_specific_credentials for authentication that the user owns the event.
+
+    :param request: the HTTP request for a page
+    :param event_id: the id of the event that someone wants to edit
+    """
     event = event_specific_credentials(request, event_id)
     if isinstance(event, HttpResponseRedirect):
         return event
