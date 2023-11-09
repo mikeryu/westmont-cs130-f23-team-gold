@@ -14,8 +14,8 @@
         <div>
              <form class="is-inline-block is-size-5" method="post" action="">
                 {% csrf_token %}
-                <input class="is-size-5" type="submit" value="Invite User" name="add" style="display: inline-block">
-                <div style="display: inline-block">
+                <input class="is-inline-block is-size-5" type="submit" value="Invite User" name="add">
+                <div class="is-inline-block">
                     {{ invite_form.as_div }}
                 </div>
             </form>
