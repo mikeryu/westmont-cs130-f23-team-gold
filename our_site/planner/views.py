@@ -1,10 +1,9 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
-from .models import Event
 import django.forms as forms
-from django.shortcuts import render
 
-from .models import Event, Profile
+from .models import Event, User
+from .forms import AddInvitationForm, RemoveInvitationForm
 
 
 class DashboardFilterAllEvents(forms.Form):
@@ -125,7 +124,18 @@ def event_creation(request):
             return HttpResponse(template.render({"event_creation_form": event_creation_form}, request))
 
 
-def edit_event(request, event_id):
+def event_specific_credentials(request, event_id) -> HttpResponseRedirect | Event:
+    """
+    This is a utility function that allows you to tell if a user has logged in and is the owner of
+    an event. If this is the case, the Event record will be returned, and if not an HttpResponseRedirect.
+
+    :param request: The HTTP request for a page
+    :param event_id: the id of the event in the url
+    :return: If the user is logged in as the owner of an event with the id event_id, that Event.
+             Otherwise, an HttpResponseRedirect to the login page if the user isn't logged in,
+             and an HttpResponseRedirect to the user's dashboard if they do not own the event
+             or if the event does not exist.
+    """
     if request.user.is_anonymous:
         return HttpResponseRedirect("/account/login/")
 
@@ -138,6 +148,14 @@ def edit_event(request, event_id):
     owner_profile_id = event.owner_id
     if user_profile_id != owner_profile_id:  # If the user does not own this event, they can't edit it
         return HttpResponseRedirect("/account/dashboard")
+
+    return event
+
+
+def edit_event(request, event_id):
+    event = event_specific_credentials(request, event_id)
+    if isinstance(event, HttpResponseRedirect):
+        return event
 
     # If a get, give the template to edit an event.
     # If a post, try to validate the form and save information,
@@ -171,5 +189,57 @@ def edit_event(request, event_id):
                 "basic_details": basic_details,
             },
             request
+        )
+    )
+
+
+def invitations(request, event_id):
+    event = event_specific_credentials(request, event_id)
+    if isinstance(event, HttpResponseRedirect):
+        return event
+
+    match request.method:
+        case "GET":
+            pass
+        case "POST":
+            if "add" in request.POST:
+                form = AddInvitationForm(request.POST)
+                # If the name they type in is a user on record, add their profile as an invitee
+                # Otherwise throw the form back at them with any errors
+                if form.is_valid():
+                    # Safe to get directly because user existence has been validated by the form validation
+                    matching_user = User.objects.all().filter(username__exact=form.cleaned_data["user_name"]).get()
+                    event.invitees.add(matching_user.profile)
+                    event.save()
+                else:
+                    pass
+            elif "remove" in request.POST:
+                form = RemoveInvitationForm(request.POST)
+                # If the name they type in is a user on record, remove their profile from invitations
+                # Otherwise throw the form back at them with any errors
+                if form.is_valid():
+                    matching_user = User.objects.all().filter(username__exact=form.cleaned_data["user_name"]).get()
+                    event.invitees.remove(matching_user.profile)
+                    event.save()
+            else:
+                raise Exception("That's not a valid POST...")
+
+    current_invitee_names = sorted([invitee.user.username for invitee in event.invitees.all()])
+    current_invitees = [
+        {
+            "name": name,
+            "uninvite_form": RemoveInvitationForm(initial={"user_name": name}),
+        }
+        for name in current_invitee_names
+    ]
+
+    template = loader.get_template("planner/event_modify_invitees.html")
+    return HttpResponse(
+        template.render(
+            {
+                "invitees": current_invitees,
+                "invite_form": AddInvitationForm(),
+            },
+            request,
         )
     )

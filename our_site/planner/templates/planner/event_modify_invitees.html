@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <p>
+        Current invitees:
+    </p>
+
+    <div class="column">
+        <form method="post" action="">
+            {% csrf_token %}
+            {{ invite_form.as_div }}
+            <input type="submit" value="Invite User" name="add">
+        </form>
+
+         {% for invitee in invitees %}
+            <div class="box">
+                {{ invitee.name }}
+                <form method="post" action="">
+                    {% csrf_token %}
+    {#                Do we event need the following line? #}
+{#                    {{ invitee.uninvite_form.as_hidden }}#}
+                    {{ invitee.uninvite_form.as_div }}
+                    <input type="submit" value="Uninvite User" name="remove">
+                </form>
+            </div>
+        {% endfor %}
+    </div>
+
+
+
+
+
+{% endblock content %}
