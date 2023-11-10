@@ -6,7 +6,7 @@
     <div class="column">
 
         <form action="{% url 'planner:event_creation' %}">
-            <input class="button is-medium" type="submit" value="Create new event!" />
+            <input class="button is-medium is-warning" type="submit" value="Create new event!" />
         </form>
         
         <div class="column">
@@ -24,19 +24,25 @@
                     <form method="post">
                         {% csrf_token %}
                         {{ AllEventsButton }}
-                        <input class="button is-medium is-#7f0000" id="All Events Filter" type="submit" value="All Events" name="filter_all_events">
+                        <input class="button is-medium is-warning" id="All Events Filter" type="submit" value="All Events" name="filter_all_events">
                     </form>
+
+                    <div class="column">
+                    </div>
             
                     <form method="post">
                         {% csrf_token %}
                         {{ MyEventsButton }}
-                        <input class="button is-medium" id="My Events Filter" type="submit" value="My Events" name="filter_my_events">
+                        <input class="button is-medium is-warning" id="My Events Filter" type="submit" value="My Events" name="filter_my_events">
                     </form>
             
+                    <div class="column">
+                    </div>
+
                     <form method="post">
                         {% csrf_token %}
                         {{ InvitedEventsButton }}
-                        <input class="button is-medium" id="Invited Events Filter" type="submit" value="Invited Events" name="filter_invited_events">
+                        <input class="button is-medium is-warning" id="Invited Events Filter" type="submit" value="Invited Events" name="filter_invited_events">
                     </form>
     </div>
 </div>     
