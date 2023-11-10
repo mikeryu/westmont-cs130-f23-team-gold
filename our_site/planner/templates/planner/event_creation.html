@@ -3,10 +3,10 @@
 {% block content %}
 
 
-<form class="box" method="post" action="{% url 'event_creation' %}">
+<form class="box" method="post" action="{% url 'planner:event_creation' %}">
     {% csrf_token %}
 
-    <div class="field">
+    <div>
         {{ form.event_name.errors }}
         <label class="label">
             Event Name (30 characters max):
@@ -14,21 +14,21 @@
         {{ form.event_name }}
     </div>
 {#    WHY DOES THIS CAUSE A NEWLINE BUT IT DOESN'T IN THE DASHBOARD??? #}
-    <div class="field">
+    <div>
         {{ form.event_date.errors }}
         <label class="label">
             Event Date (d/m/y h:m):
         </label>
         {{ form.event_date }}
     </div>
-    <div class="field">
+    <div>
         {{ form.event_description.errors }}
         <label class="label">
             Event Description (200 characters max):
         </label>
         {{ form.event_description }}
     </div>
-    <div clas="field">
+    <div>
         {{ form.event_location.errors }}
         <label class="label">
             Event Location (50 characters max):
@@ -41,5 +41,17 @@
     {# What is the following line for? #}
     <input class="input" type="hidden" name="next" value="{{ next }}">
 </form>
+
+    <form>
+        <p>
+            {{ add_invitees }}
+        </p>
+
+        <input type="submit" value="Add Invitees">
+    </form>
+
+    <form action="{% url 'planner:dashboard' %}">
+        <input type="submit" value="Back to Dashboard" />
+    </form>
 
 {% endblock content %}

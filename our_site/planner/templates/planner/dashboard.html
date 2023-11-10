@@ -2,19 +2,19 @@
 
 {% block content %}
 
-
 <div class="columns"> 
     <div class="column">
-        <form action="{% url 'event_creation' %}">
+
+        <form action="{% url 'planner:event_creation' %}">
             <input class="button is-medium" type="submit" value="Create new event!" />
-        </form>  
+        </form>
         
         <div class="column">
         </div>
 
         <div class="is-size-5" id="Current Filter Mode">
                 The dashboard is currently in mode {{ filter_value }}
-            </div>
+        </div>
 
                 <div class="column">
                 </div>
@@ -39,8 +39,7 @@
                         <input class="button is-medium" id="Invited Events Filter" type="submit" value="Invited Events" name="filter_invited_events">
                     </form>
     </div>
-</div>    
-
+</div>     
 
     <div class="column">
         {% for event in event_list %}
