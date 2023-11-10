@@ -1,7 +1,7 @@
 from selenium import webdriver
-from selenium.webdriver.firefox.options import Options
+from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.options import Options as ChromeOptions
 
 
 def test_user_login(driver):
@@ -26,7 +26,7 @@ class FirefoxManager:
     """
 
     def __init__(self):
-        options = Options()
+        options = FirefoxOptions()
         driver = webdriver.Firefox(options=options)
         driver.implicitly_wait(2)
         self.driver = driver
@@ -44,7 +44,7 @@ class ChromeManager:
     """
 
     def __init__(self):
-        options = Options()
+        options = ChromeOptions()
         options.add_experimental_option("excludeSwitches", ["enable-logging"])
         options.add_argument("--headless")
         driver = webdriver.Chrome(options=options)

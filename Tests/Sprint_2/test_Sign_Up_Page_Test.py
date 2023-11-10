@@ -70,6 +70,7 @@ class TestNewAccount(unittest.TestCase):
                 driver.find_element(By.ID, "id_submit_new_account_button").text
             )
 
+<<<<<<< HEAD
 # placeholder
 # TC 5: create new account with a long username and get denied, currently not working reportedly (but merge still please)
 #    def test_long_name(self):
@@ -84,3 +85,19 @@ class TestNewAccount(unittest.TestCase):
 #                "The dashboard is currently in mode All Events",
 #                driver.find_element(By.ID, "Current Filter Mode").text
 #            )
+=======
+
+    #TC 5: create new account with a long username and get denied, currently not working reportedly (but merge still please)
+    def test_long_name(self):
+        with driver_manager() as driver:
+            driver.get("http://localhost:8000/")
+            driver.find_element(By.ID, "id_new_account_button").click()
+            driver.find_element(By.ID, "id_username").send_keys(15*"atenletterword")
+            driver.find_element(By.ID, "id_password1").send_keys("passwordg")
+            driver.find_element(By.ID, "id_password2").send_keys("passwordg")
+            driver.find_element(By.ID, "id_submit_new_account_button").click()
+            self.assertEquals(
+                "The dashboard is currently in mode All Events",
+                driver.find_element(By.ID, "Current Filter Mode").text
+            )
+>>>>>>> 537d72b (fixed name collision and added 150 char test)
