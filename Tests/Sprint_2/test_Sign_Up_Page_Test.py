@@ -16,6 +16,10 @@ class TestNewAccount(unittest.TestCase):
 
     # TC 1: create new account and go to dashboard
     def test_create_account(self):
+        """
+        [USER]
+        - (NOT PRESENT) name: jefferson
+        """
         with driver_manager() as driver:
             driver.get("http://localhost:8000/")
             driver.find_element(By.ID, "id_new_account_button").click()
@@ -30,6 +34,10 @@ class TestNewAccount(unittest.TestCase):
 
     # TC 2: create new account with weak password and get denied
     def test_weak_password(self):
+        """
+        [USER]
+        - (NOT PRESENT) name: jefferson
+        """
         with driver_manager() as driver:
             driver.get("http://localhost:8000/")
             driver.find_element(By.ID, "id_new_account_button").click()
@@ -44,6 +52,10 @@ class TestNewAccount(unittest.TestCase):
 
     # TC 3: create new account with already used username and get denied
     def test_already_used_name(self):
+        """
+        [USER]
+        - name: "jefferson", password: any
+        """
         with driver_manager() as driver:
             driver.get("http://localhost:8000/")
             driver.find_element(By.ID, "id_new_account_button").click()
@@ -58,6 +70,10 @@ class TestNewAccount(unittest.TestCase):
 
     # TC 4: create new account with two different passwords and get denied
     def test_two_passwords(self):
+        """
+        [USER]
+        - (NOT PRESENT) name: jefferson
+        """
         with driver_manager() as driver:
             driver.get("http://localhost:8000/")
             driver.find_element(By.ID, "id_new_account_button").click()
@@ -73,6 +89,10 @@ class TestNewAccount(unittest.TestCase):
     # TC 5: create new account with a long username and get denied, currently not working reportedly (but merge still
     # please)
     def test_long_name(self):
+        """
+        [USER]
+        - (NOT PRESENT) name: atenletterwordrstatenletterwordrstatenletterwordrstatenletterwordrstatenletterwordrstatenletterwordrstatenletterwordrstatenletterwordrstatenletterwordrstatenletterwordrstatenletterwordrstatenletterwordrstatenletterwordrstatenletterwordrstatenletterwordrst
+        """
         with driver_manager() as driver:
             driver.get("http://localhost:8000/")
             driver.find_element(By.ID, "id_new_account_button").click()
