@@ -2,21 +2,31 @@
 
 {% block content %}
 
-<div>
-    <form action="{% url 'event_creation' %}">
-    <input type="submit" value="Create new event!" />
-    </form>
-</div>
-{#    WHY DOES THIS NOT HAVE A NEWLINE WHEN IT DOES IN EVENT_CREATION??? #}
-    <p>
-        Choose a filter:
-    </p>
+<div class="columns"> 
+    <div class="column">
+
+        <form action="{% url 'planner:event_creation' %}">
+            <input class="button is-medium is-warning" type="submit" value="Create new event!" />
+        </form>
+        
+        <div class="column">
+        </div>
+
+        <div class="is-size-5" id="Current Filter Mode">
+                The dashboard is currently in mode {{ filter_value }}
+        </div>
+
+                <div class="column">
+                </div>
+             
+                    <p class="is-size-5"> Choose a filter: </p>
 
     <form method="post">
         {% csrf_token %}
         {{ AllEventsButton }}
         <input id="All Events Filter" type="submit" value="All Events" name="filter_all_events">
     </form>
+
     <form method="post">
         {% csrf_token %}
         {{ MyEventsButton }}
@@ -31,4 +41,20 @@
     <p id="Current Filter Mode">
         The dashboard is currently in mode {{ filter_value }}
     </p>
-{% endblock content %}
+
+
+    <div class="column">
+        {% for event in event_list %}
+        <div class="box">
+            <b>{{ event.name }}</b>
+            <p>{{ event.description }}</p>
+            <p> Created by: {{ event.owner.user }}</p>
+            <p> Location: {{ event.location }}</p>
+            <p> Date: {{ event.date }}</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% endblock content %}
+
+
