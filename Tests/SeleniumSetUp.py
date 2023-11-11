@@ -28,7 +28,7 @@ class FirefoxManager:
     def __init__(self):
         options = FirefoxOptions()
         driver = webdriver.Firefox(options=options)
-        driver.implicitly_wait(2)
+        driver.implicitly_wait(5)
         self.driver = driver
 
     def __enter__(self):
