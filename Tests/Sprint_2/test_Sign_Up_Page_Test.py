@@ -24,7 +24,7 @@ class TestNewAccount(unittest.TestCase):
             driver.find_element(By.ID, "id_password2").send_keys("passwordg")
             driver.find_element(By.ID, "id_submit_new_account_button").click()
             self.assertEquals(
-                "The dashboard is currently in mode All Events",
+                "The dashboard is currently in mode My Events",
                 driver.find_element(By.ID, "Current Filter Mode").text
             )
 
@@ -42,12 +42,12 @@ class TestNewAccount(unittest.TestCase):
                 driver.find_element(By.ID, "id_submit_new_account_button").text
             )
 
-    # TC 3: create new account with a already used username and get denied
+    # TC 3: create new account with already used username and get denied
     def test_already_used_name(self):
         with driver_manager() as driver:
             driver.get("http://localhost:8000/")
             driver.find_element(By.ID, "id_new_account_button").click()
-            driver.find_element(By.ID, "id_username").send_keys("admin")
+            driver.find_element(By.ID, "id_username").send_keys("jefferson")
             driver.find_element(By.ID, "id_password1").send_keys("passwordg")
             driver.find_element(By.ID, "id_password2").send_keys("passwordg")
             driver.find_element(By.ID, "id_submit_new_account_button").click()
@@ -70,16 +70,17 @@ class TestNewAccount(unittest.TestCase):
                 driver.find_element(By.ID, "id_submit_new_account_button").text
             )
 
-    # TC 5: create new account with a long username and get denied, currently not working reportedly (but merge still please)
+    # TC 5: create new account with a long username and get denied, currently not working reportedly (but merge still
+    # please)
     def test_long_name(self):
         with driver_manager() as driver:
             driver.get("http://localhost:8000/")
             driver.find_element(By.ID, "id_new_account_button").click()
-            driver.find_element(By.ID, "id_username").send_keys(15 * "atenletterword")
+            driver.find_element(By.ID, "id_username").send_keys(15 * "atenletterwordrst")
             driver.find_element(By.ID, "id_password1").send_keys("passwordg")
             driver.find_element(By.ID, "id_password2").send_keys("passwordg")
             driver.find_element(By.ID, "id_submit_new_account_button").click()
             self.assertEquals(
-                "The dashboard is currently in mode All Events",
-                driver.find_element(By.ID, "Current Filter Mode").text
+                "Sign up",
+                driver.find_element(By.ID, "id_submit_new_account_button").text
             )
