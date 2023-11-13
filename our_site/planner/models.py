@@ -23,9 +23,3 @@ class Role(models.Model):
     description = models.CharField(max_length=100)
     event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="roles")
     amount = models.IntegerField()
-
-
-def create_profile(sender, instance, created, **kwargs):
-    if created:
-        user_profile = Profile(user=instance)
-        user_profile.save()
