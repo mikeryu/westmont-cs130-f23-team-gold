@@ -38,7 +38,6 @@
         {% for event in event_list %}
         <div class="box">
             <a href="{% url 'planner:event_home' event.id %}">{{ event.name }}</a>
-            <b>{{ event.name }}</b>
             <p>{{ event.description }}</p>
             <p> Created by: {{ event.owner.user }}</p>
             <p> Location: {{ event.location }}</p>
