@@ -73,7 +73,7 @@ def dashboard(request):
             },
             request
         ))
-
+    
     template = loader.get_template("planner/dashboard.html")
     return HttpResponse(template.render(
         {
