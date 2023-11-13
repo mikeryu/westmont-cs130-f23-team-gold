@@ -11,8 +11,7 @@ try:
         case "FIREFOX":
             SeleniumSetUp.driver_manager = SeleniumSetUp.FirefoxManager
         case "CHROME":
-            raise NotImplementedError("The Chrome driver has not been set up yet. "
-                                      "Please be patient or add it yourself in SeleniumSetUp.py.")
+            SeleniumSetUp.driver_manager = SeleniumSetUp.ChromeManager
         case _:
             raise NotImplementedError("The driver mode '{}' is not recognized. "
                                       "Expected values are 'FIREFOX' and 'CHROME'.")
