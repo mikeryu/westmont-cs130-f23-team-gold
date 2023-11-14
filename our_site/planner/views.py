@@ -273,8 +273,20 @@ class RoleDetails(forms.Form):
     #amount = forms.IntegerField()
 
 def addRoles(request):
+    
     if request.user.is_anonymous:
         return HttpResponseRedirect("/account/login/")
+
+    #owner = request.user.profile
+    #if Event.objects(owner_id=owner):
+        #return HttpResponseRedirect("/account/dashboard")
+    #event = Event.objects.all().filter(id__exact=event_id).get()
+    #user_profile_id = request.user.profile.id
+    #owner_profile_id = event.owner_id
+
+    #if user_profile_id != owner_profile_id:
+        #return HttpResponseRedirect("/account/dashboard")
+
     if request.method=="GET":
         template=loader.get_template("planner/addRoles.html")
         addRoles_form=RoleForm()
@@ -288,7 +300,7 @@ def addRoles(request):
             role.save()
 
         addRoles_form=RoleForm()
-        return render(request, "planner/dashboard.html", {"addRoles_form": addRoles_form})
+        return render(request, "planner/addRoles.html", {"addRoles_form": addRoles_form})
     else:
-        template=loader.get_template("planner/addRoles.html")
+        template=loader.get_template("planner/dashboard.html")
         return HttpResponse(template.render({"RoleDetails": RoleDetails},request))
