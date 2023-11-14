@@ -1,4 +1,4 @@
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.template import loader
 import django.forms as forms
 from django.contrib import messages
@@ -203,6 +203,28 @@ def edit_event(request, event_id: int) -> HttpResponse:
         )
     )
 
+
+def event_home(request, event_id):
+    if request.user.is_anonymous:
+        return HttpResponseRedirect("/account/login/")
+    
+    event = Event.objects.all().filter(id__exact=event_id).get()
+
+    user_profile_id = request.user.profile.id
+    owner_profile_id = event.owner_id
+    invitee_profile_ids = event.invitees.values_list('id', flat=True)
+
+    if user_profile_id != owner_profile_id and user_profile_id not in invitee_profile_ids:
+        return HttpResponseRedirect("/account/dashboard")
+    
+    try:
+        event = Event.objects.get(pk=event_id)
+    except Event.DoesNotExist:
+        raise Http404("Event does not exist")
+
+    return HttpResponse(
+        render(request, 'planner/event_home.html', {'event': event})
+    )
 
 def invitations(request, event_id: int) -> HttpResponse:
     """
