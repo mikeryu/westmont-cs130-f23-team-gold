@@ -22,7 +22,7 @@ class TestEventView(unittest.TestCase):
             )
 
     # TC 2: can edit previously input event details
-    def edit_new_event(self):
+    def test_edit_new_event(self):
         with driver_manager() as driver:
             driver.get("http://localhost:8000/")
             test_user_login(driver)
@@ -39,7 +39,7 @@ class TestEventView(unittest.TestCase):
             )
 
     # TC 3: create new event and save edited event details
-    def save_edit_details(self):
+    def test_save_edit_details(self):
         with driver_manager() as driver:
             driver.get("http://localhost:8000/")
             test_user_login(driver)
@@ -57,7 +57,7 @@ class TestEventView(unittest.TestCase):
             )
 
     # TC 4: create new event and filter by sort buttons
-    def new_event_sorted(self):
+    def test_new_event_sorted(self):
         with driver_manager() as driver:
             driver.get("http://localhost:8000/")
             test_user_login(driver)
