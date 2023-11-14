@@ -2,20 +2,17 @@ from django import forms
 from django.core.exceptions import ValidationError
 
 from django.contrib.auth.forms import User
-from .models import Event, Profile, Role
+from .models import Role
 
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 
 class RoleForm(forms.ModelForm):
     name = forms.CharField(max_length=30, required=True)
-    description= forms.CharField(max_length=100)
-    #event=forms.ForeignKey(Event, on_delete=forms.CASCADE, related_name='roles')
+    description = forms.CharField(max_length=100)
     amount = forms.IntegerField()
 
     class Meta:
-        model=Role
-        exclude=("user",)
+        model = Role
+        exclude = ("user",)
 
 
 class LoginForm(forms.Form):
@@ -50,4 +47,3 @@ class AddInvitationForm(SelectUserForm):
 
 class RemoveInvitationForm(SelectUserForm):
     pass
-
