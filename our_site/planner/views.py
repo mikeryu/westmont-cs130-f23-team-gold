@@ -3,7 +3,7 @@ from django.template import loader
 import django.forms as forms
 from django.contrib import messages
 
-from .models import Event, User
+from .models import Event, User, Role
 from .forms import AddInvitationForm, RemoveInvitationForm
 #from .forms import RoleForm
 from django.shortcuts import render
@@ -328,3 +328,63 @@ def addRoles(request):
         template=loader.get_template("planner/dashboard.html")
         return HttpResponse(template.render({"RoleDetails": RoleDetails},request))
 
+
+
+
+class RoleDetails(forms.Form):
+    role_name = forms.CharField(max_length=30)
+
+class RoleForm(forms.Form):
+    name = forms.CharField(max_length=30, required=True)
+    description = forms.CharField(max_length=100)  
+    amount = forms.IntegerField()
+
+def addRoles(request):
+    if request.user.is_anonymous:
+        return HttpResponseRedirect("/account/login/")
+    if request.method=="GET":
+        template=loader.get_template("planner/addRoles.html")
+        addRoles_form=RoleForm()
+        return HttpResponse(template.render({"addRoles_form": addRoles_form},request))
+
+    elif request.method=="POST":
+        addRoles_form=RoleForm(request.POST)
+        if addRoles_form.is_valid():
+            role = addRoles_form.save(commit=False)
+            role.user = request.user
+            role.save()
+
+        addRoles_form=RoleForm()
+
+        return render(request, "planner/addRoles.html", {"addRoles_form": addRoles_form})
+    else:
+        template=loader.get_template("planner/dashboard.html")
+        return HttpResponse(template.render({"RoleDetails": RoleDetails},request))
+
+
+class RoleDetails(forms.Form):
+    role_name=forms.CharField(max_length=30)
+    #description= forms.CharField(max_length=100)
+    #event=forms.ForeignKey(Event, on_delete=models.CASCADE, related_name='roles')
+    #amount = forms.IntegerField()
+
+def addRoles(request):
+    if request.user.is_anonymous:
+        return HttpResponseRedirect("/account/login/")
+    if request.method=="GET":
+        template=loader.get_template("planner/addRoles.html")
+        addRoles_form=RoleForm()
+        return HttpResponse(template.render({"addRoles_form": addRoles_form},request))
+
+    elif request.method=="POST":
+        addRoles_form=RoleForm(request.POST)
+        if addRoles_form.is_valid():
+            role=addRoles_form.save(commit=False)
+            role.user=request.user
+            role.save()
+
+        addRoles_form=RoleForm()
+        return render(request, "planner/dashboard.html", {"addRoles_form": addRoles_form})
+    else:
+        template=loader.get_template("planner/addRoles.html")
+        return HttpResponse(template.render({"RoleDetails": RoleDetails},request))
