@@ -207,6 +207,11 @@ def edit_event(request, event_id: int) -> HttpResponse:
 def event_home(request, event_id):
     if request.user.is_anonymous:
         return HttpResponseRedirect("/account/login/")
+<<<<<<< HEAD
+=======
+
+    event = Event.objects.all().filter(id__exact=event_id).get()
+>>>>>>> ba42354 (Adding things to backend roles logic  (#73))
 
     event = Event.objects.all().filter(id__exact=event_id).get()
     #role= Role.objects().filter()
@@ -314,6 +319,7 @@ def addRoles(request):
    
     if request.user.is_anonymous:
         return HttpResponseRedirect("/account/login/")
+<<<<<<< HEAD
     if request.method=="GET":
         template=loader.get_template("planner/addRoles.html")
         addRoles_form=RoleForm()
@@ -321,11 +327,21 @@ def addRoles(request):
     elif request.method=="POST":    
         addRoles_form=RoleForm(request.POST)
 >>>>>>> 778076c (sprint 4)
+=======
+
+    if request.method == "GET":
+        template = loader.get_template("planner/addRoles.html")
+        addRoles_form = RoleForm()
+        return HttpResponse(template.render({"addRoles_form": addRoles_form}, request))
+    elif request.method == "POST":
+        addRoles_form = RoleForm(request.POST)
+>>>>>>> ba42354 (Adding things to backend roles logic  (#73))
         if addRoles_form.is_valid():
             role = addRoles_form.save(commit=False)
             role.user = request.user
             role.save()
 
+<<<<<<< HEAD
 <<<<<<< HEAD
         addRoles_form = RoleForm()
 =======
@@ -344,3 +360,11 @@ def addRoles(request):
     
 
 >>>>>>> 778076c (sprint 4)
+=======
+        addRoles_form = RoleForm()
+
+        return render(request, "planner/addRoles.html", {"addRoles_form": addRoles_form})
+    else:
+        template = loader.get_template("planner/dashboard.html")
+        return HttpResponse(template.render({"RoleDetails": RoleDetails}, request))
+>>>>>>> ba42354 (Adding things to backend roles logic  (#73))
