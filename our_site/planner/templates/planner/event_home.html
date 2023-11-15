@@ -51,3 +51,22 @@
     </div>
 </body>
 </html>
+        <div class="columns">
+            <div class="column is-2">
+                <form action="{% url 'planner:addRoles' %}">
+                    <input class="button is-warning" type="submit" value="Add Roles" />
+                </form>
+            </div>
+            <div class="column is-6">
+                <form action="{% url 'planner:dashboard' %}">
+                    <input class="button is-warning" type="submit" value="Back to Dashboard" />
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+{% endblock content %}
