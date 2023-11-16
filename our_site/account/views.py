@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 import django.contrib.auth.views as auth_views
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login
+from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from planner.models import Profile
 
@@ -14,9 +15,11 @@ def newAccount(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            Profile.objects.create(user=user)
+            profile = Profile(user=user)
+            profile.save()
+            user = User.objects.all().filter(username__exact=user.username).get()
             login(request, user)
-            return redirect('dashboard')
+            return redirect('planner:dashboard')
     else:
         form = UserCreationForm()
     return render(request, 'registration/newAccount.html', {'form': form})
