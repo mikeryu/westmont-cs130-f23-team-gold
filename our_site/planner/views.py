@@ -310,7 +310,7 @@ def addRoles(request):
             role.save()
 
         addRoles_form=RoleForm()
-        return render(request, "planner/dashboard.html", {"addRoles_form": addRoles_form})
+        return render(request, "planner/addRoles.html", {"addRoles_form": addRoles_form})
     else:
-        template=loader.get_template("planner/addRoles.html")
+        template=loader.get_template("planner/dashboard.html")
         return HttpResponse(template.render({"RoleDetails": RoleDetails},request))
