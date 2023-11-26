@@ -227,7 +227,7 @@ def event_home_owned(request, event_id):
 
     if request.method == "POST":
         if "Edit Event" in request.POST:
-            return HttpResponseRedirect("/planner/dashboard")
+            return HttpResponseRedirect("/planner/{:d}/edit_event".format(event.id))
 
 
     return HttpResponse(
@@ -246,7 +246,7 @@ def event_home(request, event_id):
     invitee_profile_ids = event.invitees.values_list('id', flat=True)
 
     if user_profile_id != owner_profile_id and user_profile_id not in invitee_profile_ids:
-        
+
         return HttpResponseRedirect("/planner/dashboard")
     
     if user_profile_id == owner_profile_id:
@@ -257,9 +257,10 @@ def event_home(request, event_id):
     except Event.DoesNotExist:
         raise Http404("Event does not exist")
 
+ # edit once able to accept invite
     if request.method == "POST":
         if "Accept Invite" in request.POST:
-            return HttpResponseRedirect("/planner/{:d}/edit_event".format(event.id))
+            return HttpResponseRedirect("/planner/dashboard")
 
     return HttpResponse(
         render(request, 'planner/event_home.html', {'event': event})
