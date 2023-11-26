@@ -27,7 +27,7 @@ def dashboard(request):
 
     owner = request.user.profile
     event_list = Event.objects.filter(owner_id=owner)
-
+    
     if request.method == "POST":
         template = loader.get_template('planner/dashboard.html')
 
@@ -209,10 +209,14 @@ def event_home(request, event_id):
         return HttpResponseRedirect("/account/login/")
 
     event = Event.objects.all().filter(id__exact=event_id).get()
-
+    #role= Role.objects().filter()
     user_profile_id = request.user.profile.id
     owner_profile_id = event.owner_id
     invitee_profile_ids = event.invitees.values_list('id', flat=True)
+
+    roles_list=[]
+    for role in event.roles.all():
+        roles_list.append(role)
 
     if user_profile_id != owner_profile_id and user_profile_id not in invitee_profile_ids:
         return HttpResponseRedirect("/account/dashboard")
@@ -223,7 +227,7 @@ def event_home(request, event_id):
         raise Http404("Event does not exist")
 
     return HttpResponse(
-        render(request, 'planner/event_home.html', {'event': event})
+        render(request, 'planner/event_home.html', {'event': event ,"roles_list": roles_list} )
     )
 
 
@@ -295,6 +299,7 @@ class RoleDetails(forms.Form):
 
 
 def addRoles(request):
+<<<<<<< HEAD
     if request.user.is_anonymous:
         return HttpResponseRedirect("/account/login/")
 
@@ -304,14 +309,38 @@ def addRoles(request):
         return HttpResponse(template.render({"addRoles_form": addRoles_form}, request))
     elif request.method == "POST":
         addRoles_form = RoleForm(request.POST)
+=======
+   
+   
+    if request.user.is_anonymous:
+        return HttpResponseRedirect("/account/login/")
+    if request.method=="GET":
+        template=loader.get_template("planner/addRoles.html")
+        addRoles_form=RoleForm()
+        return HttpResponse(template.render({"addRoles_form": addRoles_form},request))
+    elif request.method=="POST":    
+        addRoles_form=RoleForm(request.POST)
+>>>>>>> 778076c (sprint 4)
         if addRoles_form.is_valid():
             role = addRoles_form.save(commit=False)
             role.user = request.user
             role.save()
 
+<<<<<<< HEAD
         addRoles_form = RoleForm()
+=======
+        addRoles_form=RoleForm()
+        return render(request, "planner/addRoles.html", {"addRoles_form":addRoles_form})
+>>>>>>> 778076c (sprint 4)
 
-        return render(request, "planner/addRoles.html", {"addRoles_form": addRoles_form})
     else:
+<<<<<<< HEAD
         template = loader.get_template("planner/dashboard.html")
         return HttpResponse(template.render({"RoleDetails": RoleDetails}, request))
+=======
+        template=loader.get_template("planner/dashboard/html")
+        return HttpResponse(template.render({"RoleDetails": RoleDetails},request))
+    
+    
+
+>>>>>>> 778076c (sprint 4)

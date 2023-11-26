@@ -11,15 +11,30 @@
             <p> Host: {{ event.owner.user }}</p>
             <p> Location: {{ event.location }}</p>
             <p> Date: {{ event.date }}</p>
+
+            <p> Roles:
+            <div class='list'> 
+                <ul>
+                    <div class='list-item'> 
+                        {% for role in roles_list %}
+                            <li class="px-6">  •{{ role.name }} </li>
+                        {% endfor %}
+                    </div>  
+                </ul>
+            </div>
+            </p>
+       
         </div>
     </section>
+
 
     <div class="container">
         <form action="{% url 'planner:dashboard' %}">
             <input type="submit" value="Back to Dashboard" />
         </form>
     </div>
-</div>
 
+   
+</div>
 
 {% endblock content %}
