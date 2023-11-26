@@ -3,7 +3,7 @@ from django.template import loader
 import django.forms as forms
 from django.contrib import messages
 
-from .models import Event, User, Role
+from .models import Event, User
 from .forms import AddInvitationForm, RemoveInvitationForm
 from .forms import RoleForm
 from django.shortcuts import render
@@ -238,7 +238,7 @@ def event_home_owned(request, event_id):
 def event_home(request, event_id):
     if request.user.is_anonymous:
         return HttpResponseRedirect("/account/login/")
-    
+
     event = Event.objects.all().filter(id__exact=event_id).get()
 
     user_profile_id = request.user.profile.id
@@ -246,6 +246,7 @@ def event_home(request, event_id):
     invitee_profile_ids = event.invitees.values_list('id', flat=True)
 
     if user_profile_id != owner_profile_id and user_profile_id not in invitee_profile_ids:
+        
         return HttpResponseRedirect("/planner/dashboard")
     
     if user_profile_id == owner_profile_id:

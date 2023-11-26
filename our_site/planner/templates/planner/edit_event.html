@@ -10,6 +10,10 @@
         <input class="button is-warning" type="submit" value="Save Changes">
     </form>
     <br>
+    <form action="{% url 'planner:addRoles' %}">
+        <input class="button is-warning" type="submit" value="Add Roles" />
+    </form>
+    <br>
     <form action="{% url 'planner:dashboard' %}">
         <input class="button is-warning" type="submit" value="Back to Dashboard" />
     </form>
