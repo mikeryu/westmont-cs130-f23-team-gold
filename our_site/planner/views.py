@@ -2,6 +2,7 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.template import loader
 import django.forms as forms
 from django.contrib import messages
+from django.urls import reverse
 
 from .models import Event, User
 from .forms import AddInvitationForm, RemoveInvitationForm
@@ -35,8 +36,9 @@ def dashboard(request):
             filter_value = "All Events"
 
             owned_events_list = []
-
             invited_list = []
+            attending_list = []
+
             for invitedEvent in Event.objects.all():
                 if invitedEvent.invitees.contains(request.user.profile):
                     invited_list.append(invitedEvent)
@@ -47,7 +49,11 @@ def dashboard(request):
                 else:
                     owned_events_list.append(events)
 
-            event_list = owned_events_list + invited_list
+            for attendedEvent in Event.objects.all():
+                if attendedEvent.attendees.contains(request.user.profile) and attendedEvent not in owned_events_list:
+                    attending_list.append(attendedEvent)
+
+            event_list = owned_events_list + invited_list + attending_list
 
         elif "filter_my_events" in request.POST:
             filter_value = "My Events"
@@ -209,21 +215,26 @@ def event_home(request, event_id):
         return HttpResponseRedirect("/account/login/")
 
     event = Event.objects.all().filter(id__exact=event_id).get()
+    invitees = event.invitees.all()
+    attendees = event.attendees.all()
+
 
     user_profile_id = request.user.profile.id
     owner_profile_id = event.owner_id
     invitee_profile_ids = event.invitees.values_list('id', flat=True)
+    attendee_profile_ids = event.attendees.values_list('id', flat=True)
 
-    if user_profile_id != owner_profile_id and user_profile_id not in invitee_profile_ids:
+
+    #check if user is owner or invitee
+    if (
+        user_profile_id != owner_profile_id
+        and user_profile_id not in invitee_profile_ids
+        and user_profile_id not in attendee_profile_ids
+    ):
         return HttpResponseRedirect("/account/dashboard")
 
-    try:
-        event = Event.objects.get(pk=event_id)
-    except Event.DoesNotExist:
-        raise Http404("Event does not exist")
-
     return HttpResponse(
-        render(request, 'planner/event_home.html', {'event': event})
+        render(request, 'planner/event_home.html', {'event': event, 'invitees': invitees, 'attendees': attendees})
     )
 
 
@@ -315,3 +326,26 @@ def addRoles(request):
     else:
         template = loader.get_template("planner/dashboard.html")
         return HttpResponse(template.render({"RoleDetails": RoleDetails}, request))
+
+
+def handle_event(request, event_id):
+
+    #if user is not signed in, redirect to login
+    if request.user.is_anonymous:
+        return HttpResponseRedirect("/account/login/")
+
+    event = Event.objects.all().filter(id__exact=event_id).get()
+
+    if request.method == 'POST':
+        action = request.POST.get('action')
+        user_profile = request.user.profile
+
+        if action == 'accept':
+            event.attendees.add(user_profile)
+            event.invitees.remove(user_profile)
+        elif action == 'decline':
+            event.invitees.remove(user_profile)
+        
+
+
+    return HttpResponseRedirect(reverse('planner:dashboard'))

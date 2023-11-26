@@ -52,8 +52,7 @@
         <div class="box">
             <a href="{% url 'planner:event_home' event.id %}">{{ event.name }}</a>
             <p>{{ event.description }}</p>
-            <p> Created by: {{ event.owner.user }}
-            </p>
+            <p> Created by: {{ event.owner.user }}</p>
         </div>
         {% endfor %}
     </div>
