@@ -16,9 +16,12 @@
             <p class="subtitle is-4" style="color: #7f0000">
                 TODO: catchy catchphrase
             </p>
-            <p class="has-text-right">
-                {{ owner.user }} is signed in
+            <p class="has-text-right subtitle is-4" style="color: #7f0000">
+                {{ user }} is signed in
             </p>
+            <form class="has-text-right" action="{% url 'login' %}">
+                <input class="button is-default has-text-warning" style="background-color: #7f0000" type="submit" value="Logout" />
+            </form>
         </div>
     </section>
 
