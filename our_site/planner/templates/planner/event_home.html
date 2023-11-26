@@ -15,8 +15,13 @@
     </section>
 
     <div class="container">
+        <form method="post">
+            {% csrf_token %}
+            <input class="button is-medium is-warning" type="submit" value="Accept Invite" name="Accept Invite">
+        </form>
+        <br>
         <form action="{% url 'planner:dashboard' %}">
-            <input type="submit" value="Back to Dashboard" />
+            <input class="button is-medium is-warning" type="submit" value="Back to Dashboard" />
         </form>
     </div>
 </div>

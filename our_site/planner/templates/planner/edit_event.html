@@ -6,12 +6,12 @@
         {% csrf_token %}
 
         {{ basic_details.as_div }}
-
-        <input type="submit" value="Save Changes">
+        <br>
+        <input class="button is-warning" type="submit" value="Save Changes">
     </form>
-
+    <br>
     <form action="{% url 'planner:dashboard' %}">
-        <input type="submit" value="Back to Dashboard" />
+        <input class="button is-warning" type="submit" value="Back to Dashboard" />
     </form>
 
 {% endblock content %}
