@@ -187,10 +187,15 @@ def edit_event(request, event_id: int) -> HttpResponse:
                 event.description = posted_details.cleaned_data["event_description"]
                 event.location = posted_details.cleaned_data["event_location"]
                 event.save()
+                return HttpResponseRedirect("/planner/event_owned/{:d}/".format(event.id))
 
     if request.method == "POST":
         if "Add Invitees" in request.POST:
             return HttpResponseRedirect("/planner/{:d}/invitations/".format(event.id))
+
+        # if "Save Changes" in request.POST:
+        #     event.save()
+        #     return HttpResponseRedirect("/planner/event_owned/{:d}/".format(event.id))
 
     basic_details = EventBasicDetails(initial={
         "event_name": str(event.name),
