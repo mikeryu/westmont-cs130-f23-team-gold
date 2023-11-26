@@ -188,6 +188,10 @@ def edit_event(request, event_id: int) -> HttpResponse:
                 event.location = posted_details.cleaned_data["event_location"]
                 event.save()
 
+    if request.method == "POST":
+        if "Add Invitees" in request.POST:
+            return HttpResponseRedirect("/planner/{:d}/invitations/".format(event.id))
+
     basic_details = EventBasicDetails(initial={
         "event_name": str(event.name),
         "event_date": str(event.date),

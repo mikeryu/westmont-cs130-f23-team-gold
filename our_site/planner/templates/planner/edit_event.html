@@ -12,7 +12,7 @@
 <body>
     <section class="hero is-small mb-4" style="background-color: #eeb01e">
         <div class="hero-body">
-            <h1 class="title is-1" style="color: #7f0000">Edit Event</h1>
+            <h1 class="title is-1" style="color: #7f0000">Edit Your Event!</h1>
             <p class="has-text-right subtitle is-4" style="color: #7f0000">
                 {{ user }} is signed in
             </p>
@@ -35,6 +35,11 @@
         <br>
         <form action="{% url 'planner:addRoles' %}">
             <input class="button is-warning" type="submit" value="Add Roles" />
+        </form>
+        <br>
+        <form method="post">
+            {% csrf_token %}
+            <input class="button is-warning" type="submit" value="Add Invitees" name="Add Invitees"/>
         </form>
         <br>
         <form action="{% url 'planner:dashboard' %}">
