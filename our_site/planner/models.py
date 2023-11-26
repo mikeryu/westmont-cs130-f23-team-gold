@@ -16,6 +16,7 @@ class Event(models.Model):
     description = models.CharField(max_length=200)
     location = models.CharField(max_length=50)
     invitees = models.ManyToManyField(Profile, related_name="invitations")
+    attendees = models.ManyToManyField(Profile, related_name="attended_events")
 
 
 class Role(models.Model):

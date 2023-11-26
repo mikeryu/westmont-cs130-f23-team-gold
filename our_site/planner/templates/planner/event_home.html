@@ -22,6 +22,8 @@
         </div>
     </section>
 
+
+
     <div class="container">
 
             <div class="container">
@@ -65,6 +67,36 @@
         </div>
     </div>
 
+    <div class="container">
+        <div class="columns">
+            <div class="column is-2">
+                <h2>Invitees:</h2>
+                <ul>
+                    {% for invitee in invitees %}
+                      <li>{{ invitee.user.username }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="column is-6">
+                <h2>Attendees:</h2>
+                <ul>
+                    {% for attendee in attendees %}
+                        <li>{{ attendee.user.username }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+
+    {% if user.profile in invitees %}
+        <form method="post" action="{% url 'planner:handle_event' event.id %}">
+            {% csrf_token %}
+            <button type="submit" name="action" value="accept">Accept Invite</button>
+            <button type="submit" name="action" value="decline">Decline Invite</button>
+        </form>
+    {% endif %}
 
 
 
