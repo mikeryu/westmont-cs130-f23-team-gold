@@ -27,7 +27,6 @@
 
     <div class="container">
 
-        {% block content %}
             <form method="post" action="{% url "planner:event_creation" %}">
                 {% csrf_token %}
 
@@ -78,7 +77,6 @@
                 </div>
 
             </form>
-        {% endblock content %}
 
     </div>
 </body>

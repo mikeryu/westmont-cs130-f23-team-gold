@@ -24,7 +24,6 @@
 
     <div class="container">
 
-        {% block content %}
         <form method="post" action="{% url 'planner:addRoles' %}">
             {% csrf_token %}
             {{ addRoles_form.as_div}}
@@ -35,7 +34,6 @@
         <form action="{% url 'planner:dashboard' %}">
             <input input class="button is-warning" type="submit" value="Back to Dashboard" />
         </form>
-        {% endblock content %}
 
     </div>
 </body>
