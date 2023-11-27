@@ -25,53 +25,52 @@
     <div class="container">
 
         {% block content %}
-        <div class="column">
-            {% if messages %}
-                <ul class="messages">
-                    {% for message in messages %}
-                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-    
-            <div>
-                 <form class="is-inline-block is-size-5" method="post" action="">
-                    {% csrf_token %}
-                    <input class="button is-warning is-inline-block is-size-5" type="submit" value="Invite User" name="add">
-                    <div class="is-inline-block">
-                        {{ invite_form.as_div }}
-                    </div>
-                </form>
-    
-                <form action="{% url "planner:dashboard" %}" class="is-inline-block is-pulled-right">
-                    <input class="button is-warning is-size-5" type="submit" value="Back to Dashboard">
-                </form>
-                
-                <form action="{{ event_edit_page }}" class="is-inline-block is-pulled-right">
-                    <input class="button is-warning is-size-5" type="submit" value="Back to Event Info">
-                </form>
-            </div>
-    
-            <hr>
-            <header class="is-size-3 has-text-centered">Current Invitations:</header>
-    
-             {% for invitee in invitees %}
-                <div class="box">
-                    <form class="is-inline-block" method="post" action="">
+            <div class="column">
+                {% if messages %}
+                    <ul class="messages">
+                        {% for message in messages %}
+                            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+
+                <div>
+                     <form class="is-inline-block is-size-5" method="post" action="">
                         {% csrf_token %}
-                        {{ invitee.uninvite_form.user_name.as_hidden }}
-                        <input class="has-background-danger is-size-5" type="submit" value="Rescind Invitation" name="remove">
+                        <input class="button is-warning is-inline-block is-size-5" type="submit" value="Invite User" name="add">
+                        <div class="is-inline-block">
+                            {{ invite_form.as_div }}
+                        </div>
                     </form>
-    
-                    <p class="is-inline-block is-size-4">
-                        {{ invitee.name }}
-                    </p>
+
+                    <form action="{% url "planner:dashboard" %}" class="is-inline-block is-pulled-right">
+                        <input class="button is-warning is-size-5" type="submit" value="Back to Dashboard">
+                    </form>
+
+                    <form action="{{ event_edit_page }}" class="is-inline-block is-pulled-right">
+                        <input class="button is-warning is-size-5" type="submit" value="Back to Event Info">
+                    </form>
                 </div>
-            {% endfor %}
-        </div>
+
+                <hr>
+                <header class="is-size-3 has-text-centered">Current Invitations:</header>
+
+                 {% for invitee in invitees %}
+                    <div class="box">
+                        <form class="is-inline-block" method="post" action="">
+                            {% csrf_token %}
+                            {{ invitee.uninvite_form.user_name.as_hidden }}
+                            <input class="has-background-danger is-size-5" type="submit" value="Rescind Invitation" name="remove">
+                        </form>
+
+                        <p class="is-inline-block is-size-4">
+                            {{ invitee.name }}
+                        </p>
+                    </div>
+                {% endfor %}
+            </div>
         {% endblock content %}
 
     </div>
 </body>
 </html>
-

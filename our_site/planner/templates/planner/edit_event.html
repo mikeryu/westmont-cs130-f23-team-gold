@@ -25,29 +25,28 @@
     <div class="container">
 
         {% block content %}
-        <form method="post">
-            {% csrf_token %}
-    
-            {{ basic_details.as_div }}
+            <form method="post">
+                {% csrf_token %}
+
+                {{ basic_details.as_div }}
+                <br>
+                <input class="button is-warning" type="submit" value="Save Changes"/>
+            </form>
             <br>
-            <input class="button is-warning" type="submit" value="Save Changes"/>
-        </form>
-        <br>
-        <form action="{% url 'planner:addRoles' %}">
-            <input class="button is-warning" type="submit" value="Add Roles" />
-        </form>
-        <br>
-        <form method="post">
-            {% csrf_token %}
-            <input class="button is-warning" type="submit" value="Add Invitees" name="Add Invitees"/>
-        </form>
-        <br>
-        <form action="{% url 'planner:dashboard' %}">
-            <input class="button is-warning" type="submit" value="Back to Dashboard" />
-        </form>
+            <form action="{% url 'planner:addRoles' %}">
+                <input class="button is-warning" type="submit" value="Add Roles" />
+            </form>
+            <br>
+            <form method="post">
+                {% csrf_token %}
+                <input class="button is-warning" type="submit" value="Add Invitees" name="Add Invitees"/>
+            </form>
+            <br>
+            <form action="{% url 'planner:dashboard' %}">
+                <input class="button is-warning" type="submit" value="Back to Dashboard" />
+            </form>
         {% endblock content %}
 
     </div>
 </body>
 </html>
-

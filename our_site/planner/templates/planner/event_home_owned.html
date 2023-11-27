@@ -25,30 +25,30 @@
     <div class="container">
 
         {% block content %}
-        <div class="container">
-            <section class="box" style="background-color: #7f000065">
-                <div class="hero-body">
-                    <section class="box" style="background-color: #eeb01e">
-                        <h1 class="title is-1" style="color: #7f0000">{{ event.name }}</h1>
-                    </section>
-                    <b>Description: {{ event.description }}</b>
-                    <p> Host: {{ event.owner.user }}</p>
-                    <p> Location: {{ event.location }}</p>
-                    <p> Date: {{ event.date }}</p>
-                </div>
-            </section>
-        
             <div class="container">
-                <form method="post">
-                    {% csrf_token %}
-                    <input class="button is-medium is-warning" type="submit" value="Edit Event" name="Edit Event">
-                </form>
-                <br>
-                <form action="{% url 'planner:dashboard' %}">
-                    <input class="button is-medium is-warning" type="submit" value="Back to Dashboard" />
-                </form>
+                <section class="box" style="background-color: #7f000065">
+                    <div class="hero-body">
+                        <section class="box" style="background-color: #eeb01e">
+                            <h1 class="title is-1" style="color: #7f0000">{{ event.name }}</h1>
+                        </section>
+                        <p>Description: {{ event.description }}</p>
+                        <p> Host: {{ event.owner.user }}</p>
+                        <p> Location: {{ event.location }}</p>
+                        <p> Date: {{ event.date }}</p>
+                    </div>
+                </section>
+
+                <div class="container">
+                    <form method="post">
+                        {% csrf_token %}
+                        <input class="button is-medium is-warning" type="submit" value="Edit Event" name="Edit Event">
+                    </form>
+                    <br>
+                    <form action="{% url 'planner:dashboard' %}">
+                        <input class="button is-medium is-warning" type="submit" value="Back to Dashboard" />
+                    </form>
+                </div>
             </div>
-        </div>
                 
         {% endblock content %}
 
