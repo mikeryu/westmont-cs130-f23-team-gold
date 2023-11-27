@@ -39,6 +39,23 @@ class FirefoxManager:
 
 
 class ChromeManager:
+    """
+    Chrome managers
+    """
+
+    def __init__(self):
+        options = ChromeOptions()
+        options.add_experimental_option("excludeSwitches", ["enable-logging"])
+        options.add_argument("--headless")
+        driver = webdriver.Chrome(options=options)
+        driver.implicitly_wait(2)
+        self.driver = driver
+
+    def __enter__(self):
+        return self.driver
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.driver.quit()
 
 
 driver_manager = None
