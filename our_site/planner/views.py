@@ -8,7 +8,7 @@ from .models import Event, User
 from .forms import AddInvitationForm, RemoveInvitationForm
 from .forms import RoleForm
 
-from notifications.googleapitest import send_notification
+from notifications.notify_email import send_notification
 
 
 class DashboardFilterAllEvents(forms.Form):
