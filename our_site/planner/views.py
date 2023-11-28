@@ -67,6 +67,14 @@ def dashboard(request):
                 if invitedEvent.invitees.contains(request.user.profile):
                     event_list.append(invitedEvent)
 
+        elif "filter_attending_events" in request.POST:
+            filter_value = "Attending Events"
+            owner = request.user.profile
+            event_list = []
+            for attendedEvent in Event.objects.all():
+                if attendedEvent.attendees.contains(request.user.profile):
+                    event_list.append(attendedEvent)
+
         else:
             raise Exception("unknown post provided")
 
@@ -272,6 +280,9 @@ def event_home(request, event_id):
             and user_profile_id not in attendee_profile_ids
     ):
         return HttpResponseRedirect("/account/dashboard")
+
+    if  owner_profile_id == user_profile_id:
+        return HttpResponseRedirect("/planner/event_owned/{:d}/".format(event.id))
 
     return HttpResponse(
         render(request, 'planner/event_home.html', {'event': event, 'invitees': invitees, 'attendees': attendees})
