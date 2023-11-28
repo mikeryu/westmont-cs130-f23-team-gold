@@ -8,7 +8,7 @@ from test_utils.SeleniumSetUp import driver_manager, generic_user_login
 from planner.models import *
 
 
-class SiteTest(StaticLiveServerTestCase):
+class DashboardTest(StaticLiveServerTestCase):
     def setUp(self) -> None:
         # Make two users and associated profiles
         test_user0 = User.objects.create_user(
