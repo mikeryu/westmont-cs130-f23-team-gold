@@ -227,7 +227,6 @@ def event_home_owned(request, event_id):
     invitees = event.invitees.all()
     attendees = event.attendees.all()
 
-
     user_profile_id = request.user.profile.id
     owner_profile_id = event.owner_id
     invitee_profile_ids = event.invitees.values_list('id', flat=True)
@@ -261,17 +260,16 @@ def event_home(request, event_id):
     invitees = event.invitees.all()
     attendees = event.attendees.all()
 
-
     user_profile_id = request.user.profile.id
     owner_profile_id = event.owner_id
     invitee_profile_ids = event.invitees.values_list('id', flat=True)
     attendee_profile_ids = event.attendees.values_list('id', flat=True)
 
-    #check if user is owner or invitee
+    # check if user is owner or invitee
     if (
-        user_profile_id != owner_profile_id
-        and user_profile_id not in invitee_profile_ids
-        and user_profile_id not in attendee_profile_ids
+            user_profile_id != owner_profile_id
+            and user_profile_id not in invitee_profile_ids
+            and user_profile_id not in attendee_profile_ids
     ):
         return HttpResponseRedirect("/account/dashboard")
 
@@ -370,8 +368,7 @@ def addRoles(request):
 
 
 def handle_event(request, event_id):
-
-    #if user is not signed in, redirect to login
+    # if user is not signed in, redirect to login
     if request.user.is_anonymous:
         return HttpResponseRedirect("/account/login/")
 
@@ -386,7 +383,5 @@ def handle_event(request, event_id):
             event.invitees.remove(user_profile)
         elif action == 'decline':
             event.invitees.remove(user_profile)
-        
-
 
     return HttpResponseRedirect(reverse('planner:dashboard'))
