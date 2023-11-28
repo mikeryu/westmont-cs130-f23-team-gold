@@ -263,23 +263,6 @@ def event_home(request, event_id):
     invitee_profile_ids = event.invitees.values_list('id', flat=True)
     attendee_profile_ids = event.attendees.values_list('id', flat=True)
 
-    if user_profile_id != owner_profile_id and user_profile_id not in invitee_profile_ids:
-        return HttpResponseRedirect("/planner/dashboard")
-
-    if user_profile_id == owner_profile_id:
-        return HttpResponseRedirect("/planner/event_owned/{:d}/".format(event.id))
-
-    try:
-        event = Event.objects.get(pk=event_id)
-    except Event.DoesNotExist:
-        raise Http404("Event does not exist")
-
-    # edit once able to accept invite
-    if request.method == "POST":
-        if "Accept Invite" in request.POST:
-            return HttpResponseRedirect("/planner/dashboard")
-
-
     #check if user is owner or invitee
     if (
         user_profile_id != owner_profile_id

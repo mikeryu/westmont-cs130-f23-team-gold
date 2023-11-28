@@ -9,6 +9,7 @@
           href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
     <title>Planner</title>
 </head>
+
 <body>
     <section class="hero is-small mb-4" style="background-color: #eeb01e">
         <div class="hero-body">
@@ -22,83 +23,70 @@
         </div>
     </section>
 
-
-
     <div class="container">
+        <div class="container">
+            <section class="box" style="background-color: #7f000065">
+                <div class="hero-body">
+                    <section class="box" style="background-color: #eeb01e">
+                        <h1 class="title is-1" style="color: #7f0000">{{ event.name }}</h1>
+                    </section>
+                    <p>Description: {{ event.description }}</p>
+                    <p> Host: {{ event.owner.user }}</p>
+                    <p> Location: {{ event.location }}</p>
+                    <p> Date: {{ event.date }}</p>
+                </div>
+            </section>
 
             <div class="container">
-                <section class="box" style="background-color: #7f000065">
-                    <div class="hero-body">
-                        <section class="box" style="background-color: #eeb01e">
-                            <h1 class="title is-1" style="color: #7f0000">{{ event.name }}</h1>
-                        </section>
-                        <p>Description: {{ event.description }}</p>
-                        <p> Host: {{ event.owner.user }}</p>
-                        <p> Location: {{ event.location }}</p>
-                        <p> Date: {{ event.date }}</p>
+                <div class="columns">
+                    <div class="column is-2">
+                        <form action="{% url 'planner:addRoles' %}">
+                            <input class="button is-medium is-warning" type="submit" value="Add Roles" />
+                        </form>
                     </div>
-                </section>
-
-                <div class="container">
-                    <form method="post">
-                        {% csrf_token %}
-                        <input class="button is-medium is-warning" type="submit" value="Accept Invite" name="Accept Invite">
-                    </form>
-                    <br>
-                    <form action="{% url 'planner:dashboard' %}">
-                        <input class="button is-medium is-warning" type="submit" value="Back to Dashboard" />
-                    </form>
+                    <div class="column is-6">
+                        <form action="{% url 'planner:dashboard' %}">
+                            <input class="button is-medium is-warning" type="submit" value="Back to Dashboard" />
+                        </form>
+                    </div>
                 </div>
             </div>
+        </div>
+        
+        <br>
+
+        {% if user.profile in invitees %}
+            <div class="container">
+                <form method="post" action="{% url 'planner:handle_event' event.id %}">
+                    {% csrf_token %}
+                    <button class="button is-medium is-warning" type="submit" name="action" value="accept">Accept Invite</button>
+                    <button class="button is-medium is-warning" type="submit" name="action" value="decline">Decline Invite</button>
+                </form>
+            </div>
+        {% endif %}
+
+        <br>
+
+        <div class="container">
+            <div class="columns">
+                <div class="column is-2">
+                    <h2>Invitees:</h2>
+                    <ul>
+                        {% for invitee in invitees %}
+                        <li>{{ invitee.user.username }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="column is-2">
+                    <h2>Attendees:</h2>
+                    <ul>
+                        {% for attendee in attendees %}
+                            <li>{{ attendee.user.username }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 </html>
-        <div class="columns">
-            <div class="column is-2">
-                <form action="{% url 'planner:addRoles' %}">
-                    <input class="button is-warning" type="submit" value="Add Roles" />
-                </form>
-            </div>
-            <div class="column is-6">
-                <form action="{% url 'planner:dashboard' %}">
-                    <input class="button is-warning" type="submit" value="Back to Dashboard" />
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <div class="container">
-        <div class="columns">
-            <div class="column is-2">
-                <h2>Invitees:</h2>
-                <ul>
-                    {% for invitee in invitees %}
-                      <li>{{ invitee.user.username }}</li>
-                    {% endfor %}
-                </ul>
-            </div>
-            <div class="column is-6">
-                <h2>Attendees:</h2>
-                <ul>
-                    {% for attendee in attendees %}
-                        <li>{{ attendee.user.username }}</li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </div>
-    </div>
-
-
-
-    {% if user.profile in invitees %}
-        <form method="post" action="{% url 'planner:handle_event' event.id %}">
-            {% csrf_token %}
-            <button type="submit" name="action" value="accept">Accept Invite</button>
-            <button type="submit" name="action" value="decline">Decline Invite</button>
-        </form>
-    {% endif %}
-
-
-
-
-{% endblock content %}
