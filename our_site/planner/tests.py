@@ -1,5 +1,4 @@
 from datetime import datetime
-from time import sleep
 
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium.webdriver.common.by import By
@@ -41,11 +40,29 @@ class SiteTest(StaticLiveServerTestCase):
         test_event1.invitees.add(test_profile0)
         test_event1.save()
 
-    def test_something(self) -> None:
+    def test_edit_my_event(self) -> None:
+        """
+
+        """
         with driver_manager() as driver:
             driver.get(f"{self.live_server_url}/")
             generic_user_login(driver, "test_user0", "test_password")
+            driver.find_element(By.ID, "event-title-1").click()
             self.assertEquals(
-                "The dashboard is currently in mode My Events",
-                driver.find_element(By.ID, "Current Filter Mode").text
+                len(driver.find_elements(By.ID, "edit-event")),
+                1
+            )
+
+    def test_no_edit_not_my_event(self) -> None:
+        """
+
+        """
+        with driver_manager() as driver:
+            driver.get(f"{self.live_server_url}/")
+            generic_user_login(driver, "test_user0", "test_password")
+            driver.find_element(By.ID, "Invited Events Filter").click()
+            driver.find_element(By.ID, "event-title-1").click()
+            self.assertEquals(
+                len(driver.find_elements(By.ID, "edit-event")),
+                0
             )
