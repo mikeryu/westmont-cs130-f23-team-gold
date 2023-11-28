@@ -3,11 +3,13 @@ from django.template import loader
 import django.forms as forms
 from django.contrib import messages
 from django.urls import reverse
+from django.shortcuts import render
 
 from .models import Event, User
 from .forms import AddInvitationForm, RemoveInvitationForm
 from .forms import RoleForm
-from django.shortcuts import render
+
+from notifications.notify_email import send_notification
 
 
 class DashboardFilterAllEvents(forms.Form):
