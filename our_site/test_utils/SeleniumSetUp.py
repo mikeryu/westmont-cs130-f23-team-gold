@@ -16,6 +16,20 @@ def test_user_login(driver):
     driver.find_element(By.ID, "submit_button").click()
 
 
+def generic_user_login(driver, username: str, password: str) -> None:
+    """
+    test_user_login just logs in a test user, but using generic credentials.
+    Because this functionality is wanted in many tests, it is good to have a function that performs it.
+
+    :param driver: a selenium web driver already at the login page of our app.
+    :param username: username to log in with.
+    :param password: password to log in with.
+    """
+    driver.find_element(By.ID, "id_username").send_keys(username)
+    driver.find_element(By.ID, "id_password").send_keys(password)
+    driver.find_element(By.ID, "submit_button").click()
+
+
 class FirefoxManager:
     """
     FirefoxManager is a context manager for a selenium web driver for Firefox.
