@@ -1,7 +1,7 @@
 import unittest
 from selenium.webdriver.common.by import By
 
-from Tests.SeleniumSetUp import driver_manager, test_user_login
+from our_site.test_utils.SeleniumSetUp import driver_manager, test_user_login
 
 
 # not merged with main yet, but meant to test create account option
