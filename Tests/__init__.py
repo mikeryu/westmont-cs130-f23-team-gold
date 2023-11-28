@@ -1,6 +1,6 @@
 import os
 
-import Tests.SeleniumSetUp as SeleniumSetUp
+import our_site.test_utils.SeleniumSetUp as SeleniumSetUp
 
 # Based on the value of the environment variable SELENIUM_DRIVER_MODE,
 # the variable Tests.SeleniumSetUp.driver_manager will be set to a different
