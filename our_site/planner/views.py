@@ -123,6 +123,9 @@ def event_creation(request):
                 location=event_creation_form.cleaned_data["event_location"],
             )
             event.save()
+            if (username := request.user.username).endswith("@westmont.edu"):
+                send_notification(username, "Your new event is live!", "Your event '{:s}' has been created!\n"
+                                                                       "Go invite people now.".format(event.name))
             return HttpResponseRedirect("/planner/{:d}/edit_event".format(event.id))
         else:
             template = loader.get_template("planner/event_creation.html")
