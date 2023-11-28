@@ -38,6 +38,14 @@
                 {{ InvitedEventsButton }}
                 <input class="button is-medium is-warning" id="Invited Events Filter" type="submit" value="Invited Events" name="filter_invited_events">
             </form>
+
+            <br>
+
+            <form method="post">
+                {% csrf_token %}
+                {{ AttendingEventsButton }}
+                <input class="button is-medium is-warning" id="Attending Events Filter" type="submit" value="Attending Events" name="filter_attending_events">
+            </form>
         </div>
 
         <div class="column">
