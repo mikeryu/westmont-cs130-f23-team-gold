@@ -12,22 +12,25 @@
 <body>
     <section class="hero is-small mb-4" style="background-color: #eeb01e">
         <div class="hero-body">
-            <h1 class="title is-1" style="color: #7f0000">Plan It!</h1>
+            <h1 class="title is-1" style="color: #7f0000">Plan it</h1>
             <p class="subtitle is-4" style="color: #7f0000">
                 Just Plan it!
             </p>
-            <p class="has-text-right">
-                {{ owner.user }} is signed in
+            <p class="has-text-right subtitle is-4" style="color: #7f0000">
+                {{ user }} is signed in
             </p>
+            <form class="has-text-right" action="{% url 'login' %}">
+                <input class="button is-default has-text-warning" style="background-color: #7f0000" type="submit" value="Logout" />
+            </form>
         </div>
     </section>
 
     <div class="container">
         <div class="columns">
 
-            {% block content %}
+        {% block content %}
 
-            {% endblock content %}
+        {% endblock content %}
 
         </div>
     </div>
