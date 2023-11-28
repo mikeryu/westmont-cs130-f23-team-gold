@@ -1,64 +1,83 @@
-{% extends 'base.html' %}
-
-{% block content %}
-
-
-<form method="post" action="{% url "planner:event_creation" %}">
-    {% csrf_token %}
-
-    <div>
-        {{ event_creation_form.event_name.errors }}
-        <label class="label">
-            Event Name (30 characters max):
-        </label>
-        {{ event_creation_form.event_name }}
-    </div>
-{#    WHY DOES THIS CAUSE A NEWLINE BUT IT DOESN'T IN THE DASHBOARD??? #}
-    <div>
-        {{ event_creation_form.event_date.errors }}
-        <label class="label">
-            Event Date (d/m/y h:m):
-        </label>
-        {{ event_creation_form.event_date }}
-    </div>
-    <div>
-        {{ event_creation_form.event_description.errors }}
-        <label class="label">
-            Event Description (200 characters max):
-        </label>
-        {{ event_creation_form.event_description }}
-    </div>
-    <div>
-        {{ event_creation_form.event_location.errors }}
-        <label class="label">
-            Event Location (50 characters max):
-        </label>
-        {{ event_creation_form.event_location }}
-    </div>
-
-    <input class="button is-warning" type="submit" value="Create Event">
-</form>
-
-<div class="columns is-1">
-    <div class="column">
-        <form>
-            <p>
-                {{ add_invitees }}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Include the Bulma CSS framework for styling -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <title>Planner</title>
+</head>
+<body>
+    <section class="hero is-small mb-4" style="background-color: #eeb01e">
+        <div class="hero-body">
+            <h1 class="title is-1" style="color: #7f0000">Create an Event!</h1>
+            <p class="subtitle is-4" style="color: #7f0000">
+                TODO: catchy catchphrase
             </p>
-            <input class="button is-warning" type="submit" value="Add Invitees">
-        </form>
-    </div>
+            <p class="has-text-right subtitle is-4" style="color: #7f0000">
+                {{ user }} is signed in
+            </p>
+            <form class="has-text-right" action="{% url 'login' %}">
+                <input class="button is-default has-text-warning" style="background-color: #7f0000" type="submit" value="Logout" />
+            </form>
+        </div>
+    </section>
 
-    <div class="column">
-        <form action="{% url 'planner:dashboard' %}">
-            <input class="button is-warning" type="submit" value="Back to Dashboard" />
-        </form>
-    </div>
-    <div class="column">
-        <form action="{% url 'planner:addRoles' %}">
-            <input class="button is-warning" type="submit" value="Add Roles" />
-        </form>
-    </div>
-</div>
+    <div class="container">
 
-{% endblock content %}
+            <form method="post" action="{% url "planner:event_creation" %}">
+                {% csrf_token %}
+
+                <div>
+                    {{ event_creation_form.event_name.errors }}
+                    <label class="label">
+                        Event Name (30 characters max):
+                    </label>
+                    {{ event_creation_form.event_name }}
+                </div>
+
+                <div>
+                    {{ event_creation_form.event_date.errors }}
+                    <label class="label">
+                        Event Date (mm/dd/yyyy h:m):
+                    </label>
+                    {{ event_creation_form.event_date }}
+                </div>
+
+                <div>
+                    {{ event_creation_form.event_description.errors }}
+                    <label class="label">
+                        Event Description (200 characters max):
+                    </label>
+                    {{ event_creation_form.event_description }}
+                </div>
+
+                <div>
+                    {{ event_creation_form.event_location.errors }}
+                    <label class="label">
+                        Event Location (50 characters max):
+                    </label>
+                    {{ event_creation_form.event_location }}
+                </div>
+
+                <br>
+
+                <div>
+                    <input class="button is-warning" type="submit" value="Create Event">
+                </div>
+
+                <br>
+
+                <div>
+                    <form action="{% url 'planner:dashboard' %}">
+                        <input class="button is-warning" type="submit" value="Back to Dashboard" />
+                    </form>
+                </div>
+
+            </form>
+
+    </div>
+</body>
+</html>

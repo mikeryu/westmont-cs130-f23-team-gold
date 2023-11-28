@@ -187,6 +187,15 @@ def edit_event(request, event_id: int) -> HttpResponse:
                 event.description = posted_details.cleaned_data["event_description"]
                 event.location = posted_details.cleaned_data["event_location"]
                 event.save()
+                return HttpResponseRedirect("/planner/event_owned/{:d}/".format(event.id))
+
+    if request.method == "POST":
+        if "Add Invitees" in request.POST:
+            return HttpResponseRedirect("/planner/{:d}/invitations/".format(event.id))
+
+        # if "Save Changes" in request.POST:
+        #     event.save()
+        #     return HttpResponseRedirect("/planner/event_owned/{:d}/".format(event.id))
 
     basic_details = EventBasicDetails(initial={
         "event_name": str(event.name),
@@ -204,6 +213,36 @@ def edit_event(request, event_id: int) -> HttpResponse:
     )
 
 
+def event_home_owned(request, event_id):
+    if request.user.is_anonymous:
+        return HttpResponseRedirect("/account/login/")
+
+    event = Event.objects.all().filter(id__exact=event_id).get()
+
+    user_profile_id = request.user.profile.id
+    owner_profile_id = event.owner_id
+    invitee_profile_ids = event.invitees.values_list('id', flat=True)
+
+    if user_profile_id != owner_profile_id and user_profile_id not in invitee_profile_ids:
+        return HttpResponseRedirect("/planner/dashboard")
+
+    if user_profile_id != owner_profile_id:
+        return HttpResponseRedirect("/planner/event/{:d}/".format(event.id))
+
+    try:
+        event = Event.objects.get(pk=event_id)
+    except Event.DoesNotExist:
+        raise Http404("Event does not exist")
+
+    if request.method == "POST":
+        if "Edit Event" in request.POST:
+            return HttpResponseRedirect("/planner/{:d}/edit_event".format(event.id))
+
+    return HttpResponse(
+        render(request, 'planner/event_home_owned.html', {'event': event})
+    )
+
+
 def event_home(request, event_id):
     if request.user.is_anonymous:
         return HttpResponseRedirect("/account/login/")
@@ -215,12 +254,20 @@ def event_home(request, event_id):
     invitee_profile_ids = event.invitees.values_list('id', flat=True)
 
     if user_profile_id != owner_profile_id and user_profile_id not in invitee_profile_ids:
-        return HttpResponseRedirect("/account/dashboard")
+        return HttpResponseRedirect("/planner/dashboard")
+
+    if user_profile_id == owner_profile_id:
+        return HttpResponseRedirect("/planner/event_owned/{:d}/".format(event.id))
 
     try:
         event = Event.objects.get(pk=event_id)
     except Event.DoesNotExist:
         raise Http404("Event does not exist")
+
+    # edit once able to accept invite
+    if request.method == "POST":
+        if "Accept Invite" in request.POST:
+            return HttpResponseRedirect("/planner/dashboard")
 
     return HttpResponse(
         render(request, 'planner/event_home.html', {'event': event})
@@ -297,11 +344,11 @@ class RoleDetails(forms.Form):
 def addRoles(request):
     if request.user.is_anonymous:
         return HttpResponseRedirect("/account/login/")
-
     if request.method == "GET":
         template = loader.get_template("planner/addRoles.html")
         addRoles_form = RoleForm()
         return HttpResponse(template.render({"addRoles_form": addRoles_form}, request))
+
     elif request.method == "POST":
         addRoles_form = RoleForm(request.POST)
         if addRoles_form.is_valid():
@@ -310,7 +357,6 @@ def addRoles(request):
             role.save()
 
         addRoles_form = RoleForm()
-
         return render(request, "planner/addRoles.html", {"addRoles_form": addRoles_form})
     else:
         template = loader.get_template("planner/dashboard.html")
