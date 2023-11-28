@@ -7,14 +7,14 @@ from .import views
 
 
 
-#class RoleForm(forms.Form):
-    #name = forms.CharField(max_length=30, required=True)
-    #description = forms.CharField(max_length=100)  
-    #amount = forms.IntegerField()
+class RoleForm(forms.ModelForm):
+    name = forms.CharField(max_length=30, required=True)
+    description = forms.CharField(max_length=100)  
+    amount = forms.IntegerField()
 
-    #class Meta:
-        #model = Role
-        #exclude = ("user",)
+    class Meta:
+        model = Role
+        exclude = ("user",)
 
 
 class LoginForm(forms.Form):
