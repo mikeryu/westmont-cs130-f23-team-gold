@@ -1,3 +1,4 @@
+
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
@@ -16,12 +17,13 @@ class Event(models.Model):
     description = models.CharField(max_length=200)
     location = models.CharField(max_length=50)
     invitees = models.ManyToManyField(Profile, related_name="invitations")
+   
 
 
 class Role(models.Model):
     name = models.CharField(max_length=30)
     description = models.CharField(max_length=100)
-    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="roles")
+    event=models.ForeignKey(Event, on_delete=models.CASCADE, related_name="roles")
     amount = models.IntegerField()
 
 

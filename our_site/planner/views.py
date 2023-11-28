@@ -3,7 +3,7 @@ from django.template import loader
 import django.forms as forms
 from django.contrib import messages
 
-from .models import Event, User
+from .models import Event, User, Role
 from .forms import AddInvitationForm, RemoveInvitationForm
 #from .forms import RoleForm
 from django.shortcuts import render
@@ -324,30 +324,53 @@ def invitations(request, event_id: int) -> HttpResponse:
     )
 
 class RoleDetails(forms.Form):
-    role_name=forms.CharField(max_length=30)
-    #description= forms.CharField(max_length=100)
-    #event=forms.ForeignKey(Event, on_delete=models.CASCADE, related_name='roles')
-    #amount = forms.IntegerField()
+    role_name = forms.CharField(max_length=30)
 
-def addRoles(request):
+class RoleForm(forms.Form):
+    name = forms.CharField(max_length=30, required=True)
+    description = forms.CharField(max_length=100)  
+    amount = forms.IntegerField()
 
+def addRoles(request, event_id: int) -> HttpResponse:
+    event = event_specific_credentials(request, event_id)
     
-    if request.user.is_anonymous:
-        return HttpResponseRedirect("/account/login/")
-    if request.method=="GET":
-        template=loader.get_template("planner/addRoles.html")
-        addRoles_form=RoleForm()
-        return HttpResponse(template.render({"addRoles_form": addRoles_form},request))
+    if isinstance(event, HttpResponseRedirect):
+        return event
+   
+    match request.method:
+        case "GET":
+            template=loader.get_template("planner/addRoles.html")
+            addRoles_form=RoleForm()
+            return HttpResponse(template.render(
+                {"addRoles_form": addRoles_form,
+                #"event_edit_page": "/planner/{:d}/edit_event/".format(event_id),
+                },
+                request
+                )
+                )
+            
+        case "POST":
+            addRoles_form=RoleForm(request.POST)
+            if addRoles_form.is_valid():
+                #event=event_id
+                role= Role(
+                    
+                    name=addRoles_form.cleaned_data["name"],
+                    description=addRoles_form.cleaned_data["description"],
+                    amount=addRoles_form.cleaned_data["amount"],
+                )
+                role.user=request.user
+                role.save()
+               
+                #role = addRoles_form.save(commit=False)
+                #role.user = request.user
+                #role.save()
 
-    elif request.method=="POST":
-        addRoles_form=RoleForm(request.POST)
-        if addRoles_form.is_valid():
-            role = addRoles_form.save(commit=False)
-            role.user = request.user
-            role.save()
+            addRoles_form=RoleForm()
+            return render(request, "planner/addRoles.html", {"addRoles_form": addRoles_form, "event_edit_page": "/planner/{:d}/edit_event/".format(event_id),}) 
+    
+#{"addRoles_form": addRoles_form, "event_edit_page": "/planner/{:d}/edit_event/".format(event_id),}
+    
+    
+    
 
-        addRoles_form=RoleForm()
-        return render(request, "planner/dashboard.html", {"addRoles_form": addRoles_form})
-    else:
-        template = loader.get_template("planner/dashboard.html")
-        return HttpResponse(template.render({"RoleDetails": RoleDetails}, request))
