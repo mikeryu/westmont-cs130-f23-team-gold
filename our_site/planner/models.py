@@ -1,7 +1,6 @@
+
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 
 
 class Profile(models.Model):
@@ -22,5 +21,13 @@ class Event(models.Model):
 class Role(models.Model):
     name = models.CharField(max_length=30)
     description = models.CharField(max_length=100)
-    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="roles")
+    event=models.ForeignKey(Event, on_delete=models.CASCADE, related_name="roles")
     amount = models.IntegerField()
+
+
+def create_profile(sender, instance, created, **kwargs):
+    if created:
+        user_profile = Profile(user=instance)
+        user_profile.save()
+
+

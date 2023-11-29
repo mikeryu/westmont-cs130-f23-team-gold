@@ -30,7 +30,8 @@ def dashboard(request):
 
     owner = request.user.profile
     event_list = Event.objects.filter(owner_id=owner)
-
+    
+    
     if request.method == "POST":
         template = loader.get_template('planner/dashboard.html')
 
@@ -137,6 +138,9 @@ def event_creation(request):
                 location=event_creation_form.cleaned_data["event_location"],
             )
             event.save()
+            if (username := request.user.username).endswith("@westmont.edu"):
+                send_notification(username, "Your new event is live!", "Your event '{:s}' has been created!\n"
+                                                                       "Go invite people now.".format(event.name))
             return HttpResponseRedirect("/planner/{:d}/edit_event".format(event.id))
         else:
             template = loader.get_template("planner/event_creation.html")
@@ -241,6 +245,9 @@ def event_home_owned(request, event_id):
     owner_profile_id = event.owner_id
     invitee_profile_ids = event.invitees.values_list('id', flat=True)
     attendee_profile_ids = event.attendees.values_list('id', flat=True)
+    roles_list=[]
+    for role in event.roles.all():
+        roles_list.append(role)
 
     if user_profile_id != owner_profile_id and user_profile_id not in invitee_profile_ids:
         return HttpResponseRedirect("/planner/dashboard")
@@ -258,7 +265,7 @@ def event_home_owned(request, event_id):
             return HttpResponseRedirect("/planner/{:d}/edit_event".format(event.id))
 
     return HttpResponse(
-        render(request, 'planner/event_home_owned.html', {'event': event})
+        render(request, 'planner/event_home_owned.html', {'event': event,  "roles_list": roles_list})
     )
 
 
@@ -270,11 +277,15 @@ def event_home(request, event_id):
     invitees = event.invitees.all()
     attendees = event.attendees.all()
 
+
     user_profile_id = request.user.profile.id
     owner_profile_id = event.owner_id
     invitee_profile_ids = event.invitees.values_list('id', flat=True)
     attendee_profile_ids = event.attendees.values_list('id', flat=True)
 
+    roles_list=[]
+    for role in event.roles.all():
+        roles_list.append(role)
     # check if user is owner or invitee
     if (
             user_profile_id != owner_profile_id
@@ -287,7 +298,7 @@ def event_home(request, event_id):
         return HttpResponseRedirect("/planner/event_owned/{:d}/".format(event.id))
 
     return HttpResponse(
-        render(request, 'planner/event_home.html', {'event': event, 'invitees': invitees, 'attendees': attendees})
+        render(request, 'planner/event_home.html', {'event': event, 'invitees': invitees, 'attendees': attendees, "roles_list": roles_list})
     )
 
 

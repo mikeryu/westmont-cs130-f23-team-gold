@@ -21,10 +21,8 @@
             </form>
         </div>
     </section>
-
     <div class="container">
-
-        <form method="post" action="{% url 'planner:addRoles' %}">
+        <form method="post" >
             {% csrf_token %}
             {{ addRoles_form.as_div}}
             <br>

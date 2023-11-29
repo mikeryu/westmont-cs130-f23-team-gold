@@ -15,3 +15,4 @@ urlpatterns = [
     path('addRoles/', views.addRoles, name="addRoles"),
     path('<int:event_id>/handle_event/', views.handle_event, name='handle_event'),
 ]
+

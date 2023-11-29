@@ -24,5 +24,7 @@ def send_notification(recipient: str, subject: str, body: str) -> bool:
         return True
     except HTTPError as error:
         print(F'An error occurred: {error}')
+        return False
+    except AttributeError as error:
         print("Did you possibly forget to set the GOOGLE_API_SECRET_FILE environment variable?")
         return False
