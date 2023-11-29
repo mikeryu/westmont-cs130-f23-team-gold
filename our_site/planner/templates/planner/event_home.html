@@ -9,7 +9,6 @@
           href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
     <title>Planner</title>
 </head>
-
 <body>
     <section class="hero is-small mb-4" style="background-color: #eeb01e">
         <div class="hero-body">
@@ -36,6 +35,17 @@
                     <p> Host: {{ event.owner.user }}</p>
                     <p> Location: {{ event.location }}</p>
                     <p> Date: {{ event.date }}</p>
+                    <p> Roles:
+                        <div class='list'> 
+                            <ul>
+                                <div class='list-item'> 
+                                    {% for role in roles_list %}
+                                        <li class="px-6">  •{{ role.name }} </li>
+                                    {% endfor %}
+                                </div> 
+                            </ul>  
+                        </div>
+                    </p>
                 </div>
             </section>
 

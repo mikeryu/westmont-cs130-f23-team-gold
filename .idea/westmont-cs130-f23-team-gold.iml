@@ -14,11 +14,18 @@
   </component>
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
+<<<<<<< HEAD
+      <sourceFolder url="file://$MODULE_DIR$/Tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/our_site/account" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/our_site/our_site" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/our_site/planner" isTestSource="false" />
+=======
       <sourceFolder url="file://$MODULE_DIR$/our_site/account" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/our_site/our_site" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/our_site/planner" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/our_site/test_utils" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/our_site/notifications" isTestSource="false" />
+>>>>>>> main
     </content>
     <orderEntry type="jdk" jdkName="CS130" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />

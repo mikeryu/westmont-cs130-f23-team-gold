@@ -2,12 +2,14 @@ from django import forms
 from django.core.exceptions import ValidationError
 
 from django.contrib.auth.forms import User
-from .models import Role
+from .models import Role, Event
+from .import views
+
 
 
 class RoleForm(forms.ModelForm):
     name = forms.CharField(max_length=30, required=True)
-    description = forms.CharField(max_length=100)
+    description = forms.CharField(max_length=100)  
     amount = forms.IntegerField()
 
     class Meta:
