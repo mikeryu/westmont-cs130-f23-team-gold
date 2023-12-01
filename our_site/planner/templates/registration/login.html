@@ -6,48 +6,46 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Include the Bulma CSS framework for styling -->
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <!-- <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"> -->
+    <!-- <link rel="stylesheet" href="/our_site/css/style.css"> -->
     <title>Planner</title>
 </head>
-<body>
-    <section class="hero is-small mb-4" style="background-color: #eeb01e">
-        <div class="hero-body">
-            <h1 class="title is-1" style="color: #7f0000">Plan it</h1>
-            <p class="subtitle is-4" style="color: #7f0000">
-                TODO: catchy catchphrase
-            </p>
-        </div>
-    </section>
+<body bgcolor="white">
 
-    <div class="container">
+    <div class="container" align="center" style="position: relative; top: 200px">
 
         {% block content %}
             {% if form.errors %}
                 <p>Your username and password didn't match. Please try again.</p>
                 {% endif %}
+                <div style="box-shadow: 0 5px 4px 1px gray; background-color: #eeb01e; position: relative; border: 3px solid #86610a; border-radius: 30px; width: 420px; height: 450px">
+                    <div>
+                        <h1 style="font-family: Arial, sans-serif; font-size: 70px; color: #7f0000" class="title is-1">Plan it</h1>
+                    </div>
+                    <br>
+                    <form method="post" action="{% url 'login' %}">
+                    {% csrf_token %}
+                    <div style="font-size: 25px; font-family: Arial, sans-serif; color: #7f0000">
+                        {{ form.username.label_tag }}
+                        {{ form.username }}
+                    </div>
+                    <div style="font-size: 25px; font-family: Arial, sans-serif; color: #7f0000">
+                        {{ form.password.label_tag }}
+                        {{ form.password }}
+                    </div>
+                    <br>
+                    <br>
+                    
+                    <input class="button is-warning" id="submit_button" type="submit" style="font-family: Arial, sans-serif; font-size: 13px; background-color: #7f0000; color: #eeb01e; padding: 10px 20px; border-radius: 10px;" value="Login">
+                    <input type="hidden" name="next" value="{{ next }}">
 
-                <form method="post" action="{% url 'login' %}">
-                {% csrf_token %}
-                <table>
-                <tr>
-                    <td>{{ form.username.label_tag }}</td>
-                    <td>{{ form.username }}</td>
-                </tr>
-                <tr>
-                    <td>{{ form.password.label_tag }}</td>
-                    <td>{{ form.password }}</td>
-                </tr>
-                </table>
+                    <a href="/account/newAccount" class="button is-warning" id="id_new_account_button" style="font-family: Arial, sans-serif; background-color: #7f0000; color: #eeb01e; border: 1.5px solid black; padding: 8px 20px; border-radius: 10px; text-decoration: none">
+                        Create Account
+                    </a>
 
-                <input class="button is-warning" id="submit_button" type="submit" value="Login">
-                <input type="hidden" name="next" value="{{ next }}">
-
-
-                <a href="/account/newAccount" class="button is-warning" id="id_new_account_button">Create Account</a>
-
-                </form>
-
+                    </form>
+                </div>
 
                 {# Assumes you set up the password_reset view in your URLconf #}
                 <!--<p><a href="<add left curly brace>% url 'password_reset' %<add right curly brace>">Lost password?</a></p>-->

@@ -18,8 +18,8 @@ class RoleForm(forms.ModelForm):
 
 
 class LoginForm(forms.Form):
-    username = forms.CharField(label="Username", max_length=100)
-    password = forms.CharField(label="Password", max_length=100)
+    username = forms.CharField(label="Username", max_length=100, widget=forms.TextInput(attrs={'style': 'width: 250px; height: 300px; border: 1px solid #ccc; padding: 5px;'}))
+    password = forms.CharField(label="Password", max_length=100, widget=forms.TextInput(attrs={'style': 'width: 250px; height: 30px; border: 1px solid #ccc; padding: 5px;'}))
 
 
 def is_user_name(user_name: str) -> None:
