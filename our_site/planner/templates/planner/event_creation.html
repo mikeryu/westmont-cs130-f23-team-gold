@@ -10,12 +10,11 @@
     <title>Planner</title>
 </head>
 <body>
-    <section class="hero is-small mb-4" style="background-color: #eeb01e">
-        <div class="hero-body">
+    <header class="header" style="display: flex; justify-content: space-between; background-color: #eeb01e; height: 175px">
+        <div class="column" style="flex: 1; padding: 5px; color: #7f0000; text-align: left">
             <h1 class="title is-1" style="color: #7f0000">Create an Event!</h1>
-            <p class="subtitle is-4" style="color: #7f0000">
-                TODO: catchy catchphrase
-            </p>
+        </div>
+        <div class="column" style="flex: 1; padding: 5px; color: #7f0000; text-align: right">
             <p class="has-text-right subtitle is-4" style="color: #7f0000">
                 {{ user }} is signed in
             </p>
@@ -23,8 +22,8 @@
                 <input class="button is-default has-text-warning" style="background-color: #7f0000" type="submit" value="Logout" />
             </form>
         </div>
-    </section>
-    <div class="container">
+    </header>
+    <div class="container" style="margin:30px">
 
         <form method="post" action="{% url "planner:event_creation" %}">
             {% csrf_token %}
