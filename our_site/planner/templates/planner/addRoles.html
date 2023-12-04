@@ -28,11 +28,11 @@
             {% csrf_token %}
             {{ addRoles_form.as_div}}
             <br>
-            <input input class="button is-warning" type="submit" value="Add Roles">
+            <input class="button is-warning" type="submit" value="Add Roles">
         </form>
         <br>
         <form action="{% url 'planner:dashboard' %}">
-            <input input class="button is-warning" type="submit" value="Back to Dashboard" />
+            <input class="button is-warning" type="submit" value="Back to Dashboard" />
         </form>
 
     </div>
