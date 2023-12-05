@@ -2,63 +2,25 @@
 
 {% block content %}
 
+    <div class="level">
+        <div class="level-item">
+            <div class="tabs is-toggle is-toggle-rounded is-large">
+                <ul>
+                    {% block tabs %}
 
-<div class="columns"> 
-    <div class="column is-4">
-        <form action="{% url 'planner:event_creation' %}">
-            <input class="button is-medium is-warning" type="submit" value="Create new event!" />
-        </form>
-        <p class="is-size-5" id="Current Filter Mode">
-            The dashboard is currently in mode {{ filter_value }}
-        </p> 
-        <br>
-
-        <p class="is-size-5"> Choose a filter: </p>
-
-        <form method="post">
-            {% csrf_token %}
-            {{ AllEventsButton }}
-            <input class="button is-medium is-warning" id="All Events Filter" type="submit" value="All Events" name="filter_all_events">
-        </form>
-
-        <br>
-
-        <form method="post">
-            {% csrf_token %}
-            {{ MyEventsButton }}
-            <input class="button is-medium is-warning" id="My Events Filter" type="submit" value="My Events" name="filter_my_events">
-        </form>
-
-        <br>
-
-            <form method="post">
-                {% csrf_token %}
-                {{ InvitedEventsButton }}
-                <input class="button is-medium is-warning" id="Invited Events Filter" type="submit" value="Invited Events" name="filter_invited_events">
-            </form>
-
-            <br>
-
-            <form method="post">
-                {% csrf_token %}
-                {{ AttendingEventsButton }}
-                <input class="button is-medium is-warning" id="Attending Events Filter" type="submit" value="Attending Events" name="filter_attending_events">
-            </form>
+                    {% endblock %}
+                </ul>
+            </div>
         </div>
+    </div>
 
-        <div class="column">
-            {% for event in event_list %}
-                <div class="box">
-                    <a href="{% url 'planner:event_home' event.id %}" id="event-title-{{ forloop.counter }}">{{ event.name }}</a>
-                    <p>{{ event.description }}</p>
-                    <p> Created by: {{ event.owner.user }}
-                    </p>
-                </div>
-            {% endfor %}
+    {% for event in event_list %}
+        <div class="box">
+            <a href="{% url 'planner:event_home' event.id %}" id="event-title-{{ forloop.counter }}">{{ event.name }}</a>
+            <p>{{ event.description }}</p>
+            <p> Created by: {{ event.owner.user }}
+            </p>
         </div>
-    </div>     
+    {% endfor %}
+
 {% endblock content %}
-        
-
-
-

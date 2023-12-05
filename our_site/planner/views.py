@@ -29,15 +29,20 @@ def dashboard(request):
         return HttpResponseRedirect("/account/login/")
 
     owner = request.user.profile
-    event_list = Event.objects.filter(owner_id=owner)
-    
-    
-    if request.method == "POST":
-        template = loader.get_template('planner/dashboard.html')
 
-        if "filter_all_events" in request.POST:
-            filter_value = "All Events"
+    # Get the full url, because the last part of the url is the value by which to filter events
+    filter_value = request.build_absolute_uri().split("/")[-2]
+    template = loader.get_template(
+        {
+            "allevents": "planner/dash_allevents.html",
+            "myevents": "planner/dash_myevents.html",
+            "accevents": "planner/dash_accevents.html",
+            "invevents": "planner/dash_invevents.html",
+        }[filter_value]
+    )
 
+    match filter_value:
+        case "allevents":
             owned_events_list = []
             invited_list = []
             attending_list = []
@@ -57,49 +62,25 @@ def dashboard(request):
                     attending_list.append(attendedEvent)
 
             event_list = owned_events_list + invited_list + attending_list
-
-        elif "filter_my_events" in request.POST:
-            filter_value = "My Events"
+        case "myevents":
             owner = request.user.profile
             event_list = Event.objects.filter(owner_id=owner)
-
-        elif "filter_invited_events" in request.POST:
-            filter_value = "Invited Events"
-            event_list = []
-            for invitedEvent in Event.objects.all():
-                if invitedEvent.invitees.contains(request.user.profile):
-                    event_list.append(invitedEvent)
-
-        elif "filter_attending_events" in request.POST:
-            filter_value = "Attending Events"
+        case "accevents":
             owner = request.user.profile
             event_list = []
             for attendedEvent in Event.objects.all():
                 if attendedEvent.attendees.contains(request.user.profile):
                     event_list.append(attendedEvent)
+        case "invevents":
+            event_list = []
+            for invitedEvent in Event.objects.all():
+                if invitedEvent.invitees.contains(request.user.profile):
+                    event_list.append(invitedEvent)
+        case _:
+            raise Exception("Oh crap.")
 
-        else:
-            raise Exception("unknown post provided")
-
-        return HttpResponse(template.render(
-            {
-                "filter_value": filter_value,
-                "AllEventsButton": DashboardFilterAllEvents(),
-                "MyEventsButton": DashboardFilterMyEvents(),
-                "InvitedEventsButton": DashboardFilterInvitedEvents(),
-                "event_list": event_list,
-                "owner": owner,
-            },
-            request
-        ))
-
-    template = loader.get_template("planner/dashboard.html")
     return HttpResponse(template.render(
         {
-            "filter_value": "My Events",
-            "AllEventsButton": DashboardFilterAllEvents(),
-            "MyEventsButton": DashboardFilterMyEvents(),
-            "InvitedEventsButton": DashboardFilterInvitedEvents(),
             "event_list": event_list,
             "owner": owner,
         },
