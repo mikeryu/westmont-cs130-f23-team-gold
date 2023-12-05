@@ -32,17 +32,10 @@ def dashboard(request):
 
     # Get the full url, because the last part of the url is the value by which to filter events
     filter_value = request.build_absolute_uri().split("/")[-2]
-    template = loader.get_template(
-        {
-            "allevents": "planner/dash_allevents.html",
-            "myevents": "planner/dash_myevents.html",
-            "accevents": "planner/dash_accevents.html",
-            "invevents": "planner/dash_invevents.html",
-        }[filter_value]
-    )
 
     match filter_value:
         case "allevents":
+            template = loader.get_template("planner/dash_allevents.html")
             owned_events_list = []
             invited_list = []
             attending_list = []
@@ -63,21 +56,24 @@ def dashboard(request):
 
             event_list = owned_events_list + invited_list + attending_list
         case "myevents":
+            template = loader.get_template("planner/dash_myevents.html")
             owner = request.user.profile
             event_list = Event.objects.filter(owner_id=owner)
         case "accevents":
+            template = loader.get_template("planner/dash_accevents.html")
             owner = request.user.profile
             event_list = []
             for attendedEvent in Event.objects.all():
                 if attendedEvent.attendees.contains(request.user.profile):
                     event_list.append(attendedEvent)
         case "invevents":
+            template = loader.get_template("planner/dash_invevents.html")
             event_list = []
             for invitedEvent in Event.objects.all():
                 if invitedEvent.invitees.contains(request.user.profile):
                     event_list.append(invitedEvent)
         case _:
-            raise Exception("Oh crap.")
+            return HttpResponseRedirect("/planner/dashboard/allevents")
 
     return HttpResponse(template.render(
         {
