@@ -2,16 +2,12 @@
 
 {% block content %}
 
-    <div class="level">
-        <div class="level-item">
-            <div class="tabs is-boxed is-fullwidth is-centered is-large">
-                <ul>
-                    {% block tabs %}
+    <div class="tabs is-boxed is-centered is-large">
+        <ul>
+            {% block tabs %}
 
-                    {% endblock %}
-                </ul>
-            </div>
-        </div>
+            {% endblock %}
+        </ul>
     </div>
 
     {% for event in event_list %}
