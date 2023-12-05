@@ -12,18 +12,6 @@ from .forms import RoleForm
 from notifications.notify_email import send_notification
 
 
-class DashboardFilterAllEvents(forms.Form):
-    pass
-
-
-class DashboardFilterMyEvents(forms.Form):
-    pass
-
-
-class DashboardFilterInvitedEvents(forms.Form):
-    pass
-
-
 def dashboard(request) -> HttpResponse:
     """
     dashboard is the central "hub" of our website, where users can view all the events that they have created or have
