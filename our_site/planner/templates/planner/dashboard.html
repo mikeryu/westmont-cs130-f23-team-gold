@@ -27,19 +27,15 @@
                     Hosted by: {{ event.owner.user }}
                 </div>
                 <div class="level-item is-size-4">
-                    When: {{ event.location }}
+                    Where: {{ event.location }}
                 </div>
                 <div class="level-item is-size-4">
-                    Where: {{ event.date }}
+                    When: {{ event.date }}
                 </div>
             </div>
 
             <div class="level">
-                <div class="level-left">
-                    <div class="level-item">
-                        Description: {{ event.description }}
-                    </div>
-                </div>
+                Description: {{ event.description }}
             </div>
         </div>
     {% endfor %}
