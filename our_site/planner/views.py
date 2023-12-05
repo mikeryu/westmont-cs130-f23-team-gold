@@ -201,7 +201,7 @@ def event_home_owned(request, event_id):
     owner_profile_id = event.owner_id
     invitee_profile_ids = event.invitees.values_list('id', flat=True)
     attendee_profile_ids = event.attendees.values_list('id', flat=True)
-    roles_list=[]
+    roles_list = []
     for role in event.roles.all():
         roles_list.append(role)
 
@@ -221,7 +221,7 @@ def event_home_owned(request, event_id):
             return HttpResponseRedirect("/planner/{:d}/edit_event".format(event.id))
 
     return HttpResponse(
-        render(request, 'planner/event_home_owned.html', {'event': event,  "roles_list": roles_list})
+        render(request, 'planner/event_home_owned.html', {'event': event, "roles_list": roles_list})
     )
 
 
@@ -233,13 +233,12 @@ def event_home(request, event_id):
     invitees = event.invitees.all()
     attendees = event.attendees.all()
 
-
     user_profile_id = request.user.profile.id
     owner_profile_id = event.owner_id
     invitee_profile_ids = event.invitees.values_list('id', flat=True)
     attendee_profile_ids = event.attendees.values_list('id', flat=True)
 
-    roles_list=[]
+    roles_list = []
     for role in event.roles.all():
         roles_list.append(role)
     # check if user is owner or invitee
@@ -250,11 +249,12 @@ def event_home(request, event_id):
     ):
         return HttpResponseRedirect("/account/dashboard")
 
-    if  owner_profile_id == user_profile_id:
+    if owner_profile_id == user_profile_id:
         return HttpResponseRedirect("/planner/event_owned/{:d}/".format(event.id))
 
     return HttpResponse(
-        render(request, 'planner/event_home.html', {'event': event, 'invitees': invitees, 'attendees': attendees, "roles_list": roles_list})
+        render(request, 'planner/event_home.html',
+               {'event': event, 'invitees': invitees, 'attendees': attendees, "roles_list": roles_list})
     )
 
 
