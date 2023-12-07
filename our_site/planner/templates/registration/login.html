@@ -9,15 +9,16 @@
 </head>
 <body style="background-color: white">
 
-    <div class="container" align="center" style="position: relative; top: 200px">
+    <div class="container" align="center" style="position: relative; padding-top: 150px">
 
         {% block content %}
             {% if form.errors %}
                 <p>Your username and password didn't match. Please try again.</p>
                 {% endif %}
                 <div style="box-shadow: 0 5px 4px 1px gray; background-color: #eeb01e; position: relative; border: 3px solid #86610a; border-radius: 30px; width: 420px; height: 450px">
-                    <div>
-                        <h1 style="font-family: Arial, sans-serif; font-size: 70px; color: #7f0000" class="title is-1">Plan it</h1>
+                    <div style="padding-top: 30px">
+                        {% load static %}
+                        <img src="{% static 'planitlogo.png' %}" alt="Logo" style="max-width: 75%; max-height: 75%">
                     </div>
                     <br>
                     <form method="post" action="{% url 'login' %}">
