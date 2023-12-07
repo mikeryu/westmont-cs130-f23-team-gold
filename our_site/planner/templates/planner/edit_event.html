@@ -8,19 +8,61 @@
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
     <title>Planner</title>
+    <style>
+        /* Dropdown Button */
+        .dropbtn {
+            padding: 16px;
+            font-size: 16px;
+            border: none;
+        }
+        
+        /* Position the dropdown content */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        
+        /* Dropdown Content */
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            border-bottom: 3px solid #7f0000;
+            min-width: 150px;
+        }
+        
+        /* Links inside the dropdown */
+        .dropdown-content a {
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+        
+        /* Show the dropdown menu on hover */
+        .dropdown:hover .dropdown-content {display: block;}
+    </style>
 </head>
 <body>
     <header class="header" style="display: flex; justify-content: space-between; background-color: #eeb01e; height: 175px">
         <div class="column" style="flex: 1; padding: 5px; color: #7f0000; text-align: left">
             <h1 class="title is-1" style="color: #7f0000">Edit Your Event!</h1>
         </div>
-        <div class="column" style="flex: 1; padding: 5px; color: #7f0000; text-align: right">
-            <p class="has-text-right subtitle is-4" style="color: #7f0000">
-                Hello, <b>{{ user }}</b>
-            </p>
-            <form class="has-text-right" action="{% url 'login' %}">
-                <input class="button is-default has-text-warning" style="background-color: #7f0000" type="submit" value="Logout" />
-            </form>
+        <div class="has-text-right column" style="flex: 1; padding: 5px; color: #7f0000">
+            <div class="dropdown" style="text-align: center">
+                <p class="subtitle is-4" style="color: #7f0000">
+                    Hello, <b style="padding-right: 10px">{{ user }}</b>
+                </p>
+                <div class="dropdown-content">
+                    <form action="{% url 'planner:dashboard' %}" style="padding-right: 6px">
+                        <input type="submit" value="Dashboard" style="font-size: 21px; border: none; background-color: transparent; color: #7f0000; font-weight: bold"/>
+                    </form>
+                    <form action="{% url 'planner:event_creation' %}">
+                        <input type="submit" value="Create Event" style="font-size: 21px; border: none; background-color: transparent; color: #7f0000; font-weight: bold"/>
+                    </form>
+                    <form action="{% url 'login' %}">
+                        <input type="submit" value="Logout" style="font-size: 21px; border: none; background-color: transparent; color: #7f0000; font-weight: bold"/>
+                    </form>
+                </div>
+              </div>
         </div>
     </header>
     <div class="container" style="margin:30px">
