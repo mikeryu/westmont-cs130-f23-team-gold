@@ -9,7 +9,7 @@
           href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
     <title>Planner</title>
 </head>
-<body>
+<body style="background-color: #e4e4e4;">
     <header class="header" style="display: flex; justify-content: space-between; background-color: #eeb01e; height: 175px">
         <div class="column" style="flex: 1; padding: 5px; color: #7f0000; text-align: left">
             <h1 class="title is-1" style="color: #7f0000">Event Details!</h1>
@@ -24,44 +24,76 @@
         </div>
     </header>
 
-    <div class="container" style="margin:30px">
-
-            <div class="container">
-                <section class="box" style="background-color: #7f000065">
-                    <div class="hero-body">
-                        <section class="box" style="background-color: #eeb01e">
-                            <h1 class="title is-1" style="color: #7f0000">{{ event.name }}</h1>
-                        </section>
-                        <p>Description: {{ event.description }}</p>
-                        <p> Host: {{ event.owner.user }}</p>
-                        <p> Location: {{ event.location }}</p>
-                        <p> Date: {{ event.date }}</p>
-                        <p> Roles:
-                            <div class='list'> 
-                                <ul>
-                                    <div class='list-item'> 
-                                        {% for role in roles_list %}
-                                            <li class="px-6">  •{{ role.name }} </li>
-                                        {% endfor %}
-                                    </div> 
-                                </ul>  
-                            </div>
-                        </p>
-                    </div>
-                </section>
-
-                <div class="container">
+    <section class="section" >
+        <div class="container has-background-white p-3">
+            <div class="columns">
+                <div class="column has-text-left">
                     <form method="post">
                         {% csrf_token %}
                         <input class="button is-medium is-warning" type="submit" value="Edit Event" name="Edit Event" id="edit-event">
                     </form>
-                    <br>
-                    <form action="{% url 'planner:dashboard' %}">
-                        <input class="button is-medium is-warning" type="submit" value="Back to Dashboard" />
-                    </form>
+                </div>
+                <div class="column">
+                    <div class="container has-text-right">
+                        <form action="{% url 'planner:dashboard' %}">
+                            <input class="button is-medium is-warning" type="submit" value="Back to Dashboard" />
+                        </form>
+                    </div>
                 </div>
             </div>
+        </div>
 
-    </div>
+        <div class="container has-background-white p-5">
+            <h1 class="title is-1 has-text-centered" style="color: #7f0000">{{ event.name }}</h1>
+            <div class="content">
+                <ul>
+                    <li><strong>Description:</strong> {{ event.description }}</li>
+                    <li><strong>Host:</strong> {{ event.owner.user }}</li>
+                    <li><strong>Location:</strong> {{ event.location }}</li>
+                    <li><strong>Date:</strong> {{ event.date }}</li>
+                </ul>
+            </div>
+            
+        
+            <div class="columns">
+                <div class="column">
+                    <h2 class="subtitle is-4">Attendees:</h2>
+                    <ul>
+                        {% for attendee in attendees %}
+                            <li>{{ attendee.user.username }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="column">
+                    <h2 class="subtitle is-4">Invitees:</h2>
+                    <ul>
+                        {% for invitee in invitees %}
+                            <li>{{ invitee.user.username }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="column">
+                    <h2 class="subtitle is-4">Roles</h2>
+                    <ul>
+                        <div class='list-item'> 
+                            {% for role in roles_list %}
+                                <li>{{ role.name }}</li>
+                            {% endfor %}
+                        </div> 
+                    </ul>  
+                </div>
+            </div>
+        
+            {% if user.profile in invitees %}
+                <div class="buttons has-text-centered">
+                    <form method="post" action="{% url 'planner:handle_event' event.id %}">
+                        {% csrf_token %}
+                        <button class="button is-medium is-warning" type="submit" name="action" value="accept">Accept Invite</button>
+                        <button class="button is-medium is-warning" type="submit" name="action" value="decline">Decline Invite</button>
+                    </form>
+                </div>
+            {% endif %}
+        </div>
+    </section>
 </body>
 </html>
