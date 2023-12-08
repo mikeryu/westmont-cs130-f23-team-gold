@@ -9,6 +9,15 @@
           href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
     <title>Planner</title>
     <style>
+        .caret {
+            border: solid #7f0000;
+            border-width: 0 3px 3px 0;
+            display: inline-block;
+            padding: 2px;
+            transform: rotate(45deg);
+            transition: transform 0.3s ease-in-out;
+          }
+
         /* Dropdown Button */
         .dropbtn {
             padding: 16px;
@@ -39,6 +48,14 @@
         
         /* Show the dropdown menu on hover */
         .dropdown:hover .dropdown-content {display: block;}
+
+        .username:hover {
+            border: 2px solid #7f0000
+        }
+
+        .navbarbtn:hover {
+            background-color: rgb(215, 211, 211);
+        }
     </style>
 </head>
 <body>
@@ -48,17 +65,17 @@
         </div>
         <div class="has-text-right column" style="flex: 1; padding: 5px; color: #7f0000">
             <div class="dropdown" style="text-align: center">
-                <p class="subtitle is-4" style="color: #7f0000">
-                    Hello, <b style="padding-right: 10px">{{ user }}</b>
+                <p class="username subtitle is-4" style="color: #7f0000">
+                    Hello, <b style="padding-right: 10px">{{ user }} <span class="caret"></span></b>
                 </p>
                 <div class="dropdown-content">
-                    <form action="{% url 'planner:dashboard' %}" style="padding-right: 6px">
+                    <form class="navbarbtn" action="{% url 'planner:dashboard' %}" style="padding-right: 6px">
                         <input type="submit" value="Dashboard" style="font-size: 21px; border: none; background-color: transparent; color: #7f0000; font-weight: bold"/>
                     </form>
-                    <form action="{% url 'planner:event_creation' %}">
+                    <form class="navbarbtn" action="{% url 'planner:event_creation' %}">
                         <input type="submit" value="Create Event" style="font-size: 21px; border: none; background-color: transparent; color: #7f0000; font-weight: bold"/>
                     </form>
-                    <form action="{% url 'login' %}">
+                    <form class="navbarbtn" action="{% url 'login' %}">
                         <input type="submit" value="Logout" style="font-size: 21px; border: none; background-color: transparent; color: #7f0000; font-weight: bold"/>
                     </form>
                 </div>
