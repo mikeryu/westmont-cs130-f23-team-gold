@@ -24,5 +24,6 @@
         {% endfor %}
 
         <button class="button is-warning" type="submit" id="id_submit_new_account_button">Sign up</button>
+        <a href="{% url 'account:login' %}" class="button is-warning">Back to Login</a>
     </form>
 {% endblock content %}
