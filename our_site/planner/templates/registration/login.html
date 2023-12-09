@@ -22,7 +22,7 @@
                     </div>
 
                     <br>
-                    <form method="post" action="{% url 'login' %}">
+                    <form method="post" action="{% url 'account:login' %}">
                         {% csrf_token %}
                         <div style="font-size: 25px; color: #7f0000">
                             {{ form.username.label_tag }}
@@ -40,7 +40,7 @@
 
                         {# To keep the formatting the same for the create account button, we literally just added a copy #}
                         {# of the login button but made it not clickable and put it inside a hyperlink LOL #}
-                        <a href="/account/newAccount" id="id_new_account_button">
+                        <a href="{% url "account:newAccount" %}" id="id_new_account_button">
                             <input
                                     class="button is-warning"
                                     id="submit_button"

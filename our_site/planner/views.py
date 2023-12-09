@@ -194,16 +194,11 @@ def event_home_owned(request, event_id):
         return HttpResponseRedirect("/account/login/")
 
     event = Event.objects.all().filter(id__exact=event_id).get()
-    invitees = event.invitees.all()
-    attendees = event.attendees.all()
 
     user_profile_id = request.user.profile.id
     owner_profile_id = event.owner_id
     invitee_profile_ids = event.invitees.values_list('id', flat=True)
-    attendee_profile_ids = event.attendees.values_list('id', flat=True)
-    roles_list = []
-    for role in event.roles.all():
-        roles_list.append(role)
+    roles_list = list(event.roles.all())
 
     if user_profile_id != owner_profile_id and user_profile_id not in invitee_profile_ids:
         return HttpResponseRedirect("/planner/dashboard")
