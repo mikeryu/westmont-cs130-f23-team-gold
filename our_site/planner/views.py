@@ -12,94 +12,50 @@ from .forms import RoleForm
 from notifications.notify_email import send_notification
 
 
-class DashboardFilterAllEvents(forms.Form):
-    pass
+def dashboard(request) -> HttpResponse:
+    """
+    dashboard is the central "hub" of our website, where users can view all the events that they have created or have
+    been invited to. The dashboard is actually made up of four slightly different html templates.
+    Each template has a different "activated" button on the menu of 4 buttons to indicate what the shown events
+    are being filtered by (all events, owned events, attending, and invited).
 
-
-class DashboardFilterMyEvents(forms.Form):
-    pass
-
-
-class DashboardFilterInvitedEvents(forms.Form):
-    pass
-
-
-def dashboard(request):
+    :param request: The HTTP request for a page.
+    :return: If the user is not logged in, an HTTP redirect to the login page.
+             Otherwise, one of the four rendered templates corresponding to each of the filters.
+    """
     if request.user.is_anonymous:
         return HttpResponseRedirect("/account/login/")
 
     owner = request.user.profile
-    event_list = Event.objects.filter(owner_id=owner)
-    
-    
-    if request.method == "POST":
-        template = loader.get_template('planner/dashboard.html')
 
-        if "filter_all_events" in request.POST:
-            filter_value = "All Events"
+    # Get the full url, because the last part of the url is the value by which to filter events
+    filter_value = request.build_absolute_uri().split("/")[-2]
 
-            owned_events_list = []
-            invited_list = []
-            attending_list = []
+    match filter_value:
+        case "allevents":
+            template = loader.get_template("planner/dash_allevents.html")
 
-            for invitedEvent in Event.objects.all():
-                if invitedEvent.invitees.contains(request.user.profile):
-                    invited_list.append(invitedEvent)
-
-            for events in Event.objects.filter(owner_id=owner):
-                if events in invited_list:
-                    owned_events_list = owned_events_list
-                else:
-                    owned_events_list.append(events)
-
-            for attendedEvent in Event.objects.all():
-                if attendedEvent.attendees.contains(request.user.profile) and attendedEvent not in owned_events_list:
-                    attending_list.append(attendedEvent)
+            owned_events_list = list(Event.objects.all().filter(owner=owner))
+            invited_list = list(Event.objects.all().filter(invitees__in=[owner]))
+            attending_list = list(Event.objects.all().filter(attendees__in=[owner]))
 
             event_list = owned_events_list + invited_list + attending_list
-
-        elif "filter_my_events" in request.POST:
-            filter_value = "My Events"
+        case "myevents":
+            template = loader.get_template("planner/dash_myevents.html")
             owner = request.user.profile
-            event_list = Event.objects.filter(owner_id=owner)
-
-        elif "filter_invited_events" in request.POST:
-            filter_value = "Invited Events"
-            event_list = []
-            for invitedEvent in Event.objects.all():
-                if invitedEvent.invitees.contains(request.user.profile):
-                    event_list.append(invitedEvent)
-
-        elif "filter_attending_events" in request.POST:
-            filter_value = "Attending Events"
+            event_list = list(Event.objects.filter(owner_id=owner))
+        case "accevents":
+            template = loader.get_template("planner/dash_accevents.html")
             owner = request.user.profile
-            event_list = []
-            for attendedEvent in Event.objects.all():
-                if attendedEvent.attendees.contains(request.user.profile):
-                    event_list.append(attendedEvent)
+            event_list = list(Event.objects.all().filter(attendees__in=[owner]))
+        case "invevents":
+            template = loader.get_template("planner/dash_invevents.html")
+            event_list = list(Event.objects.all().filter(invitees__in=[owner]))
+        case _:
+            return HttpResponseRedirect("/planner/dashboard/allevents")
 
-        else:
-            raise Exception("unknown post provided")
-
-        return HttpResponse(template.render(
-            {
-                "filter_value": filter_value,
-                "AllEventsButton": DashboardFilterAllEvents(),
-                "MyEventsButton": DashboardFilterMyEvents(),
-                "InvitedEventsButton": DashboardFilterInvitedEvents(),
-                "event_list": event_list,
-                "owner": owner,
-            },
-            request
-        ))
-
-    template = loader.get_template("planner/dashboard.html")
     return HttpResponse(template.render(
         {
-            "filter_value": "My Events",
-            "AllEventsButton": DashboardFilterAllEvents(),
-            "MyEventsButton": DashboardFilterMyEvents(),
-            "InvitedEventsButton": DashboardFilterInvitedEvents(),
             "event_list": event_list,
             "owner": owner,
         },
@@ -245,7 +201,7 @@ def event_home_owned(request, event_id):
     owner_profile_id = event.owner_id
     invitee_profile_ids = event.invitees.values_list('id', flat=True)
     attendee_profile_ids = event.attendees.values_list('id', flat=True)
-    roles_list=[]
+    roles_list = []
     for role in event.roles.all():
         roles_list.append(role)
 
@@ -265,7 +221,7 @@ def event_home_owned(request, event_id):
             return HttpResponseRedirect("/planner/{:d}/edit_event".format(event.id))
 
     return HttpResponse(
-        render(request, 'planner/event_home_owned.html', {'event': event,  "roles_list": roles_list})
+        render(request, 'planner/event_home_owned.html', {'event': event, "roles_list": roles_list})
     )
 
 
@@ -277,13 +233,12 @@ def event_home(request, event_id):
     invitees = event.invitees.all()
     attendees = event.attendees.all()
 
-
     user_profile_id = request.user.profile.id
     owner_profile_id = event.owner_id
     invitee_profile_ids = event.invitees.values_list('id', flat=True)
     attendee_profile_ids = event.attendees.values_list('id', flat=True)
 
-    roles_list=[]
+    roles_list = []
     for role in event.roles.all():
         roles_list.append(role)
     # check if user is owner or invitee
@@ -294,11 +249,12 @@ def event_home(request, event_id):
     ):
         return HttpResponseRedirect("/account/dashboard")
 
-    if  owner_profile_id == user_profile_id:
+    if owner_profile_id == user_profile_id:
         return HttpResponseRedirect("/planner/event_owned/{:d}/".format(event.id))
 
     return HttpResponse(
-        render(request, 'planner/event_home.html', {'event': event, 'invitees': invitees, 'attendees': attendees, "roles_list": roles_list})
+        render(request, 'planner/event_home.html',
+               {'event': event, 'invitees': invitees, 'attendees': attendees, "roles_list": roles_list})
     )
 
 

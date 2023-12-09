@@ -4,6 +4,10 @@ from . import views
 app_name = "planner"
 urlpatterns = [
     path("dashboard/", views.dashboard, name="dashboard"),  # Main page where user views events
+    path("dashboard/allevents/", views.dashboard, name="dashboard_all"),
+    path("dashboard/myevents/", views.dashboard, name="dashboard_my"),
+    path("dashboard/accevents/", views.dashboard, name="dashboard_accepted"),
+    path("dashboard/invevents/", views.dashboard, name="dashboard_invited"),
 
     path("event_creation/", views.event_creation, name="event_creation"),  # Place to create and edit events
     path("<int:event_id>/edit_event/", views.edit_event, name="edit_event"),
