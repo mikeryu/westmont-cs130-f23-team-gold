@@ -37,15 +37,27 @@
                     <input class="button is-warning" id="submit_button" type="submit" style="font-family: Arial, sans-serif; font-size: 13px; background-color: #7f0000; color: #eeb01e; padding: 10px 20px; border-radius: 10px;" value="Login">
                     <input type="hidden" name="next" value="{{ next }}">
 
-                    <a href="/account/newAccount" class="button is-warning" id="id_new_account_button" style="font-family: Arial, sans-serif; background-color: #7f0000; color: #eeb01e; border: 1.5px solid black; padding: 8px 20px; border-radius: 10px; text-decoration: none">
-                        Create Account
+                    {# To keep the formatting the same for the create account button, we literally just added a copy #}
+                    {# of the login button but made it not clickable and put it inside a hyperlink LOL #}
+                    <a href="/account/newAccount" id="id_new_account_button">
+                        <input
+                                class="button is-warning"
+                                id="submit_button"
+                                type="submit"
+                                style=
+                                        "font-family: Arial, sans-serif;
+                                        font-size: 13px;
+                                        background-color: #7f0000;
+                                        color: #eeb01e;
+                                        padding: 10px 20px;
+                                        border-radius: 10px;
+                                        pointer-events: none"
+                                value="Create New Account">
                     </a>
 
                     </form>
                 </div>
 
-                {# Assumes you set up the password_reset view in your URLconf #}
-                <!--<p><a href="<add left curly brace>% url 'password_reset' %<add right curly brace>">Lost password?</a></p>-->
         {% endblock content %}
 
     </div>
