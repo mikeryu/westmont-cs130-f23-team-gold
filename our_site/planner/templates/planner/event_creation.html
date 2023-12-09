@@ -7,18 +7,18 @@
             {% csrf_token %}
 
             <div>
-                {{ event_creation_form.event_name.errors }}
                 <label class="label">
                     Event Name (30 characters max):
                 </label>
+                {{ event_creation_form.event_name.errors }}
                 {{ event_creation_form.event_name }}
             </div>
             <div>
-                {{ event_creation_form.event_date.errors }}
                 <label class="label">
                     Event Date (mm/dd/yyyy h:m):
                 </label>
                 {{ event_creation_form.event_date }}
+                {{ event_creation_form.event_date.errors }}
             </div>
             <div>
                 {{ event_creation_form.event_description.errors }}
