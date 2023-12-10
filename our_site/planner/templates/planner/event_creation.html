@@ -1,32 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Include the Bulma CSS framework for styling -->
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
-    <title>Planner</title>
-</head>
-<body>
-    <header class="header" style="display: flex; justify-content: space-between; background-color: #eeb01e; height: 175px">
-        <div class="column" style="flex: 1; padding: 5px; color: #7f0000; text-align: left">
-            <h1 class="title is-1" style="color: #7f0000">Create an Event!</h1>
-        </div>
-        <div class="column" style="flex: 1; padding: 5px; color: #7f0000; text-align: right">
-            <p class="has-text-right subtitle is-4" style="color: #7f0000">
-                {{ user }} is signed in
-            </p>
-            <form class="has-text-right" action="{% url 'login' %}">
-                <input class="button is-default has-text-warning" style="background-color: #7f0000" type="submit" value="Logout" />
-            </form>
-        </div>
-    </header>
+{% extends 'base.html' %}
+
+{% block content %}
     <div class="container" style="margin:30px">
 
         <form method="post" action="{% url "planner:event_creation" %}">
             {% csrf_token %}
+
             <div>
                 {{ event_creation_form.event_name.errors }}
                 <label class="label">
@@ -55,21 +34,19 @@
                 </label>
                 {{ event_creation_form.event_location }}
             </div>
+
             <br>
 
-                <div>
-                    <input class="button is-warning" type="submit" value="Create Event">
-                </div>
-
-                <br>
-            </form>
             <div>
-                <form action="{% url 'planner:dashboard' %}">
-                    <input class="button is-warning" type="submit" value="Back to Dashboard" />
-                </form>
+                <input class="button is-warning" type="submit" value="Create Event">
             </div>
+            <br>
+        </form>
 
+        <div>
+            <form action="{% url 'planner:dashboard' %}">
+                <input class="button is-warning" type="submit" value="Back to Dashboard" />
+            </form>
+        </div>
     </div>
-</body>
-</html>
-
+{% endblock %}
