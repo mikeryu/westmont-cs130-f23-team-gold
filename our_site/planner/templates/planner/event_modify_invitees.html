@@ -1,76 +1,48 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Include the Bulma CSS framework for styling -->
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
-    <title>Planner</title>
-</head>
-<body>
-    <header class="header" style="display: flex; justify-content: space-between; background-color: #eeb01e; height: 175px">
-        <div class="column" style="flex: 1; padding: 5px; color: #7f0000; text-align: left">
-            <h1 class="title is-1" style="color: #7f0000">Add Invitees!</h1>
-        </div>
-        <div class="column" style="flex: 1; padding: 5px; color: #7f0000; text-align: right">
-            <p class="has-text-right subtitle is-4" style="color: #7f0000">
-                Hello, <b>{{ user }}</b>
-            </p>
-            <form class="has-text-right" action="{% url 'login' %}">
-                <input class="button is-default has-text-warning" style="background-color: #7f0000" type="submit" value="Logout" />
-            </form>
-        </div>
-    </header>
+{% extends 'base.html' %}
 
-    <div class="container">
+{% block content %}
 
-            <div class="column">
-                {% if messages %}
-                    <ul class="messages">
-                        {% for message in messages %}
-                            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 
-                <div>
-                     <form class="is-inline-block is-size-5" method="post" action="">
-                        {% csrf_token %}
-                        <input class="button is-warning is-inline-block is-size-5" type="submit" value="Invite User" name="add">
-                        <div class="is-inline-block">
-                            {{ invite_form.as_div }}
-                        </div>
-                    </form>
-
-                    <form action="{% url "planner:dashboard" %}" class="is-inline-block is-pulled-right">
-                        <input class="button is-warning is-size-5 mx-2" type="submit" value="Back to Dashboard">
-                    </form>
-
-                    <form action="{{ event_edit_page }}" class="is-inline-block is-pulled-right">
-                        <input class="button is-warning is-size-5" type="submit" value="Back to Event Info">
-                    </form>
-                </div>
-
-                <hr>
-                <header class="is-size-3 has-text-centered">Current Invitations:</header>
-
-                 {% for invitee in invitees %}
-                    <div class="box">
-                        <form class="is-inline-block" method="post" action="">
-                            {% csrf_token %}
-                            {{ invitee.uninvite_form.user_name.as_hidden }}
-                            <input class="has-background-danger is-size-5" type="submit" value="Rescind Invitation" name="remove">
-                        </form>
-
-                        <p class="is-inline-block is-size-4">
-                            {{ invitee.name }}
-                        </p>
-                    </div>
-                {% endfor %}
+    <div>
+        <form class="is-inline-block is-size-5" method="post" action="">
+            {% csrf_token %}
+            <input class="button is-warning is-inline-block is-size-5 mx-2" type="submit" value="Invite User" name="add">
+            <div class="is-inline-block">
+                {{ invite_form.as_div }}
             </div>
+        </form>
 
+        <form action="{% url "planner:dashboard" %}" class="is-inline-block is-pulled-right">
+            <input class="button is-warning is-size-5 mx-2" type="submit" value="Back to Dashboard">
+        </form>
+
+        <form action="{{ event_edit_page }}" class="is-inline-block is-pulled-right">
+            <input class="button is-warning is-size-5" type="submit" value="Back to Event Info">
+        </form>
     </div>
-</body>
-</html>
+
+    <hr>
+    <header class="is-size-3 has-text-centered">Current Invitations:</header>
+
+    {% for invitee in invitees %}
+        <div class="box">
+            <form class="is-inline-block" method="post" action="">
+                {% csrf_token %}
+                {{ invitee.uninvite_form.user_name.as_hidden }}
+                <input class="has-background-danger is-size-5" type="submit" value="Rescind Invitation" name="remove">
+            </form>
+
+            <p class="is-inline-block is-size-4">
+                {{ invitee.name }}
+            </p>
+        </div>
+    {% endfor %}
+
+{% endblock %}
