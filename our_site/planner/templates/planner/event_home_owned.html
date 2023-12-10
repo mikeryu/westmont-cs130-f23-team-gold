@@ -9,7 +9,7 @@
           href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
     <title>Planner</title>
 </head>
-<body style="background-color: #e4e4e4;">
+<body style="background-color: #ebeaea;">
     <header class="header" style="display: flex; justify-content: space-between; background-color: #eeb01e; height: 175px">
         <div class="column" style="flex: 1; padding: 5px; color: #7f0000; text-align: left">
             <h1 class="title is-1" style="color: #7f0000">Event Details!</h1>
@@ -47,10 +47,10 @@
             <h1 class="title is-1 has-text-centered" style="color: #7f0000">{{ event.name }}</h1>
             <div class="content">
                 <ul>
-                    <li><strong>Description:</strong> {{ event.description }}</li>
-                    <li><strong>Host:</strong> {{ event.owner.user }}</li>
-                    <li><strong>Location:</strong> {{ event.location }}</li>
-                    <li><strong>Date:</strong> {{ event.date }}</li>
+                    <p><strong>Description:</strong> {{ event.description }}</p>
+                    <p><strong>Host:</strong> {{ event.owner.user }}</p>
+                    <p><strong>Location:</strong> {{ event.location }}</p>
+                    <p><strong>Date:</strong> {{ event.date }}</p>
                 </ul>
             </div>
             
