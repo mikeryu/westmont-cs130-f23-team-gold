@@ -2,11 +2,11 @@
 
 {% block content %}
     <div class="container" style="margin:30px">
-        <form method="post" style="font-size:30px; color: #7f0000;" align="center">
+        <form method="post" style="font-size:30px; color: #7f0000;">
+            <input class="button has-text-warning is-pulled-right" style="background-color: #7f0000;" type="submit" value="Add Roles">
+            <br>
             {% csrf_token %}
             {{ addRoles_form.as_div}}
-            <br>
-            <input class="button has-text-warning" style="background-color: #7f0000;" type="submit" value="Add Roles">
         </form>
     </div>
 {% endblock %}
