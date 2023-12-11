@@ -1,12 +1,24 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div class="container" style="margin:30px">
-        <form method="post" style="font-size:30px; color: #7f0000;">
-            <input class="button has-text-warning is-pulled-right" style="background-color: #7f0000;" type="submit" value="Add Roles">
-            <br>
-            {% csrf_token %}
-            {{ addRoles_form.as_div}}
-        </form>
+<form class="column" method="post" style="flex: 2">
+    {% csrf_token %}
+
+    <div style="background-color: rgb(238, 236, 236); padding: 50px">
+        <p>
+            <b style="font-size: 50px; color: #900505">
+                Add Roles
+            </b>
+            <i>
+                Let your atendees know how they can help out!
+            </i>
+        </p>
+        <br>
+        <div>
+            <label class="label" style="font-size:20px">
+                <input class="button has-text-warning is-pulled-right" style="background-color: #7f0000;" type="submit" value="Add Roles">
+                {{ addRoles_form.as_div}}
+        </div>
     </div>
-{% endblock %}
+
+    {% endblock %}
