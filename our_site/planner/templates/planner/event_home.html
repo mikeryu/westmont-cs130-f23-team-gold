@@ -41,15 +41,15 @@
             <h1 class="title is-1 has-text-centered" style="color: #7f0000">{{ event.name }}</h1>
             <div class="content">
                 <ul>
-                    <p><strong>Description:</strong> {{ event.description }}</p>
-                    <p><strong>Host:</strong> {{ event.owner.user }}</p>
-                    <p><strong>Location:</strong> {{ event.location }}</p>
-                    <p><strong>Date:</strong> {{ event.date }}</p>
+                    <p style="color:black; font-size:20px"><strong style="font-size:25px; color:#7f0000">Description:</strong> {{ event.description }}</p>
+                    <p style="color:black; font-size:20px"><strong style="font-size:25px; color:#7f0000">Host:</strong> {{ event.owner.user }}</p>
+                    <p style="color:black; font-size:20px"><strong style="font-size:25px; color:#7f0000">Location:</strong> {{ event.location }}</p>
+                    <p style="color:black; font-size:20px"><strong style="font-size:25px; color:#7f0000">Date:</strong> {{ event.date }}</p>
                 </ul>
             </div>
 
             <div class="columns">
-                <div class="column">
+                <div class="column has-text-left box">
                     <h2 class="subtitle is-4">Attendees:</h2>
                     <ul>
                         {% for attendee in attendees %}
@@ -57,7 +57,7 @@
                         {% endfor %}
                     </ul>
                 </div>
-                <div class="column">
+                <div class="column has-text-left box">
                     <h2 class="subtitle is-4">Invitees:</h2>
                     <ul>
                         {% for invitee in invitees %}
@@ -65,7 +65,7 @@
                         {% endfor %}
                     </ul>
                 </div>
-                <div class="column">
+                <div class="column has-text-left box">
                     <h2 class="subtitle is-4">Roles</h2>
                     <ul>
                         <div class='list-item'> 
