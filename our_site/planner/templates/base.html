@@ -18,7 +18,11 @@
                 cursor: pointer;
                 background-color: #8f600a;
                 border: 2px solid #7f0000;
+            }
 
+            .logoutbtn {
+                border-color: #7f0000; 
+                border-radius: 5px;
             }
         </style>
     </head>
@@ -52,7 +56,16 @@
                     </div>
                     <br><br>
                     <form action="{% url 'account:logout' %}">
-                        <input class="logoutbtn" type="submit" value="Logout" style="font-size: 21px; background-color: #eeb01e; color: #7f0000; border-color: #7f0000; font-weight: bold"/>
+                        <input 
+                            class="logoutbtn" 
+                            type="submit" 
+                            value="Logout" 
+                            style=
+                                "font-size: 21px; 
+                                background-color: #eeb01e; 
+                                color: #7f0000;                                  
+                                font-weight: bold"
+                        />
                     </form>
                 </div>
             </header>
