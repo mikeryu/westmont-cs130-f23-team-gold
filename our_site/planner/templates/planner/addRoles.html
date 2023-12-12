@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<form class="column" method="post" style="flex: 2">
+<form class="column" method="post" style="flex: 2" align="center">
     {% csrf_token %}
     <div style="background-color: rgb(238, 236, 236); padding: 50px">
         <p>
@@ -16,7 +16,8 @@
         <div>
             <label class="label" style="font-size:20px">
                 {{ addRoles_form.as_div}}
-                <input class="button has-text-warning is-pulled-right" style="background-color: #7f0000;" type="submit" value="Add Roles">
+                <br>
+                <input class="button has-text-warning is-pulled-center" style="background-color: #7f0000;" type="submit" value="Add Roles">
 
         </div>
     </div>
