@@ -1,52 +1,107 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div class="container" style="margin:30px">
-
-        <form method="post" action="{% url "planner:event_creation" %}">
-            {% csrf_token %}
-
-            <div>
-                <label class="label">
-                    Event Name (30 characters max):
-                </label>
-                {{ event_creation_form.event_name.errors }}
-                {{ event_creation_form.event_name }}
-            </div>
-            <div>
-                <label class="label">
-                    Event Date (dd/mm/yyyy hh:mm):
-                </label>
-                {{ event_creation_form.event_date }}
-                {{ event_creation_form.event_date.errors }}
-            </div>
-            <div>
-                {{ event_creation_form.event_description.errors }}
-                <label class="label">
-                    Event Description (200 characters max):
-                </label>
-                {{ event_creation_form.event_description }}
-            </div>
-            <div>
-                {{ event_creation_form.event_location.errors }}
-                <label class="label">
-                    Event Location (50 characters max):
-                </label>
-                {{ event_creation_form.event_location }}
-            </div>
-
-            <br>
-
-            <div>
-                <input class="button is-warning" type="submit" value="Create Event">
-            </div>
-            <br>
-        </form>
-
-        <div>
+    <div style="margin:30px; display: flex">
+        <div class="column" style="flex: 1">
             <form action="{% url 'planner:dashboard' %}">
                 <input class="button is-warning" type="submit" value="Back to Dashboard" />
             </form>
         </div>
+
+        <form class="column" method="post" action="{% url "planner:event_creation" %}" style="flex: 2">
+            {% csrf_token %}
+          
+            <div style="background-color: rgb(238, 236, 236); padding: 50px">
+                <p>
+                    <b style="font-size: 50px; color: #900505">
+                        Basic Info
+                    </b>
+                    <i>
+                        Give your event a name and add any details to make it unique!
+                    </i>
+                </p>
+                <br>
+                <div>
+                    {{ event_creation_form.event_name.errors }}
+                    <label class="label">
+                        <p style="font-size: 20px">
+                                Event Name:
+                        </p>
+                    </label>
+                    {{ event_creation_form.event_name }} 
+                    <p>
+                        (30 characters max)
+                    </p>
+                </div>
+                <br>
+                <div>
+                    {{ event_creation_form.event_description.errors }}
+                    <label class="label">
+                        <p style="font-size: 20px">
+                            Description:
+                        </p>
+                    </label>
+                    {{ event_creation_form.event_description }}
+                    <p>
+                        (200 characters max)
+                    </p>
+                </div>
+            </div>
+            <br>
+            <div style="background-color: rgb(238, 236, 236); padding: 35px">
+                <p>
+                    <b style="font-size: 50px; color: #900505">
+                        Location
+                    </b>
+                    <i>
+                        Help your attendees know where to show up!
+                    </i>
+                </p>
+                <br>
+                <div>
+                    {{ event_creation_form.event_location.errors }}
+                    <label class="label">
+                        <p style="font-size: 20px">
+                            Event Location:
+                        </p>
+                    </label>
+                    {{ event_creation_form.event_location }}
+                    <p>
+                        (50 characters max)
+                    </p>
+                </div>
+
+            </div>
+            <br>
+            <div style="background-color: rgb(238, 236, 236); padding: 35px">
+                <p>
+                    <b style="font-size: 50px; color: #900505"> 
+                        Date &amp; Time
+                    </b>
+                    <i>
+                        Let your event-goers know when to be there!
+                    </i>
+                </p>
+                <br>
+                <div>
+                    {{ event_creation_form.event_date.errors }}
+                    <label class="label">
+                        <p style="font-size: 20px">
+                            Event Date (mm/dd/yyyy h:m):
+                        </p>
+                    </label>
+                    {{ event_creation_form.event_date }}
+                </div>
+            </div>
+            <br>
+
+            <div style="display: flex; justify-content: center; align-items: center">
+                <input class="button is-warning" type="submit" value="Create Event!" style="height: 70px; width: 210px; font-weight: bold; font-size: 25px">
+            </div>
+            <br>
+        </form>
+
+        <div class="column"></div>
+
     </div>
 {% endblock %}
