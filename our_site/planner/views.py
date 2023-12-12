@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.urls import reverse
 from django.shortcuts import render
 
-from .models import Event, User
+from .models import Event, User, Profile, Role
 from .forms import AddInvitationForm, RemoveInvitationForm
 from .forms import RoleForm
 
@@ -365,30 +365,44 @@ def invitations(request, event_id: int) -> HttpResponse:
     )
 
 
-class RoleDetails(forms.Form):
-    role_name = forms.CharField(max_length=30)
+#class RoleDetails(forms.Form):
+    #role_name = forms.CharField(max_length=30)
+
+class RoleForm(forms.Form):
+    name = forms.CharField(max_length=30, required=True)
+    description = forms.CharField(max_length=100)  
+    amount = forms.IntegerField()
 
 
-def addRoles(request):
+def addRoles(request, event_id):
+
     if request.user.is_anonymous:
         return HttpResponseRedirect("/account/login/")
-    if request.method == "GET":
-        template = loader.get_template("planner/addRoles.html")
-        addRoles_form = RoleForm()
-        return HttpResponse(template.render({"addRoles_form": addRoles_form}, request))
-
-    elif request.method == "POST":
-        addRoles_form = RoleForm(request.POST)
-        if addRoles_form.is_valid():
-            role = addRoles_form.save(commit=False)
-            role.user = request.user
+    event = Event.objects.all().filter(id__exact=event_id).get()
+    
+    match request.method:
+        case "GET":
+            template=loader.get_template("planner/addRoles.html")
+            addRoles_form=RoleForm()
+            return HttpResponse(template.render(
+                {
+                    "addRoles_form": addRoles_form,
+                },
+                request
+            ))
+        case "POST":
+            addRoles_form=RoleForm(request.POST)
+            if addRoles_form.is_valid():
+                role = Role(
+                    name=addRoles_form.cleaned_data["name"],
+                    description=addRoles_form.cleaned_data["description"],
+                    amount = addRoles_form.cleaned_data["amount"],
+                    event = event
+            )
+            
             role.save()
-
-        addRoles_form = RoleForm()
-        return render(request, "planner/addRoles.html", {"addRoles_form": addRoles_form})
-    else:
-        template = loader.get_template("planner/dashboard.html")
-        return HttpResponse(template.render({"RoleDetails": RoleDetails}, request))
+            #addRoles_form=RoleForm()
+            return HttpResponseRedirect("/planner/dashboard")
 
 
 def handle_event(request, event_id):
@@ -409,3 +423,90 @@ def handle_event(request, event_id):
             event.invitees.remove(user_profile)
 
     return HttpResponseRedirect(reverse('planner:dashboard'))
+
+
+
+def signupRoles(request, role_id):
+    if request.user.is_anonymous:
+        return HttpResponseRedirect("/account/login/")
+
+    #event = Event.objects.all().filter(id__exact=event_id).get()
+    #user = request.user.profile.id  
+    profile_id = request.user.profile.id
+    role=Role.objects.all().filter(id__exact=role_id).get()
+    profile = Profile.objects.all().filter(id=profile_id).get()
+    #use_id=request.user.id
+    #users=Profile.objects.all()(user_id=use_id).get()
+    #roles_list=[]
+    #for role in event.roles.all():
+        #roles_list.append(role)
+    #role_list=Role.objects.filter(event=event_id)
+
+    #role=Role.objects.all().filter(id__exact=role_id).get()
+    #roles_id=request.user.event.roles
+    #role=Role.objects.all().filter(pk=role_id).get()
+
+    if request.method == 'POST':
+        action = request.POST.get('action')
+        #role_id = role_id
+        #rol=event.roles.id()
+        user = request.user.id
+        #role=Role.objects.all().filter(id__exact=role_id).get()
+
+        if action == 'accept':
+            
+            profile.roles.add(role)
+            #profile.user.add(users)
+            
+       
+    return HttpResponseRedirect(reverse('planner:dashboard'))
+    #return HttpResponse(
+        #render(request, 'planner/signupRoles.html', { "role": role})
+    #)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    #event = Event.objects.all().filter(id__exact=event_id).get()
+    #logged_in_profile_id = request.user.profile.id
+
+    #roles_list=[]
+    #for role in event.roles.all():
+        #roles_list.append(request.event.role.id)
+
+    #profile = Profile.objects.all().filter(user_id=logged_in_profile_id).get()
+    #role=Event.objects.all()filter(id_exact=role_id)
+
+    #if request.method == 'POST':
+        #action = request.POST.get('action')
+        #roles_id= event.roles
+        #role_id=request.GET['role.id']
+        #role_id= role.role.id
+
+        #if action == 'accept':
+            #profile.roles.add(roles_id)
+          
+    #roles_list=[]
+    #for role in event.roles.all():
+        #roles_list.append(role)
+
+    #return HttpResponseRedirect(reverse('planner:dashboard'))
+
+

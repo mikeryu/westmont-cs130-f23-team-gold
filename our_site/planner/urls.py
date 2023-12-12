@@ -10,9 +10,12 @@ urlpatterns = [
 
     path('event/<int:event_id>/', views.event_home, name='event_home'),  # Places to view a specific event
     path('event_owned/<int:event_id>/', views.event_home_owned, name="event_home_owned"),
-
+    #path('signupRoles/<int:event_id>/', views.signupRoles, name='signupRoles'),
+    
     path("<int:event_id>/invitations/", views.invitations, name="invitations"),  # Changing info about an event
-    path('addRoles/', views.addRoles, name="addRoles"),
+    path('<int:event_id>/addRoles', views.addRoles, name="addRoles"),
     path('<int:event_id>/handle_event/', views.handle_event, name='handle_event'),
+    path('<int:role_id>/signupRoles', views.signupRoles, name='signupRoles')
+    
 ]
 
