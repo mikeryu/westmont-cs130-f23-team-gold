@@ -1,76 +1,106 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Include the Bulma CSS framework for styling -->
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
-    <title>Planner</title>
-</head>
-<body>
-    <header class="header" style="display: flex; justify-content: space-between; background-color: #eeb01e; height: 175px">
-        <div class="column" style="flex: 1; padding: 5px; color: #7f0000; text-align: left">
-            <h1 class="title is-1" style="color: #7f0000">Create an Event!</h1>
-        </div>
-        <div class="column" style="flex: 1; padding: 5px; color: #7f0000; text-align: right">
-            <p class="has-text-right subtitle is-4" style="color: #7f0000">
-                {{ user }} is signed in
-            </p>
-            <form class="has-text-right" action="{% url 'login' %}">
-                <input class="button is-default has-text-warning" style="background-color: #7f0000" type="submit" value="Logout" />
+{% extends 'base.html' %}
+
+{% block content %}
+    <div style="margin:30px; display: flex">
+        <div class="column" style="flex: 1">
+            <form action="{% url 'planner:dashboard' %}">
+                <input class="button is-warning" type="submit" value="Back to Dashboard" />
             </form>
         </div>
-    </header>
-    <div class="container" style="margin:30px">
 
-        <form method="post" action="{% url "planner:event_creation" %}">
+        <form class="column" method="post" action="{% url "planner:event_creation" %}" style="flex: 2">
             {% csrf_token %}
-            <div>
-                {{ event_creation_form.event_name.errors }}
-                <label class="label">
-                    Event Name (30 characters max):
-                </label>
-                {{ event_creation_form.event_name }}
+
+            <div style="background-color: rgb(238, 236, 236); padding: 50px">
+                <p>
+                    <b style="font-size: 50px; color: #900505">
+                        Basic Info
+                    </b>
+                    <i>
+                        Give your event a name and add any details to make it unique!
+                    </i>
+                </p>
+                <br>
+                <div>
+                    {{ event_creation_form.event_name.errors }}
+                    <label class="label">
+                        <p style="font-size: 20px">
+                                Event Name:
+                        </p>
+                    </label>
+                    {{ event_creation_form.event_name }} 
+                    <p>
+                        (30 characters max)
+                    </p>
+                </div>
+                <br>
+                <div>
+                    {{ event_creation_form.event_description.errors }}
+                    <label class="label">
+                        <p style="font-size: 20px">
+                            Description:
+                        </p>
+                    </label>
+                    {{ event_creation_form.event_description }}
+                    <p>
+                        (200 characters max)
+                    </p>
+                </div>
             </div>
-            <div>
-                {{ event_creation_form.event_date.errors }}
-                <label class="label">
-                    Event Date (mm/dd/yyyy h:m):
-                </label>
-                {{ event_creation_form.event_date }}
+            <br>
+            <div style="background-color: rgb(238, 236, 236); padding: 35px">
+                <p>
+                    <b style="font-size: 50px; color: #900505">
+                        Location
+                    </b>
+                    <i>
+                        Help your attendees know where to show up!
+                    </i>
+                </p>
+                <br>
+                <div>
+                    {{ event_creation_form.event_location.errors }}
+                    <label class="label">
+                        <p style="font-size: 20px">
+                            Event Location:
+                        </p>
+                    </label>
+                    {{ event_creation_form.event_location }}
+                    <p>
+                        (50 characters max)
+                    </p>
+                </div>
             </div>
-            <div>
-                {{ event_creation_form.event_description.errors }}
-                <label class="label">
-                    Event Description (200 characters max):
-                </label>
-                {{ event_creation_form.event_description }}
-            </div>
-            <div>
-                {{ event_creation_form.event_location.errors }}
-                <label class="label">
-                    Event Location (50 characters max):
-                </label>
-                {{ event_creation_form.event_location }}
+            <br>
+            <div style="background-color: rgb(238, 236, 236); padding: 35px">
+                <p>
+                    <b style="font-size: 50px; color: #900505"> 
+                        Date &amp; Time
+                    </b>
+                    <i>
+                        Let your event-goers know when to be there!
+                    </i>
+                </p>
+                <br>
+                <div>
+                    {{ event_creation_form.event_date.errors }}
+                    <label class="label">
+                        <p style="font-size: 20px">
+                            Event Date (mm/dd/yyyy h:m):
+                        </p>
+                    </label>
+                    {{ event_creation_form.event_date }}
+                </div>
             </div>
             <br>
 
-                <div>
-                    <input class="button is-warning" type="submit" value="Create Event">
-                </div>
+            <div style="display: flex; justify-content: center; align-items: center">
+                <input class="button is-warning" type="submit" value="Create Event!" style="height: 70px; width: 210px; font-weight: bold; font-size: 25px">
+            </div>
+            <br>
+        </form>
 
-                <br>
-                <div>
-                    <form action="{% url 'planner:dashboard' %}">
-                        <input class="button is-warning" type="submit" value="Back to Dashboard" />
-                    </form>
-                </div>
-
-            </form>
+        <div class="column"></div>
 
     </div>
-</body>
-</html>
-
+{% endblock %}

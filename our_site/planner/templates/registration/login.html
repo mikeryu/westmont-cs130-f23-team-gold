@@ -1,54 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Planner</title>
-</head>
-<body style="background-color: white">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Planner</title>
+        <style>
+            input[type="submit"]:hover {
+                cursor: pointer; /* Change cursor style to pointer when hovering */
+            }
+        </style>
+    </head>
+    <body style="background-color: white">
 
-    <div class="container" align="center" style="position: relative; top: 200px">
+        <div class="container" align="center" style="position: relative; padding-top: 150px">
 
-        {% block content %}
-            {% if form.errors %}
-                <p>Your username and password didn't match. Please try again.</p>
+            {% block content %}
+                {% if form.errors %}
+                    <p>Your username and password didn't match. Please try again.</p>
                 {% endif %}
-                <div style="box-shadow: 0 5px 4px 1px gray; background-color: #eeb01e; position: relative; border: 3px solid #86610a; border-radius: 30px; width: 420px; height: 450px"></div>
-                    <div>
-                        <h1 style="font-family: Arial, sans-serif; font-size: 70px; color: #7f0000" class="title is-1">Plan it</h1>
-                    </div>
-                    <br>
-                    <form method="post" action="{% url 'login' %}">
-                    {% csrf_token %}
-                    <div style="font-size: 25px; font-family: Arial, sans-serif; color: #7f0000">
-                        {{ form.username.label_tag }}
-                        {{ form.username }}
-                    </div>
-                    <div style="font-size: 25px; font-family: Arial, sans-serif; color: #7f0000">
-                        {{ form.password.label_tag }}
-                        {{ form.password }}
-                    </div>
-                    <br>
-                    <br>
-                
-                
 
-                    <input class="button is-warning" id="submit_button" type="submit" style="font-family: Arial, sans-serif; font-size: 13px; background-color: #7f0000; color: #eeb01e; padding: 10px 20px; border-radius: 10px;" value="Login">
-                    <input type="hidden" name="next" value="{{ next }}">
+                <div style="box-shadow: 0 5px 4px 1px gray; background-color: #eeb01e; position: relative; border: 3px solid #86610a; border-radius: 30px; width: 420px; height: 450px">
+                    <div style="padding-top: 30px">
+                        {% load static %}
+                        <img src="{% static 'planitlogo.png' %}" alt="Logo" style="max-width: 75%; max-height: 75%">
+                    </div>
 
-                    <a href="/account/newAccount" class="button is-warning" id="id_new_account_button" style="font-family: Arial, sans-serif; background-color: #7f0000; color: #eeb01e; border: 1.5px solid black; padding: 8px 20px; border-radius: 10px; text-decoration: none">
-                        Create Account
-                    </a>
+                    <br>
+                    <form method="post" action="{% url 'account:login' %}">
+                        {% csrf_token %}
+                        <div style="font-size: 25px; color: #7f0000">
+                            {{ form.username.label_tag }}
+                            {{ form.username }}
+                        </div>
+                        <div style="font-size: 25px; color: #7f0000">
+                            {{ form.password.label_tag }}
+                            {{ form.password }}
+                        </div>
+                        <br>
+                        <br>
+
+                        <input class="button is-warning" id="submit_button" type="submit" style="font-family: Arial, sans-serif; font-size: 13px; background-color: #7f0000; color: #eeb01e; padding: 10px 20px; border-radius: 10px;" value="Login">
+                        <input type="hidden" name="next" value="{{ next }}">
+
+                        {# To keep the formatting the same for the create account button, we literally just added a copy #}
+                        {# of the login button but made it not clickable and put it inside a hyperlink LOL #}
+                        <a href="{% url "account:newAccount" %}" id="id_new_account_button">
+                            <input
+                                    class="button is-warning"
+                                    id="submit_button"
+                                    type="submit"
+                                    style=
+                                            "font-family: Arial, sans-serif;
+                                            font-size: 13px;
+                                            background-color: #7f0000;
+                                            color: #eeb01e;
+                                            padding: 10px 20px;
+                                            border-radius: 10px;
+                                            pointer-events: none"  {# This is the line that disables the inner button #}
+                                    value="Create New Account">
+                        </a>
 
                     </form>
                 </div>
 
-                {# Assumes you set up the password_reset view in your URLconf #}
-                <!--<p><a href="<add left curly brace>% url 'password_reset' %<add right curly brace>">Lost password?</a></p>-->
-        {% endblock content %}
+            {% endblock content %}
 
-    </div>
-</body>
+        </div>
+    </body>
 </html>
 
