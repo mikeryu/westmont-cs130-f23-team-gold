@@ -430,83 +430,20 @@ def signupRoles(request, role_id):
     if request.user.is_anonymous:
         return HttpResponseRedirect("/account/login/")
 
-    #event = Event.objects.all().filter(id__exact=event_id).get()
-    #user = request.user.profile.id  
+   
     profile_id = request.user.profile.id
     role=Role.objects.all().filter(id__exact=role_id).get()
     profile = Profile.objects.all().filter(id=profile_id).get()
-    #use_id=request.user.id
-    #users=Profile.objects.all()(user_id=use_id).get()
-    #roles_list=[]
-    #for role in event.roles.all():
-        #roles_list.append(role)
-    #role_list=Role.objects.filter(event=event_id)
-
-    #role=Role.objects.all().filter(id__exact=role_id).get()
-    #roles_id=request.user.event.roles
-    #role=Role.objects.all().filter(pk=role_id).get()
+  
 
     if request.method == 'POST':
         action = request.POST.get('action')
-        #role_id = role_id
-        #rol=event.roles.id()
         user = request.user.id
-        #role=Role.objects.all().filter(id__exact=role_id).get()
-
+        
         if action == 'accept':
-            
             profile.roles.add(role)
-            #profile.user.add(users)
-            
-       
-    return HttpResponseRedirect(reverse('planner:dashboard'))
-    #return HttpResponse(
-        #render(request, 'planner/signupRoles.html', { "role": role})
-    #)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    #event = Event.objects.all().filter(id__exact=event_id).get()
-    #logged_in_profile_id = request.user.profile.id
-
-    #roles_list=[]
-    #for role in event.roles.all():
-        #roles_list.append(request.event.role.id)
-
-    #profile = Profile.objects.all().filter(user_id=logged_in_profile_id).get()
-    #role=Event.objects.all()filter(id_exact=role_id)
-
-    #if request.method == 'POST':
-        #action = request.POST.get('action')
-        #roles_id= event.roles
-        #role_id=request.GET['role.id']
-        #role_id= role.role.id
-
-        #if action == 'accept':
-            #profile.roles.add(roles_id)
-          
-    #roles_list=[]
-    #for role in event.roles.all():
-        #roles_list.append(role)
-
-    #return HttpResponseRedirect(reverse('planner:dashboard'))
-
+    return HttpResponse(
+        render(request, 'planner/signupRoles.html')
+    )
 
