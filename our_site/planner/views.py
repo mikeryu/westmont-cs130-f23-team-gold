@@ -64,9 +64,14 @@ def dashboard(request) -> HttpResponse:
 
 class EventBasicDetails(forms.Form):
     event_name = forms.CharField(label="Event Name:", max_length=30, required=True)
-    event_date = forms.DateTimeField(input_formats=['%d/%m/%Y %H:%M'], label="Event Date (dd/mm/yy hh:mm):",
+    event_date = forms.DateTimeField(input_formats=['%d/%m/%Y %H:%M'], label="Event Date (yyyy-mm-dd):",
                                      required=True)
-    event_description = forms.CharField(label="Event Description:", max_length=200, required=True)
+    event_description = forms.CharField(
+        label="Event Description:",
+        max_length=200,
+        required=True,
+        widget=forms.Textarea(attrs={'class': 'event-description', 'style': 'width: 763px; height: 172px'}),
+    )
     event_location = forms.CharField(label="Event Location:", max_length=50, required=True)
 
 
@@ -373,8 +378,6 @@ def handle_event(request, event_id):
 
     return HttpResponseRedirect(reverse('planner:dashboard'))
 
-
-
 def signupRoles(request, role_id):
     if request.user.is_anonymous:
         return HttpResponseRedirect("/account/login/")
@@ -395,4 +398,5 @@ def signupRoles(request, role_id):
     return HttpResponse(
         render(request, 'planner/signupRoles.html')
     )
+
 
