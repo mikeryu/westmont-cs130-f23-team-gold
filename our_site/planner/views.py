@@ -365,3 +365,4 @@ def handle_event(request, event_id):
             event.invitees.remove(user_profile)
 
     return HttpResponseRedirect(reverse('planner:dashboard'))
+
