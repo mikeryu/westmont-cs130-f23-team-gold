@@ -71,7 +71,7 @@ class EventBasicDetails(forms.Form):
         label="Event Description:",
         max_length=200,
         required=True,
-        widget=forms.Textarea(),
+        widget=forms.Textarea(attrs={'class': 'event-description'}),
     )
     event_location = forms.CharField(label="Event Location:", max_length=50, required=True)
 

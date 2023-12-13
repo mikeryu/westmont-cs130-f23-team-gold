@@ -1,6 +1,22 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    
+    <style>
+        .eventdtls input[type="text"] {
+            padding: 4px;
+            margin-bottom: 30px;
+        }
+
+        .event-description {
+            padding: 4px;
+        }
+        
+        .event-description-label {
+            display: block;
+            padding: 10px;
+        }
+    </style>
 
     <div style="margin:30px; display: flex">
         <div class="column" style="flex: 1">
@@ -9,20 +25,26 @@
             </form>
         </div>
 
-        <div class="column" style="flex: 2; border: 3px solid #7f0000; height: 600px; width: 250px; padding-left: 50px; padding-right: 50px">
+        <div 
+            class= "column" 
+            style=
+                "flex: 2; 
+                padding: 35px;
+                background-color: rgb(238, 236, 236);
+                height: 730px;
+                width: 250px; "
+        >
             <p style="font-size: 50px; color: #900505; font-weight: bold">
                 Confirm Event Details
             </p>
             <br>
-            <form method="post">
+            <form class="eventdtls" method="post">
                 {% csrf_token %}
                 {{ basic_details.as_div }}
                     <br>
                     <input class="button is-warning" type="submit" value="Save Changes"/>
             </form>
-        </div>
-
-        <div class="column" style="display: flex; flex: 1; justify-content: flex-end; align-items: right">
+            <br>
             <form method="post" action="{% url 'planner:addRoles' %}">
                 {% csrf_token %}
                 <input class="button is-warning" type="submit" value="Add Roles" name="Add Roles"/>
@@ -34,6 +56,9 @@
                 {% csrf_token %}
                 <input class="button is-warning" type="submit" value="Add Invitees" name="Add Invitees"/>
             </form>
+        </div>
+
+        <div class="column" style="display: flex; flex: 1; justify-content: flex-end; align-items: right">
         </div>
 
     </div>
