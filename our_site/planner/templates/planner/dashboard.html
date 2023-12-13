@@ -6,17 +6,18 @@
         <ul>
             {% block tabs %}
 
-            {% endblock tabs %}
+            {% endblock %}
         </ul>
     </div>
 
     {% for event in event_list %}
-        <div class="box has-background-warning has-text-danger m-5 is-parent">
+        <div class="box has-background-warning custom-text-color m-5 is-parent" style="color: #b41313">
             <div class="level">
                 <div class="level-item">
                     <a
                             href="{% url 'planner:event_home' event.id %}"
-                            class="has-text-weight-bold is-size-2 has-text-danger"
+                            class="has-text-weight-bold is-size-2 custom-text-color"
+                            style="color: #b41313"
                             id="event-title-{{ forloop.counter }}">{{ event.name }}
                     </a>
                 </div>
