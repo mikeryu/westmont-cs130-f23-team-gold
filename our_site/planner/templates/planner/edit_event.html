@@ -15,7 +15,6 @@
 
     <div style="margin:30px; display: flex">
         <div class="column" style="flex: 1">
-    
         </div>
 
         <div 
@@ -34,10 +33,12 @@
             <form class="eventdtls" method="post" style="font-weight: bold; font-size: 20px">
                 {% csrf_token %}
                 {{ basic_details.as_div }}
-                    <br>
-                    <input class="button is-warning" type="submit" value="Save Changes"/>
+                <br>
+                <input class="button is-warning" type="submit" value="Save Changes"/>
             </form>
+
             <br>
+
             <form method="post" action="{% url 'planner:addRoles' %}">
                 {% csrf_token %}
                 <input class="button is-warning" type="submit" value="Add Roles" name="Add Roles"/>
