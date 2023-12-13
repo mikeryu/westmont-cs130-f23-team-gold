@@ -2,6 +2,9 @@
 
 {% block content %}
     <div style="margin:30px; display: flex">
+        <div class="column" style="flex: 1">
+            
+        </div>
 
         <form class="column" method="post" action="{% url "planner:event_creation" %}" style="flex: 2">
             {% csrf_token %}
