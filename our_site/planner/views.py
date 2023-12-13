@@ -348,7 +348,7 @@ def addRoles(request, event_id):
                     amount = addRoles_form.cleaned_data["amount"],
                     event = event
             )
-            
+         
             role.save()
             #addRoles_form=RoleForm()
             return HttpResponseRedirect("/planner/dashboard")
