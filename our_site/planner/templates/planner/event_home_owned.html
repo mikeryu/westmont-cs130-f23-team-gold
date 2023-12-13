@@ -26,7 +26,7 @@
         </section>
 
         <div class="container">
-            <form method="post">
+            <form method="post" action="{% url 'planner:edit_event' event.id %}">
                 {% csrf_token %}
                 <input class="button is-medium is-warning" type="submit" value="Edit Event" name="Edit Event" id="edit-event">
             </form>
