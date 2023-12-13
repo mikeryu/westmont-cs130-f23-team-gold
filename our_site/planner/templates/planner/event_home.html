@@ -21,8 +21,6 @@
                                     {% for role in roles_list %}
                                         <li class="px-6">  •{{ role.name }} </li>
                                         {% if user.profile in attendees %}
-            
-                                            
                                              <form method="post" action="{% url 'planner:signupRoles' role.id %}">
                                                 {% csrf_token %}
                                                 <button class="button is-small is-warning" type="submit" name="action" value="accept">Choose Role</button>
