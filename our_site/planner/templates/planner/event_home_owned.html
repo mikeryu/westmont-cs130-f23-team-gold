@@ -26,10 +26,10 @@
         </section>
 
         <div class="container">
-            <form method="post" action="{% url 'planner:edit_event' event.id %}">
+            <form method="post">
                 {% csrf_token %}
                 <input class="button is-medium is-warning" type="submit" value="Edit Event" name="Edit Event" id="edit-event">
-            </form>
+            </form>      
             <br>
             <form action="{% url 'planner:dashboard' %}">
                 <input class="button is-medium is-warning" type="submit" value="Back to Dashboard" />

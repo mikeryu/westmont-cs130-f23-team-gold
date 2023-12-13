@@ -182,6 +182,7 @@ def edit_event(request, event_id: int) -> HttpResponse:
         template.render(
             {
                 "basic_details": basic_details,
+                "event_id": event.id,
             },
             request
         )
