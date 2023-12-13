@@ -4,17 +4,12 @@
     
     <style>
         .eventdtls input[type="text"] {
-            padding: 4px;
+            padding: 5px;
             margin-bottom: 30px;
         }
 
         .event-description {
             padding: 4px;
-        }
-        
-        .event-description-label {
-            display: block;
-            padding: 10px;
         }
     </style>
 
@@ -31,14 +26,14 @@
                 "flex: 2; 
                 padding: 35px;
                 background-color: rgb(238, 236, 236);
-                height: 730px;
+                height: 760px;
                 width: 250px; "
         >
             <p style="font-size: 50px; color: #900505; font-weight: bold">
                 Confirm Event Details
             </p>
             <br>
-            <form class="eventdtls" method="post">
+            <form class="eventdtls" method="post" style="font-weight: bold; font-size: 20px">
                 {% csrf_token %}
                 {{ basic_details.as_div }}
                     <br>
