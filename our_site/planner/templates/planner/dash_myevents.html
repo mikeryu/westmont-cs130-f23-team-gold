@@ -1,14 +1,14 @@
 {% extends 'planner/dashboard.html' %}
 
 {% block tabs %}
-    <li><a href="{% url "planner:dashboard_all" %}" class="has-text-danger">All Events</a></li>
+    <li><a href="{% url "planner:dashboard_all" %}" class="custom-text-color" style="color: #b41313">All Events</a></li>
 
     <li class="is-active">
-        <a class="has-text-danger-dark has-background-danger-light">
+        <a class="has-text-danger-dark" style="background-color: #ffd68b">
             My Events
         </a>
     </li>
 
-    <li><a href="{% url "planner:dashboard_accepted" %}" class="has-text-danger">Accepted Events</a></li>
-    <li><a href="{% url "planner:dashboard_invited" %}" class="has-text-danger">Invited Events</a></li>
+    <li><a href="{% url "planner:dashboard_accepted" %}" class="custom-text-color" style="color: #b41313">Accepted Events</a></li>
+    <li><a href="{% url "planner:dashboard_invited" %}" class="custom-text-color" style="color: #b41313">Invited Events</a></li>
 {% endblock %}
