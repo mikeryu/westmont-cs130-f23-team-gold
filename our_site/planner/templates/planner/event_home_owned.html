@@ -48,14 +48,14 @@
             <div class="buttons has-text-centered">
                 <form method="post" action="{% url 'planner:handle_event' event.id %}">
                     {% csrf_token %}
-                    <button class="button is-medium is-warning" type="submit" name="action" value="accept">Accept Invite</button>
-                    <button class="button is-medium is-warning" type="submit" name="action" value="decline">Decline Invite</button>
+                    <button class="button is-medium is-warning" id="accept" type="submit" name="action" value="accept">Accept Invite</button>
+                    <button class="button is-medium is-warning" id="decline" type="submit" name="action" value="decline">Decline Invite</button>
                 </form>
             </div>
         {% endif %}
 
         <form action="{{ edit_link }}">
-            <input class="button is-warning is-size-5 mx-2" type="submit" value="Edit Event">
+            <input class="button is-warning is-size-5 mx-2" id="edit-event" type="submit" value="Edit Event">
         </form>
     </div>
 
