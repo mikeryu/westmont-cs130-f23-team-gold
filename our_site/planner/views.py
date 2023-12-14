@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.urls import reverse
 from django.shortcuts import render
 
-from .models import Event, User
+from .models import Event, User, Profile, Role
 from .forms import AddInvitationForm, RemoveInvitationForm
 from .forms import RoleForm
 
@@ -27,7 +27,6 @@ def dashboard(request) -> HttpResponse:
         return HttpResponseRedirect("/account/login/")
 
     owner = request.user.profile
-
     # Get the full url, because the last part of the url is the value by which to filter events
     filter_value = request.build_absolute_uri().split("/")[-2]
 
@@ -188,6 +187,7 @@ def edit_event(request, event_id: int) -> HttpResponse:
         template.render(
             {
                 "basic_details": basic_details,
+                "event_id": event.id,
             },
             request
         )
@@ -245,14 +245,17 @@ def event_home(request, event_id):
     invitees = event.invitees.all()
     attendees = event.attendees.all()
 
+    profile_id = request.user.profile.id
+    profile = Profile.objects.all().filter(id=profile_id).get()
+
     user_profile_id = request.user.profile.id
     owner_profile_id = event.owner_id
     invitee_profile_ids = event.invitees.values_list('id', flat=True)
     attendee_profile_ids = event.attendees.values_list('id', flat=True)
 
-    roles_list = []
-    for role in event.roles.all():
-        roles_list.append(role)
+    signedRoles=list(profile.roles.filter(event=event_id).all())
+    roles_list = list(event.roles.all())
+
     # check if user is owner or invitee
     if (
             user_profile_id != owner_profile_id
@@ -265,8 +268,7 @@ def event_home(request, event_id):
         return HttpResponseRedirect("/planner/event_owned/{:d}/".format(event.id))
 
     return HttpResponse(
-        render(request, 'planner/event_home.html',
-               {'event': event, 'invitees': invitees, 'attendees': attendees, "roles_list": roles_list})
+        render(request, 'planner/event_home.html', {'event': event, 'invitees': invitees, 'attendees': attendees, "roles_list": roles_list, "signedRoles": signedRoles})
     )
 
 
@@ -333,30 +335,44 @@ def invitations(request, event_id: int) -> HttpResponse:
     )
 
 
-class RoleDetails(forms.Form):
-    role_name = forms.CharField(max_length=30)
+#class RoleDetails(forms.Form):
+    #role_name = forms.CharField(max_length=30)
+
+class RoleForm(forms.Form):
+    name = forms.CharField(max_length=30, required=True)
+    description = forms.CharField(max_length=100)  
+    amount = forms.IntegerField()
 
 
-def addRoles(request):
+def addRoles(request, event_id):
+
     if request.user.is_anonymous:
         return HttpResponseRedirect("/account/login/")
-    if request.method == "GET":
-        template = loader.get_template("planner/addRoles.html")
-        addRoles_form = RoleForm()
-        return HttpResponse(template.render({"addRoles_form": addRoles_form}, request))
-
-    elif request.method == "POST":
-        addRoles_form = RoleForm(request.POST)
-        if addRoles_form.is_valid():
-            role = addRoles_form.save(commit=False)
-            role.user = request.user
+    event = Event.objects.all().filter(id__exact=event_id).get()
+    
+    match request.method:
+        case "GET":
+            template=loader.get_template("planner/addRoles.html")
+            addRoles_form=RoleForm()
+            return HttpResponse(template.render(
+                {
+                    "addRoles_form": addRoles_form,
+                },
+                request
+            ))
+        case "POST":
+            addRoles_form=RoleForm(request.POST)
+            if addRoles_form.is_valid():
+                role = Role(
+                    name=addRoles_form.cleaned_data["name"],
+                    description=addRoles_form.cleaned_data["description"],
+                    amount = addRoles_form.cleaned_data["amount"],
+                    event = event
+            )
+         
             role.save()
-
-        addRoles_form = RoleForm()
-        return render(request, "planner/addRoles.html", {"addRoles_form": addRoles_form})
-    else:
-        template = loader.get_template("planner/dashboard.html")
-        return HttpResponse(template.render({"RoleDetails": RoleDetails}, request))
+            #addRoles_form=RoleForm()
+            return HttpResponseRedirect("/planner/event_owned/{:d}/".format(event_id))
 
 
 def handle_event(request, event_id):
@@ -377,4 +393,26 @@ def handle_event(request, event_id):
             event.invitees.remove(user_profile)
 
     return HttpResponseRedirect(reverse('planner:dashboard'))
+
+def signupRoles(request, role_id):
+    if request.user.is_anonymous:
+        return HttpResponseRedirect("/account/login/")
+
+   
+    profile_id = request.user.profile.id
+    role=Role.objects.all().filter(id__exact=role_id).get()
+    profile = Profile.objects.all().filter(id=profile_id).get()
+  
+
+    if request.method == 'POST':
+        action = request.POST.get('action')
+        user = request.user.id
+        
+        if action == 'accept':
+            profile.roles.add(role)
+
+    return HttpResponse(
+        render(request, 'planner/signupRoles.html')
+    )
+
 

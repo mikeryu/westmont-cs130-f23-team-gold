@@ -52,7 +52,7 @@
 
             <br>
 
-            <form method="post" action="{% url 'planner:addRoles' %}">
+            <form action="{% url 'planner:addRoles' event_id=event_id  %}">
                 {% csrf_token %}
                 <input class="button is-warning" type="submit" value="Add Roles" name="Add Roles"/>
             </form>
@@ -67,3 +67,7 @@
     </div>
 
 {% endblock %}
+
+
+
+
