@@ -10,8 +10,8 @@
         </ul>
     {% endif %}
 
-    <div>
-        <form class="is-inline-block is-size-5" method="post" action="">
+    <div class="level">
+        <form class="is-size-5 level-item" method="post" action="">
             {% csrf_token %}
             <input class="button is-warning is-inline-block is-size-5 mx-2" type="submit" value="Invite User" name="add">
             <div class="is-inline-block">
@@ -19,11 +19,7 @@
             </div>
         </form>
 
-        <form action="{% url "planner:dashboard" %}" class="is-inline-block is-pulled-right">
-            <input class="button is-warning is-size-5 mx-2" type="submit" value="Back to Dashboard">
-        </form>
-
-        <form action="{{ event_edit_page }}" class="is-inline-block is-pulled-right">
+        <form action="{{ event_edit_page }}" class="level-item">
             <input class="button is-warning is-size-5" type="submit" value="Back to Event Info">
         </form>
     </div>
@@ -32,11 +28,11 @@
     <header class="is-size-3 has-text-centered">Current Invitations:</header>
 
     {% for invitee in invitees %}
-        <div class="box">
+        <div class="box mx-6">
             <form class="is-inline-block" method="post" action="">
                 {% csrf_token %}
                 {{ invitee.uninvite_form.user_name.as_hidden }}
-                <input class="has-background-danger is-size-5" type="submit" value="Rescind Invitation" name="remove">
+                <input class="has-background-danger is-size-5 tag has-text-black" type="submit" value="Uninvite" name="remove">
             </form>
 
             <p class="is-inline-block is-size-4">

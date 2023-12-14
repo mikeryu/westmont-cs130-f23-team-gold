@@ -223,7 +223,17 @@ def event_home_owned(request, event_id):
             return HttpResponseRedirect("/planner/{:d}/edit_event".format(event.id))
 
     return HttpResponse(
-        render(request, 'planner/event_home_owned.html', {'event': event, 'invitees': invitees, 'attendees': attendees, "roles_list": roles_list})
+        render(
+            request,
+            'planner/event_home_owned.html',
+            {
+                'event': event,
+                'invitees': invitees,
+                'attendees': attendees,
+                "roles_list": roles_list,
+                "edit_link": "/planner/{:d}/edit_event".format(event_id),
+            }
+        )
     )
 
 
