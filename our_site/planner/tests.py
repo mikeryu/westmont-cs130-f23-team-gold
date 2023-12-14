@@ -27,13 +27,13 @@ def basic_setup() -> None:
 
     # Make one event owned by each user
     # Invite the first user to the event owned by the second user
-    (test_event0 := Event(
+    Event(
         owner=test_profile0,
         name="a",
         date=datetime.now(),
         description="a",
         location="a",
-    )).save()
+    ).save()
     (test_event1 := Event(
         owner=test_profile1,
         name="b",
@@ -146,6 +146,7 @@ class DashboardTest(StaticLiveServerTestCase):
                 len(driver.find_elements(By.TAG_NAME, "a")),
                 2
             )
+
 
 class TestLogout(StaticLiveServerTestCase):
     def setUp(self) -> None:
