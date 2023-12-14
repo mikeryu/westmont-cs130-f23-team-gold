@@ -14,29 +14,35 @@
 
 {% block content %}
 
-    <h2>Sign up</h2>
+    <div style="padding-left: 30px">
+        <h2 style="font-size: 30px">
+            <b>Sign up</b>
+        </h2>
 
-    <form method="post">
-        {% csrf_token %}
+        <form method="post">
+            {% csrf_token %}
 
-        {% for field in form %}
+            {% for field in form %}
+                <br>
+                <p>
+                    {{ field.label_tag }}<br>
+                    {{ field }}
+
+                    {% if field.help_text %}
+                        <small style="color: grey">{{ field.help_text }}</small>
+                    {% endif %}
+
+                    {% for error in field.errors %}
+                        <p style="color: red">{{ error }}</p>
+                    {% endfor %}
+                </p>
+            {% endfor %}
+
             <br>
-            <p>
-                {{ field.label_tag }}<br>
-                {{ field }}
 
-                {% if field.help_text %}
-                    <small style="color: grey">{{ field.help_text }}</small>
-                {% endif %}
-
-                {% for error in field.errors %}
-                    <p style="color: red">{{ error }}</p>
-                {% endfor %}
-            </p>
-        {% endfor %}
-
-        <button class="button is-warning" type="submit" id="id_submit_new_account_button">Sign up</button>
-        <a href="{% url 'account:login' %}" class="button is-warning">Back to Login</a>
-    </form>
+            <button class="button is-warning" type="submit" id="id_submit_new_account_button">Sign up</button>
+            <a href="{% url 'account:login' %}" class="button is-warning">Back to Login</a>
+        </form>
+    </div>
 
 {% endblock content %}
