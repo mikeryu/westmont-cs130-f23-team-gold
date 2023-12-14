@@ -199,6 +199,8 @@ def event_home_owned(request, event_id):
         return HttpResponseRedirect("/account/login/")
 
     event = Event.objects.all().filter(id__exact=event_id).get()
+    invitees = event.invitees.all()
+    attendees = event.attendees.all()
 
     user_profile_id = request.user.profile.id
     owner_profile_id = event.owner_id
@@ -221,7 +223,7 @@ def event_home_owned(request, event_id):
             return HttpResponseRedirect("/planner/{:d}/edit_event".format(event.id))
 
     return HttpResponse(
-        render(request, 'planner/event_home_owned.html', {'event': event, "roles_list": roles_list})
+        render(request, 'planner/event_home_owned.html', {'event': event, 'invitees': invitees, 'attendees': attendees, "roles_list": roles_list})
     )
 
 

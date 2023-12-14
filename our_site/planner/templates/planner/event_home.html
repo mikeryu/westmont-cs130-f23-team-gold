@@ -1,85 +1,93 @@
-{% extends 'base.html' %}
 
-{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Include the Bulma CSS framework for styling -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <title>Planner</title>
+</head>
+<body style="background-color: #ebeaea;">
+    <header class="header" style="display: flex; justify-content: space-between; background-color: #eeb01e; height: 175px">
+        <div class="column" style="flex: 1; padding: 5px; color: #7f0000; text-align: left">
+            <h1 class="title is-1" style="color: #7f0000">Event Details!</h1>
 
-
-    <div class="container">
-        <div class="container">
-            <section class="box" style="background-color: #7f000065">
-                <div class="hero-body">
-                    <section class="box" style="background-color: #eeb01e">
-                        <h1 class="title is-1" style="color: #7f0000">{{ event.name }}</h1>
-                    </section>
-                    <p>Description: {{ event.description }}</p>
-                    <p> Host: {{ event.owner.user }}</p>
-                    <p> Location: {{ event.location }}</p>
-                    <p> Date: {{ event.date }}</p>
-                    <p> Roles:
-                        <div class='list'> 
-                            <ul>
-                                <div class='list-item'> 
-                                    {% for role in roles_list %}
-                                        <li class="px-6">  •{{ role.name }} </li>
-                                        {% if user.profile in attendees %}
-                                             <form method="post" action="{% url 'planner:signupRoles' role.id %}">
-                                                {% csrf_token %}
-                                                <button class="button is-small is-warning" type="submit" name="action" value="accept">Choose Role</button>
-                                            </form>
-                                           
-                                        {% endif %}
-                                    {% endfor %}
-                                </div> 
-                            </ul>  
-                        </div>
-                    </p>
-                </div>
-            </section>
-
-            <div class="container">
-                <div class="columns">
-                    <div class="column is-6">
-                        <form action="{% url 'planner:dashboard' %}">
-                            <input class="button is-medium is-warning" type="submit" value="Back to Dashboard" />
-                        </form>
-                    </div>
-                </div>
-            </div>
         </div>
+        <div class="column" style="flex: 1; padding: 5px; color: #7f0000; text-align: right">
+            <p class="has-text-right subtitle is-4" style="color: #7f0000">
+                Hello, <b>{{ user }}</b>
+            </p>
+            <form class="has-text-right" action="{% url 'login' %}">
+                <input class="button is-default has-text-warning" style="background-color: #7f0000" type="submit" value="Logout" />
+            </form>
+        </div>
+    </header>
 
-        <br>
+    <section class="section">
 
-        {% if user.profile in invitees %}
-            <div class="container">
-                <form method="post" action="{% url 'planner:handle_event' event.id %}">
-                    {% csrf_token %}
-                    <button class="button is-medium is-warning" type="submit" name="action" value="accept">Accept Invite</button>
-                    <button class="button is-medium is-warning" type="submit" name="action" value="decline">Decline Invite</button>
-                </form>
+        <div class="container has-background-white p-5">
+            <h1 class="title is-1 has-text-centered" style="color: #7f0000">{{ event.name }}</h1>
+            <div class="content">
+                <ul>
+                    <p style="color:black; font-size:20px"><strong style="font-size:25px; color:#7f0000">Description:</strong> {{ event.description }}</p>
+                    <p style="color:black; font-size:20px"><strong style="font-size:25px; color:#7f0000">Host:</strong> {{ event.owner.user }}</p>
+                    <p style="color:black; font-size:20px"><strong style="font-size:25px; color:#7f0000">Location:</strong> {{ event.location }}</p>
+                    <p style="color:black; font-size:20px"><strong style="font-size:25px; color:#7f0000">Date:</strong> {{ event.date }}</p>
+                </ul>
             </div>
-        {% endif %}
 
-        <br>
-
-        <div class="container">
             <div class="columns">
-                <div class="column is-2">
-                    <h2>Invitees:</h2>
-                    <ul>
-                        {% for invitee in invitees %}
-                        <li>{{ invitee.user.username }}</li>
-                        {% endfor %}
-                    </ul>
-                </div>
-                <div class="column is-2">
-                    <h2>Attendees:</h2>
+                <div class="column has-text-left">
+                    <h2 class="subtitle is-4">Attendees:</h2>
                     <ul>
                         {% for attendee in attendees %}
                             <li>{{ attendee.user.username }}</li>
                         {% endfor %}
                     </ul>
                 </div>
+                <div class="column has-text-left">
+                    <h2 class="subtitle is-4">Invitees:</h2>
+                    <ul>
+                        {% for invitee in invitees %}
+                            <li>{{ invitee.user.username }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="column has-text-left">
+                    <h2 class="subtitle is-4">Roles</h2>
+                    <ul>
+                        <div class='list-item'> 
+                            {% for role in roles_list %}
+                                <li>{{ role.name }}</li>
+				{% if user.profile in attendees %}
+                                	 <form method="post" action="{% url 'planner:signupRoles' role.id %}">
+                                         	{% csrf_token %}
+                                                <button class="button is-small is-warning" type="submit" name="action" value="accept">Choose Role</button>
+                                         </form>
+    
+                                {% endif %}
+                            {% endfor %}
+                        </div> 
+                    </ul>  
+                </div>
             </div>
+        
+            {% if user.profile in invitees %}
+                <div class="buttons has-text-centered">
+                    <form method="post" action="{% url 'planner:handle_event' event.id %}">
+                        {% csrf_token %}
+                        <button class="button is-medium is-warning" type="submit" name="action" value="accept">Accept Invite</button>
+                        <button class="button is-medium is-warning" type="submit" name="action" value="decline">Decline Invite</button>
+                    </form>
+                </div>
+            {% endif %}
         </div>
-    </div>
+    </section>
+</body>
+</html>
 
-{% endblock %}
+
+
