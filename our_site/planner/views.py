@@ -7,7 +7,6 @@ from django.shortcuts import render
 
 from .models import Event, User, Profile, Role
 from .forms import AddInvitationForm, RemoveInvitationForm
-from .forms import RoleForm
 
 from notifications.notify_email import send_notification
 
@@ -253,7 +252,7 @@ def event_home(request, event_id):
     invitee_profile_ids = event.invitees.values_list('id', flat=True)
     attendee_profile_ids = event.attendees.values_list('id', flat=True)
 
-    signedRoles=list(profile.roles.filter(event=event_id).all())
+    signedRoles = list(profile.roles.filter(event=event_id).all())
     roles_list = list(event.roles.all())
 
     # check if user is owner or invitee
@@ -268,7 +267,9 @@ def event_home(request, event_id):
         return HttpResponseRedirect("/planner/event_owned/{:d}/".format(event.id))
 
     return HttpResponse(
-        render(request, 'planner/event_home.html', {'event': event, 'invitees': invitees, 'attendees': attendees, "roles_list": roles_list, "signedRoles": signedRoles})
+        render(request, 'planner/event_home.html',
+               {'event': event, 'invitees': invitees, 'attendees': attendees, "roles_list": roles_list,
+                "signedRoles": signedRoles})
     )
 
 
@@ -335,25 +336,21 @@ def invitations(request, event_id: int) -> HttpResponse:
     )
 
 
-#class RoleDetails(forms.Form):
-    #role_name = forms.CharField(max_length=30)
-
 class RoleForm(forms.Form):
     name = forms.CharField(max_length=30, required=True)
-    description = forms.CharField(max_length=100)  
+    description = forms.CharField(max_length=100, required=True)
     amount = forms.IntegerField()
 
 
 def addRoles(request, event_id):
-
     if request.user.is_anonymous:
         return HttpResponseRedirect("/account/login/")
     event = Event.objects.all().filter(id__exact=event_id).get()
-    
+
     match request.method:
         case "GET":
-            template=loader.get_template("planner/addRoles.html")
-            addRoles_form=RoleForm()
+            template = loader.get_template("planner/addRoles.html")
+            addRoles_form = RoleForm()
             return HttpResponse(template.render(
                 {
                     "addRoles_form": addRoles_form,
@@ -361,17 +358,17 @@ def addRoles(request, event_id):
                 request
             ))
         case "POST":
-            addRoles_form=RoleForm(request.POST)
+            addRoles_form = RoleForm(request.POST)
             if addRoles_form.is_valid():
                 role = Role(
                     name=addRoles_form.cleaned_data["name"],
                     description=addRoles_form.cleaned_data["description"],
-                    amount = addRoles_form.cleaned_data["amount"],
-                    event = event
-            )
-         
+                    amount=addRoles_form.cleaned_data["amount"],
+                    event=event
+                )
+
             role.save()
-            #addRoles_form=RoleForm()
+            # addRoles_form=RoleForm()
             return HttpResponseRedirect("/planner/event_owned/{:d}/".format(event_id))
 
 
@@ -394,25 +391,22 @@ def handle_event(request, event_id):
 
     return HttpResponseRedirect(reverse('planner:dashboard'))
 
+
 def signupRoles(request, role_id):
     if request.user.is_anonymous:
         return HttpResponseRedirect("/account/login/")
 
-   
     profile_id = request.user.profile.id
-    role=Role.objects.all().filter(id__exact=role_id).get()
+    role = Role.objects.all().filter(id__exact=role_id).get()
     profile = Profile.objects.all().filter(id=profile_id).get()
-  
 
     if request.method == 'POST':
         action = request.POST.get('action')
         user = request.user.id
-        
+
         if action == 'accept':
             profile.roles.add(role)
 
     return HttpResponse(
         render(request, 'planner/signupRoles.html')
     )
-
-
