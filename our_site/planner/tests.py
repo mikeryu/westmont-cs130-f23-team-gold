@@ -191,37 +191,72 @@ class TestLogout(StaticLiveServerTestCase):
         test_event1.invitees.add(test_profile0)
         test_event1.save()
 
+#user can logout
     def test_normal_logout(self) -> None:
         # test logging out
         with driver_manager() as driver:
             driver.get(f"{self.live_server_url}/")
             generic_user_login(driver, "test_user0", "test_password")
             driver.find_element(By.CLASS_NAME, "logoutbtn").click()
-
-
-            print(driver.find_element(By.ID, "id_username").text)
-            self.assertEquals(
-                len(driver.find_element(By.TAG_NAME, "Login")),
+            self.assertEqual(
+                len(driver.find_elements(By.ID, "id_new_account_button")),
                 1
-            ) 
-            
+            )
 
-    # def test_view_all_attending(self) -> None:
-    #     """
+# user sees accept and decline buttons 
+    def test_accept_decline_event(self) -> None:
+        """
 
-    #     """
-    #     with driver_manager() as driver:
-    #         # Log in to website
-    #         driver.get(f"{self.live_server_url}/")
-    #         generic_user_login(driver, "test_user0", "test_password")
-    #         # Change view to Attending Event and make sure it works
-    #         driver.find_element(By.ID, "Attending Events Filter").click()
-    #         # Make sure there are two events
-    #         self.assertEquals(
-    #             len(driver.find_elements(By.TAG_NAME, "a")),
-    #             1
-    #         )
+        """
+        with driver_manager() as driver:
+            # Log in to website
+            driver.get(f"{self.live_server_url}/")
+            generic_user_login(driver, "test_user0", "test_password")
+            # Change view to Attending Event and make sure it works
+            driver.find_element(By.ID, "event-title-2").click()
+            # Make sure there are two events
+            self.assertEqual(
+                len(driver.find_elements(By.ID, "accept")),
+                1
+            )
 
+#accept an invite to an event
+    def test_accept_event(self) -> None:
+        """
+
+        """
+        with driver_manager() as driver:
+            # Log in to website
+            driver.get(f"{self.live_server_url}/")
+            generic_user_login(driver, "test_user0", "test_password")
+            # Change view to Attending Event and make sure it works
+            driver.find_element(By.ID, "event-title-2").click()
+            driver.find_element(By.ID, "accept").click()
+            # Make sure there are two events
+            self.assertEqual(
+                len(driver.find_elements(By.ID, "event-title-2")),
+                1
+            )
+
+#declines event
+    def test_decline_event(self) -> None:
+        """
+
+        """
+        with driver_manager() as driver:
+            # Log in to website
+            driver.get(f"{self.live_server_url}/")
+            generic_user_login(driver, "test_user0", "test_password")
+            # Change view to Attending Event and make sure it works
+            driver.find_element(By.ID, "event-title-2").click()
+            driver.find_element(By.ID, "decline").click()
+            # Make sure there are two events
+            self.assertEqual(
+                len(driver.find_elements(By.ID, "event-title-2")),
+                0
+            )
+
+#invites an invalid user
     def test_invite_person_no(self) -> None:
         """
 
@@ -229,16 +264,46 @@ class TestLogout(StaticLiveServerTestCase):
         with driver_manager() as driver:
             driver.get(f"{self.live_server_url}/")
             generic_user_login(driver, "test_user0", "test_password")
-            time.sleep(3)
-            driver.find_element(By.ID, "event-title-2").click()
-            time.sleep(3)
+            driver.find_element(By.ID, "event-title-1").click()
             driver.find_element(By.ID, "edit-event").click()
-            time.sleep(3)
             driver.find_element(By.ID, "Invite Button").click()
-            time.sleep(10)
+            driver.find_element(By.ID, "id_user_name").send_keys("jefferson")
+            driver.find_element(By.ID, "invite them").click()
             # Make sure there are two events
-            self.assertEquals(
-                len(driver.find_elements(By.TAG_NAME, "test_user0")),
+            self.assertEqual(
+                driver.find_element(By.ID, "not there").text,
+                "'jefferson' is not a registered user."
+            )
+
+#invites a valid user once    
+    def test_invite_valid_user(self) -> None:
+        with driver_manager() as driver:
+            driver.get(f"{self.live_server_url}/")
+            generic_user_login(driver, "test_user0", "test_password")
+            driver.find_element(By.ID, "event-title-1").click()
+            driver.find_element(By.ID, "edit-event").click()
+            driver.find_element(By.ID, "Invite Button").click()
+            driver.find_element(By.ID, "id_user_name").send_keys("test_user1")
+            driver.find_element(By.ID, "invite them").click()
+            self.assertEqual(
+                len(driver.find_elements(By.ID, "remove")),
+                1
+            )
+
+#invites the same person twice
+    def test_invite_valid_user_two(self) -> None:
+        with driver_manager() as driver:
+            driver.get(f"{self.live_server_url}/")
+            generic_user_login(driver, "test_user0", "test_password")
+            driver.find_element(By.ID, "event-title-1").click()
+            driver.find_element(By.ID, "edit-event").click()
+            driver.find_element(By.ID, "Invite Button").click()
+            driver.find_element(By.ID, "id_user_name").send_keys("test_user1")
+            driver.find_element(By.ID, "invite them").click()
+            driver.find_element(By.ID, "id_user_name").send_keys("test_user1")
+            driver.find_element(By.ID, "invite them").click()
+            self.assertEqual(
+                len(driver.find_elements(By.ID, "remove")),
                 1
             )
     
