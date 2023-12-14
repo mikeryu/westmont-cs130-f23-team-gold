@@ -191,7 +191,7 @@ class TestLogout(StaticLiveServerTestCase):
         test_event1.invitees.add(test_profile0)
         test_event1.save()
 
-#user can logout
+    # user can logout
     def test_normal_logout(self) -> None:
         # test logging out
         with driver_manager() as driver:
@@ -203,7 +203,7 @@ class TestLogout(StaticLiveServerTestCase):
                 1
             )
 
-# user sees accept and decline buttons 
+    # user sees accept and decline buttons
     def test_accept_decline_event(self) -> None:
         """
 
@@ -220,7 +220,7 @@ class TestLogout(StaticLiveServerTestCase):
                 1
             )
 
-#accept an invite to an event
+    # accept an invitation to an event
     def test_accept_event(self) -> None:
         """
 
@@ -238,7 +238,7 @@ class TestLogout(StaticLiveServerTestCase):
                 1
             )
 
-#declines event
+    # declines event
     def test_decline_event(self) -> None:
         """
 
@@ -256,7 +256,7 @@ class TestLogout(StaticLiveServerTestCase):
                 0
             )
 
-#invites an invalid user
+    # invites an invalid user
     def test_invite_person_no(self) -> None:
         """
 
@@ -275,7 +275,7 @@ class TestLogout(StaticLiveServerTestCase):
                 "'jefferson' is not a registered user."
             )
 
-#invites a valid user once    
+    # invites a valid user once
     def test_invite_valid_user(self) -> None:
         with driver_manager() as driver:
             driver.get(f"{self.live_server_url}/")
@@ -290,7 +290,7 @@ class TestLogout(StaticLiveServerTestCase):
                 1
             )
 
-#invites the same person twice
+    # invites the same person twice
     def test_invite_valid_user_two(self) -> None:
         with driver_manager() as driver:
             driver.get(f"{self.live_server_url}/")
@@ -306,4 +306,3 @@ class TestLogout(StaticLiveServerTestCase):
                 len(driver.find_elements(By.ID, "remove")),
                 1
             )
-    
