@@ -235,13 +235,17 @@ def event_home(request, event_id):
     invitees = event.invitees.all()
     attendees = event.attendees.all()
 
+    profile_id = request.user.profile.id
+    profile = Profile.objects.all().filter(id=profile_id).get()
 
     user_profile_id = request.user.profile.id
     owner_profile_id = event.owner_id
     invitee_profile_ids = event.invitees.values_list('id', flat=True)
     attendee_profile_ids = event.attendees.values_list('id', flat=True)
 
+    signedRoles=list(profile.roles.all())
     roles_list = list(event.roles.all())
+
     # check if user is owner or invitee
     if (
             user_profile_id != owner_profile_id
@@ -254,7 +258,7 @@ def event_home(request, event_id):
         return HttpResponseRedirect("/planner/event_owned/{:d}/".format(event.id))
 
     return HttpResponse(
-        render(request, 'planner/event_home.html', {'event': event, 'invitees': invitees, 'attendees': attendees, "roles_list": roles_list})
+        render(request, 'planner/event_home.html', {'event': event, 'invitees': invitees, 'attendees': attendees, "roles_list": roles_list, "signedRoles": signedRoles})
     )
 
 

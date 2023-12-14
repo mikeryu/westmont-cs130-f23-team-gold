@@ -57,20 +57,30 @@
                     </ul>
                 </div>
                 <div class="column has-text-left">
-                    <h2 class="subtitle is-4">Roles</h2>
+                    <h2 class="subtitle is-4">Roles:</h2>
                     <ul>
                         <div class='list-item'> 
                             {% for role in roles_list %}
                                 <li>{{ role.name }}</li>
-				{% if user.profile in attendees %}
+				                {% if user.profile in attendees %}
                                 	 <form method="post" action="{% url 'planner:signupRoles' role.id %}">
                                          	{% csrf_token %}
                                                 <button class="button is-small is-warning" type="submit" name="action" value="accept">Choose Role</button>
-                                         </form>
-    
+                                    </form>
                                 {% endif %}
                             {% endfor %}
-                        </div> 
+                                </div>
+                            </div>        
+                        </ul>
+                        
+                        <div class="column has-text-left">
+                            <h2 class="subtitle is-4">My Roles:</h2>
+                            <ul>
+                                <div class='list-item'> 
+                                    {% for sRoles in signedRoles %}
+                                        <li>{{ sRoles.name }}</li>
+                                    {% endfor %}
+                                </div> 
                     </ul>  
                 </div>
             </div>
