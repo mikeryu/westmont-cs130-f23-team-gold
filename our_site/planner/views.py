@@ -7,7 +7,7 @@ from django.shortcuts import render
 
 from .models import Event, User, Profile, Role
 from .forms import AddInvitationForm, RemoveInvitationForm
-from .forms import RoleForm
+
 
 from notifications.notify_email import send_notification
 
