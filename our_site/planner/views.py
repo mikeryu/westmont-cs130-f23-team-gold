@@ -253,7 +253,7 @@ def event_home(request, event_id):
     invitee_profile_ids = event.invitees.values_list('id', flat=True)
     attendee_profile_ids = event.attendees.values_list('id', flat=True)
 
-    signedRoles=list(profile.roles.all())
+    signedRoles=list(profile.roles.filter(event=event_id).all())
     roles_list = list(event.roles.all())
 
     # check if user is owner or invitee
