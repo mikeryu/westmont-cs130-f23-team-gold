@@ -2,17 +2,13 @@ from django import forms
 from django.core.exceptions import ValidationError
 
 from django.contrib.auth.forms import User
-from .models import Role, Event
-from .import views
-
-
-
-
 
 
 class LoginForm(forms.Form):
-    username = forms.CharField(label="Username", max_length=100, widget=forms.TextInput(attrs={'style': 'width: 250px; height: 300px; border: 1px solid #ccc; padding: 5px;'}))
-    password = forms.CharField(label="Password", max_length=100, widget=forms.TextInput(attrs={'style': 'width: 250px; height: 30px; border: 1px solid #ccc; padding: 5px;'}))
+    username = forms.CharField(label="Username", max_length=100, widget=forms.TextInput(
+        attrs={'style': 'width: 250px; height: 300px; border: 1px solid #ccc; padding: 5px;'}))
+    password = forms.CharField(label="Password", max_length=100, widget=forms.TextInput(
+        attrs={'style': 'width: 250px; height: 30px; border: 1px solid #ccc; padding: 5px;'}))
 
 
 def is_user_name(user_name: str) -> None:
