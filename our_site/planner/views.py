@@ -372,7 +372,7 @@ def addRoles(request, event_id):
          
             role.save()
             #addRoles_form=RoleForm()
-            return HttpResponseRedirect("/planner/dashboard")
+            return HttpResponseRedirect("/planner/event_owned/{:d}/".format(event_id))
 
 
 def handle_event(request, event_id):
