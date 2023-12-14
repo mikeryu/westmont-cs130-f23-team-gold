@@ -2,7 +2,9 @@
 
 {% block content %}
 
-    <div class="container has-background-white p-5">
+    <div class="container p-5"
+         style="background-color: #ebeaea"
+    >
         <h1 class="title is-1 has-text-centered" style="font-size:65px; color: #7f0000">{{ event.name }}</h1>
         <div class="content">
             <ul>
@@ -51,6 +53,11 @@
                 </form>
             </div>
         {% endif %}
+
+        <form action="{{ edit_link }}">
+            <input class="button is-warning is-size-5 mx-2" type="submit" value="Edit Event">
+        </form>
     </div>
+
 
 {% endblock %}
